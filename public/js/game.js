@@ -1661,50 +1661,43 @@ function getRandomColor() {
  */
 async function loadRandomQuestion(category, isChosenCategory = false) {
     try {
-        console.log('Loading random question for category:', category);
-        console.log('Is chosen category:', isChosenCategory);
-        
-        // Show loading message
-        const loadingMessage = document.createElement('div');
-        loadingMessage.className = 'loading-message';
-        loadingMessage.textContent = 'Caricamento domanda...';
-        document.body.appendChild(loadingMessage);
-
-        // Use Netlify Functions endpoint
-        const response = await fetch(`${API_URL}/api/questions`);
+        console.log('Loading questions for category:', category, 'isChosenCategory:', isChosenCategory);
+        const response = await fetch('/data/db.json');
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error('Failed to load questions');
         }
-        const questions = await response.json();
+        const data = await response.json();
+        const questions = data.questions.filter(q => q.category === category);
         
-        // Remove loading message
-        document.body.removeChild(loadingMessage);
+        if (questions.length === 0) {
+            console.log('No questions found for category:', category);
+            // Fallback to default questions
+            const defaultQuestions = [
+                {
+                    question: "What is the capital of France?",
+                    answer: "Paris",
+                    category: category,
+                    type: "text"
+                }
+            ];
+            displayQuestion(defaultQuestions[0], isChosenCategory);
+            return;
+        }
 
-        console.log('Questions loaded:', questions.length);
-        
-        // Filter questions by category if specified
-        const filteredQuestions = category 
-            ? questions.filter(q => q.category && q.category.toLowerCase() === category.toLowerCase())
-            : questions;
-            
-        if (filteredQuestions.length === 0) {
-            console.warn('No questions found for category:', category);
-            return displayQuestion(getDefaultQuestions()[0], null, isChosenCategory);
-        }
-        
-        const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
-        const selectedQuestion = filteredQuestions[randomIndex];
-        
+        const randomIndex = Math.floor(Math.random() * questions.length);
+        const selectedQuestion = questions[randomIndex];
         console.log('Selected question:', selectedQuestion);
-        return displayQuestion(selectedQuestion, null, isChosenCategory);
+        displayQuestion(selectedQuestion, isChosenCategory);
     } catch (error) {
         console.error('Error loading questions:', error);
-        // Remove loading message if it exists
-        const loadingMessage = document.querySelector('.loading-message');
-        if (loadingMessage) {
-            document.body.removeChild(loadingMessage);
-        }
-        return displayQuestion(getDefaultQuestions()[0], null, isChosenCategory);
+        // Fallback to default question
+        const defaultQuestion = {
+            question: "What is the capital of France?",
+            answer: "Paris",
+            category: category,
+            type: "text"
+        };
+        displayQuestion(defaultQuestion, isChosenCategory);
     }
 }
 
