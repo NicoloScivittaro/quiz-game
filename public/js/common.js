@@ -34,9 +34,7 @@ async function loadQuestions() {
 async function loadCategories() {
     try {
         console.log('loadCategories: Caricamento categorie da API iniziato');
-        console.log(`loadCategories: Facendo fetch a ${API_URL}/api/categories`);
-        
-        const response = await fetch(`${API_URL}/api/categories`);
+        const response = await fetch('/api/categories');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -55,7 +53,16 @@ async function loadCategories() {
             console.log(`loadCategories: Caricate ${categories.length} categorie da localStorage`);
             return categories;
         }
-        return [];
+        
+        // Se non ci sono categorie in localStorage, usa quelle di default
+        const defaultCategories = [
+            { id: 1, name: 'Letteratura' },
+            { id: 2, name: 'Storia' },
+            { id: 3, name: 'Scienza' },
+            { id: 4, name: 'Arte' }
+        ];
+        console.log('loadCategories: Usando categorie di default');
+        return defaultCategories;
     }
 }
 
