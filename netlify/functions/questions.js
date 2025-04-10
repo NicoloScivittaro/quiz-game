@@ -1,34 +1,12 @@
-// Dati delle domande incorporati direttamente nella funzione
-const questions = [
-    {
-        "id": 1,
-        "category": "Letteratura",
-        "question": "Chi è l'autore de 'Il giovane Holden'?",
-        "answer": "J.D. Salinger",
-        "type": "text"
-    },
-    {
-        "id": 2,
-        "category": "Storia",
-        "question": "In che anno è caduto il muro di Berlino?",
-        "answer": "1989",
-        "type": "text"
-    },
-    {
-        "id": 3,
-        "category": "Scienza",
-        "question": "Qual è il simbolo chimico dell'oro?",
-        "answer": "Au",
-        "type": "text"
-    },
-    {
-        "id": 4,
-        "category": "Arte",
-        "question": "Chi ha dipinto 'La Gioconda'?",
-        "answer": "Leonardo da Vinci",
-        "type": "text"
-    }
-];
+const fs = require('fs');
+const path = require('path');
+
+// Percorso al file db.json
+const dbPath = path.join(__dirname, '../../public/data/db.json');
+
+// Leggi il file db.json
+const dbData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+const questions = dbData.questions;
 
 exports.handler = async function(event, context) {
     try {
