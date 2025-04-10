@@ -1,36 +1,44 @@
 const fs = require('fs');
 const path = require('path');
 
+// Dati delle domande incorporati direttamente nella funzione
+const questions = [
+    {
+        "id": 1,
+        "category": "Letteratura",
+        "question": "Chi è l'autore de 'Il giovane Holden'?",
+        "answer": "J.D. Salinger",
+        "type": "text"
+    },
+    {
+        "id": 2,
+        "category": "Storia",
+        "question": "In che anno è caduto il muro di Berlino?",
+        "answer": "1989",
+        "type": "text"
+    },
+    {
+        "id": 3,
+        "category": "Scienza",
+        "question": "Qual è il simbolo chimico dell'oro?",
+        "answer": "Au",
+        "type": "text"
+    },
+    {
+        "id": 4,
+        "category": "Arte",
+        "question": "Chi ha dipinto 'La Gioconda'?",
+        "answer": "Leonardo da Vinci",
+        "type": "text"
+    }
+];
+
 exports.handler = async function(event, context) {
     try {
         console.log('Categories function started');
         
-        // Costruisci il percorso del file db.json
-        const dbPath = path.join(process.cwd(), '..', 'data', 'db.json');
-        console.log('Looking for db.json at:', dbPath);
-        
-        // Verifica se il file esiste
-        if (!fs.existsSync(dbPath)) {
-            console.error('db.json not found at:', dbPath);
-            return {
-                statusCode: 404,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ error: 'Database file not found' })
-            };
-        }
-
-        // Leggi il file
-        const dbContent = fs.readFileSync(dbPath, 'utf8');
-        console.log('Successfully read db.json');
-        
-        const db = JSON.parse(dbContent);
-        console.log('Successfully parsed db.json');
-
         // Estrai le categorie uniche dalle domande
-        const categories = [...new Set(db.questions.map(q => q.category))].map((category, index) => ({
+        const categories = [...new Set(questions.map(q => q.category))].map((category, index) => ({
             id: index + 1,
             name: category
         }));
