@@ -7,13 +7,13 @@
   NODE_VERSION = "18"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/categories"
+  to = "/.netlify/functions/categories"
   status = 200
 
 [[redirects]]
-  from = "/data/*"
-  to = "/data/:splat"
+  from = "/api/questions"
+  to = "/.netlify/functions/questions"
   status = 200
 
 [[redirects]]

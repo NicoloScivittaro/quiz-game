@@ -3,6 +3,12 @@
  * Gestisce la logica del gioco e la board interattiva
  */
 
+// Verifica che API_URL sia definita, altrimenti la definisce
+if (typeof API_URL === 'undefined') {
+    console.warn('API_URL non definita, utilizzo valore di fallback');
+    window.API_URL = window.location.origin;
+}
+
 // Configurazione API
 // const API_URL = 'http://localhost:3000/api';
 

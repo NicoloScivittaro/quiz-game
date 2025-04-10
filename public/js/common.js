@@ -34,12 +34,16 @@ async function loadQuestions() {
 async function loadCategories() {
     try {
         console.log('loadCategories: Caricamento categorie da API iniziato');
-        const response = await fetch('/api/categories');
+        const response = await fetch(`${API_URL}/api/categories`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const categories = await response.json();
         console.log('loadCategories: Categorie caricate da API:', categories);
+        
+        // Salva le categorie in localStorage come backup
+        localStorage.setItem('categories', JSON.stringify(categories));
+        
         return categories;
     } catch (error) {
         console.error('loadCategories: Error durante caricamento da API:', error);
