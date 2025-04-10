@@ -653,6 +653,25 @@
         }
         console.log('questions-editor.html: API_URL è', window.API_URL);
 
+        // Funzione per aprire le tab
+        function openTab(tabName) {
+            // Nascondi tutti i contenuti delle tab
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = 'none';
+            }
+
+            // Rimuovi la classe 'active' da tutti i bottoni delle tab
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+
+            // Mostra il contenuto della tab selezionata e attiva il bottone
+            document.getElementById(tabName).style.display = 'block';
+            event.currentTarget.classList.add('active');
+        }
+
         async function loadQuestionData() {
             console.log('Loading question data from API...');
             try {
@@ -693,7 +712,7 @@
                 const div = document.createElement('div');
                 div.className = 'category-item';
                 div.innerHTML = `
-                    <span>${category}</span>
+                        <span>${category}</span>
                     <div>
                         <button class="edit-button" onclick="editCategory('${category}')">
                             <i class="fas fa-edit"></i>
@@ -747,7 +766,7 @@
                     <div class="question-meta">
                         <span><i class="fas fa-tag"></i> ${question.category}</span>
                         <span class="question-type-badge ${question.type}">${question.type}</span>
-                    </div>
+                </div>
                     <div class="question-actions">
                         <button class="edit-button" onclick="editQuestion('${question.id}')">
                             <i class="fas fa-edit"></i>
@@ -755,8 +774,8 @@
                         <button class="delete-button" onclick="deleteQuestion('${question.id}')">
                             <i class="fas fa-trash"></i>
                         </button>
-                    </div>
-                `;
+                </div>
+            `;
                 questionsList.appendChild(div);
             });
         }
@@ -767,7 +786,7 @@
             if (errorAlert && errorText) {
                 errorText.textContent = message;
                 errorAlert.style.display = 'block';
-                setTimeout(() => {
+            setTimeout(() => {
                     errorAlert.style.display = 'none';
                 }, 5000);
             }

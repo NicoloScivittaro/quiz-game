@@ -1,17 +1,33 @@
 const fs = require('fs');
 const path = require('path');
 
-// Percorso al file db.json
-const dbPath = path.join(__dirname, '../../public/data/db.json');
-
-// Leggi il file db.json
-const dbData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-const questions = dbData.questions;
-
 exports.handler = async function(event, context) {
     try {
         console.log('Questions function started');
-        console.log('Event:', event);
+        
+        // Percorso al file db.json
+        const dbPath = path.join(process.cwd(), 'public', 'data', 'db.json');
+        console.log('Looking for db.json at:', dbPath);
+        
+        // Verifica se il file esiste
+        if (!fs.existsSync(dbPath)) {
+            console.error('db.json not found at:', dbPath);
+            return {
+                statusCode: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Database file not found',
+                    path: dbPath
+                })
+            };
+        }
+        
+        // Leggi il file db.json
+        const dbData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+        const questions = dbData.questions || [];
         
         // Filtra le domande per categoria se specificata
         const category = event.queryStringParameters?.category;
