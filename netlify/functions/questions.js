@@ -5,8 +5,8 @@ exports.handler = async function(event, context) {
     try {
         console.log('Questions function started');
         
-        // Percorso al file db.json - usando __dirname per ottenere il percorso della funzione
-        const dbPath = path.join(__dirname, '..', '..', 'public', 'data', 'db.json');
+        // Percorso al file db.json
+        const dbPath = path.join(process.cwd(), 'public', 'data', 'db.json');
         console.log('Looking for db.json at:', dbPath);
         
         // Verifica se il file esiste
@@ -26,8 +26,14 @@ exports.handler = async function(event, context) {
         }
         
         // Leggi il file db.json
-        const dbData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+        const fileContent = fs.readFileSync(dbPath, 'utf8');
+        console.log('File content length:', fileContent.length);
+        
+        const dbData = JSON.parse(fileContent);
+        console.log('Parsed db.json, found categories:', dbData.categories?.length);
+        
         const questions = dbData.questions || [];
+        console.log('Number of questions found:', questions.length);
         
         // Filtra le domande per categoria se specificata
         const category = event.queryStringParameters?.category;
@@ -37,7 +43,7 @@ exports.handler = async function(event, context) {
             ? questions.filter(q => q.category === category)
             : questions;
             
-        console.log(`Found ${filteredQuestions.length} questions`);
+        console.log(`Found ${filteredQuestions.length} questions after filtering`);
 
         return {
             statusCode: 200,
