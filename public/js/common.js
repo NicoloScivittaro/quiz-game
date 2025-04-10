@@ -1,5 +1,5 @@
-// Common API utilities
-const API_URL = 'http://localhost:3000/api';
+// Configurazione API
+const API_URL = window.location.origin;
 
 /**
  * Loads questions from the API
@@ -7,24 +7,22 @@ const API_URL = 'http://localhost:3000/api';
  */
 async function loadQuestions() {
     try {
-        const response = await fetch(`${API_URL}/questions`);
+        console.log('Loading questions from API...');
+        const response = await fetch(`${API_URL}/api/questions`);
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return await response.json();
+        const data = await response.json();
+        console.log('Questions loaded from API:', data.length);
+        return data;
     } catch (error) {
         console.error('Error loading questions from API:', error);
-        
-        // Try to load from localStorage as fallback
-        const savedData = localStorage.getItem('savedQuestionData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            if (data && Array.isArray(data.questions)) {
-                console.log(`Loaded ${data.questions.length} questions from localStorage`);
-                return data.questions;
-            }
+        // Fallback to localStorage
+        const savedQuestions = localStorage.getItem('questions');
+        if (savedQuestions) {
+            console.log('Using questions from localStorage');
+            return JSON.parse(savedQuestions);
         }
-        
         return [];
     }
 }
@@ -34,45 +32,30 @@ async function loadQuestions() {
  * @returns {Promise} Promise that resolves with categories data
  */
 async function loadCategories() {
-    console.log('loadCategories: Caricamento categorie da API iniziato');
     try {
-        console.log(`loadCategories: Facendo fetch a ${API_URL}/categories`);
-        const response = await fetch(`${API_URL}/categories`);
+        console.log('loadCategories: Caricamento categorie da API iniziato');
+        console.log(`loadCategories: Facendo fetch a ${API_URL}/api/categories`);
         
+        const response = await fetch(`${API_URL}/api/categories`);
         if (!response.ok) {
-            console.error(`loadCategories: Network response non OK: ${response.status} ${response.statusText}`);
-            throw new Error(`Network response was not ok: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-        const data = await response.json();
-        console.log(`loadCategories: Successo! Categorie caricate: ${JSON.stringify(data)}`);
-        return data;
+        const categories = await response.json();
+        console.log('loadCategories: Categorie caricate da API:', categories);
+        return categories;
     } catch (error) {
         console.error('loadCategories: Error durante caricamento da API:', error);
         console.error('Error stack:', error.stack);
-        
-        // Try to load from localStorage as fallback
         console.log('loadCategories: Tentativo di caricamento da localStorage');
-        const savedData = localStorage.getItem('savedQuestionData');
-        if (savedData) {
-            try {
-                const data = JSON.parse(savedData);
-                if (data && Array.isArray(data.categories)) {
-                    console.log(`loadCategories: Caricate ${data.categories.length} categorie da localStorage`);
-                    return data.categories;
-                } else {
-                    console.warn('loadCategories: localStorage non contiene dati categorie validi');
-                }
-            } catch (parseError) {
-                console.error('loadCategories: Errore durante il parsing localStorage:', parseError);
-            }
-        } else {
-            console.warn('loadCategories: Nessun dato trovato in localStorage');
-        }
         
-        // Default categories if nothing else is available
-        console.log('loadCategories: Utilizzo categorie default');
-        return ["Storia", "Geografia", "Scienza", "Sport", "Arte", "Musica", "Cinema", "Letteratura"];
+        // Fallback to localStorage
+        const savedCategories = localStorage.getItem('categories');
+        if (savedCategories) {
+            const categories = JSON.parse(savedCategories);
+            console.log(`loadCategories: Caricate ${categories.length} categorie da localStorage`);
+            return categories;
+        }
+        return [];
     }
 }
 
@@ -224,4 +207,31 @@ async function deleteData(endpoint) {
         console.error(`Error deleting ${endpoint}:`, error);
         throw error;
     }
-} 
+}
+
+// Funzioni per il salvataggio dei dati
+function saveQuestions(questions) {
+    try {
+        localStorage.setItem('questions', JSON.stringify(questions));
+        console.log('Questions saved to localStorage');
+    } catch (error) {
+        console.error('Error saving questions:', error);
+    }
+}
+
+function saveCategories(categories) {
+    try {
+        localStorage.setItem('categories', JSON.stringify(categories));
+        console.log('Categories saved to localStorage');
+    } catch (error) {
+        console.error('Error saving categories:', error);
+    }
+}
+
+// Esporta le funzioni
+window.quizAPI = {
+    loadQuestions,
+    loadCategories,
+    saveQuestions,
+    saveCategories
+}; 
