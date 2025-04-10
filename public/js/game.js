@@ -1658,149 +1658,42 @@ function getRandomColor() {
  */
 async function loadRandomQuestion(category, isChosenCategory = false) {
     try {
-        console.log(`loadRandomQuestion chiamata con categoria: ${category}, isChosenCategory: ${isChosenCategory}`);
+        console.log('Loading random question for category:', category);
+        console.log('Is chosen category:', isChosenCategory);
         
-        // Imposta un valore di fallback per la categoria se non specificata
-        category = category || 'random';
-        
-        // URL costruita con la categoria - facciamo una query esplicita per la categoria
-        const apiUrl = `${API_URL}/questions?category=${encodeURIComponent(category)}`;
-        
-        console.log(`Chiamata API a: ${apiUrl}`);
-        
-        // Aggiungi un messaggio di caricamento mentre aspettiamo la risposta
+        // Show loading message
         const loadingMessage = document.createElement('div');
-        loadingMessage.id = 'loadingMessage';
-        loadingMessage.className = 'modal active';
-        loadingMessage.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex !important; justify-content: center; align-items: center; z-index: 9999;';
-        
-        loadingMessage.innerHTML = `
-            <div class="modal-content" style="background: rgba(30, 41, 59, 0.95); padding: 30px; border-radius: 10px; text-align: center;">
-                <h3>Caricamento domanda...</h3>
-                <div class="loading">
-                    <div></div><div></div><div></div>
-                </div>
-            </div>
-        `;
-        
+        loadingMessage.className = 'loading-message';
+        loadingMessage.textContent = 'Caricamento domanda...';
         document.body.appendChild(loadingMessage);
-        
-        // Esegui la richiesta API
-        const response = await fetch(apiUrl);
+
+        // Use Netlify Functions endpoint
+        const response = await fetch('/api/questions');
         const questions = await response.json();
         
-        // Rimuovi il messaggio di caricamento
-        if (loadingMessage.parentNode) {
-            loadingMessage.parentNode.removeChild(loadingMessage);
-        }
+        // Remove loading message
+        document.body.removeChild(loadingMessage);
+
+        console.log('Questions loaded:', questions.length);
         
-        console.log(`Ricevute ${questions.length} domande dalla categoria ${category}`);
-        
-        // Filtra le domande per la categoria specifica
-        const filteredQuestions = questions.filter(q => 
-            q.category && q.category.toLowerCase() === category.toLowerCase() && 
-            q.question && q.answer
-        );
-        
-        console.log(`Domande filtrate per categoria ${category}: ${filteredQuestions.length}`);
-        
+        // Filter questions by category if specified
+        const filteredQuestions = category 
+            ? questions.filter(q => q.category === category)
+            : questions;
+            
         if (filteredQuestions.length === 0) {
-            console.warn('Nessuna domanda trovata per la categoria specificata, uso domande di fallback');
-            showAnimatedNotification('Nessuna domanda disponibile in questa categoria, uso domande generiche', 'warning');
-            
-            // Usa domande di fallback
-            const defaultQuestions = getDefaultQuestions();
-            // Filtra le domande di fallback per la categoria richiesta
-            const filteredDefaults = defaultQuestions.filter(q => 
-                q.category && q.category.toLowerCase() === category.toLowerCase()
-            );
-            
-            if (filteredDefaults.length === 0) {
-                console.warn('Nessuna domanda di default trovata per questa categoria');
-                // Cerca una domanda generale se non ci sono fallback per questa categoria
-                const randomIndex = Math.floor(Math.random() * defaultQuestions.length);
-                const selectedQuestion = defaultQuestions[randomIndex];
-                selectedQuestion.category = category;
-                
-                console.log('Usata domanda di default generica:', selectedQuestion);
-                displayQuestion(selectedQuestion, null, isChosenCategory);
-            } else {
-                // Usa una domanda di fallback della categoria richiesta
-                const randomIndex = Math.floor(Math.random() * filteredDefaults.length);
-                const selectedQuestion = filteredDefaults[randomIndex];
-                
-                console.log('Usata domanda di default della categoria richiesta:', selectedQuestion);
-                displayQuestion(selectedQuestion, null, isChosenCategory);
-            }
-            return;
+            console.warn('No questions found for category:', category);
+            return displayQuestion(getDefaultQuestions()[0], null, isChosenCategory);
         }
         
-        // Seleziona una domanda casuale
         const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
         const selectedQuestion = filteredQuestions[randomIndex];
         
-        console.log('Domanda selezionata:', selectedQuestion);
-        
-        // Assicurati che la domanda abbia un tipo
-        if (!selectedQuestion.type) {
-            console.log('Domanda senza tipo specifico, determino tipo in base al formato della risposta');
-            // Determina il tipo in base alla presenza di opzioni o al formato della risposta
-            if (selectedQuestion.options && Array.isArray(selectedQuestion.options) && selectedQuestion.options.length > 0) {
-                selectedQuestion.type = 'multiple';
-                console.log('Tipo domanda impostato a "multiple" in base alle opzioni presenti');
-            } else if (selectedQuestion.answer === 'true' || selectedQuestion.answer === 'false' || 
-                      selectedQuestion.answer === true || selectedQuestion.answer === false) {
-                selectedQuestion.type = 'boolean';
-                console.log('Tipo domanda impostato a "boolean" in base alla risposta true/false');
-            } else {
-                selectedQuestion.type = 'text';
-                console.log('Tipo domanda impostato a "text" (default)');
-            }
-        }
-        
-        console.log('Tipo domanda finale:', selectedQuestion.type);
-        
-        // Normalizza le risposte boolean
-        if (selectedQuestion.type === 'boolean') {
-            if (selectedQuestion.answer === 'true' || selectedQuestion.answer === true) {
-                selectedQuestion.answer = 'true';
-            } else if (selectedQuestion.answer === 'false' || selectedQuestion.answer === false) {
-                selectedQuestion.answer = 'false';
-            }
-        }
-        
-        // Mostra la domanda
-        displayQuestion(selectedQuestion, null, isChosenCategory);
-        
+        console.log('Selected question:', selectedQuestion);
+        return displayQuestion(selectedQuestion, null, isChosenCategory);
     } catch (error) {
-        console.error('Errore nel caricamento della domanda:', error);
-     
-        
-        // Rimuovi il messaggio di caricamento se esiste ancora
-        const loadingMessage = document.getElementById('loadingMessage');
-        if (loadingMessage && loadingMessage.parentNode) {
-            loadingMessage.parentNode.removeChild(loadingMessage);
-        }
-        
-        // Usa domande di fallback in caso di errore
-        const defaultQuestions = getDefaultQuestions();
-        // Cerca domande di fallback per la categoria richiesta
-        const filteredDefaults = defaultQuestions.filter(q => 
-            q.category && q.category.toLowerCase() === category.toLowerCase()
-        );
-        
-        if (filteredDefaults.length > 0) {
-            const randomIndex = Math.floor(Math.random() * filteredDefaults.length);
-            const selectedQuestion = filteredDefaults[randomIndex];
-            console.log('Usata domanda di default per errore (categoria corrispondente):', selectedQuestion);
-            displayQuestion(selectedQuestion, null, isChosenCategory);
-        } else {
-            const randomIndex = Math.floor(Math.random() * defaultQuestions.length);
-            const selectedQuestion = defaultQuestions[randomIndex];
-            selectedQuestion.category = category;
-            console.log('Usata domanda di default generale per errore:', selectedQuestion);
-            displayQuestion(selectedQuestion, null, isChosenCategory);
-        }
+        console.error('Error loading questions:', error);
+        return displayQuestion(getDefaultQuestions()[0], null, isChosenCategory);
     }
 }
 
