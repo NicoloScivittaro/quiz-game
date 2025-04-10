@@ -714,7 +714,7 @@
                 const div = document.createElement('div');
                 div.className = 'category-item';
                 div.innerHTML = `
-                        <span>${category}</span>
+                    <span>${category}</span>
                     <div>
                         <button class="edit-button" onclick="editCategory('${category}')">
                             <i class="fas fa-edit"></i>
@@ -768,7 +768,7 @@
                     <div class="question-meta">
                         <span><i class="fas fa-tag"></i> ${question.category}</span>
                         <span class="question-type-badge ${question.type}">${question.type}</span>
-                </div>
+                    </div>
                     <div class="question-actions">
                         <button class="edit-button" onclick="editQuestion('${question.id}')">
                             <i class="fas fa-edit"></i>
@@ -776,8 +776,8 @@
                         <button class="delete-button" onclick="deleteQuestion('${question.id}')">
                             <i class="fas fa-trash"></i>
                         </button>
-                </div>
-            `;
+                    </div>
+                `;
                 questionsList.appendChild(div);
             });
         }
@@ -788,9 +788,136 @@
             if (errorAlert && errorText) {
                 errorText.textContent = message;
                 errorAlert.style.display = 'block';
-            setTimeout(() => {
+                setTimeout(() => {
                     errorAlert.style.display = 'none';
                 }, 5000);
+            }
+        }
+
+        function showSuccess(message) {
+            const successAlert = document.getElementById('successAlert');
+            const successText = document.getElementById('successText');
+            if (successAlert && successText) {
+                successText.textContent = message;
+                successAlert.style.display = 'block';
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Funzione per aggiungere nuove opzioni alla domanda multipla
+        function addOption() {
+            const optionsContainer = document.getElementById('optionsContainer');
+            const optionNumber = optionsContainer.children.length + 1;
+            
+            const optionGroup = document.createElement('div');
+            optionGroup.className = 'option-group';
+            optionGroup.innerHTML = `
+                <input type="text" placeholder="Opzione ${optionNumber}" class="option-input">
+                <button type="button" onclick="removeOption(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            optionsContainer.appendChild(optionGroup);
+        }
+
+        // Funzione per rimuovere un'opzione
+        function removeOption(button) {
+            const optionGroup = button.parentElement;
+            const optionsContainer = optionGroup.parentElement;
+            optionsContainer.removeChild(optionGroup);
+            
+            // Aggiorna il numero delle opzioni rimanenti
+            const optionInputs = optionsContainer.querySelectorAll('.option-input');
+            optionInputs.forEach((input, index) => {
+                input.placeholder = `Opzione ${index + 1}`;
+            });
+        }
+
+        // Mostra/nascondi le opzioni in base al tipo di domanda
+        function toggleOptions() {
+            const questionType = document.getElementById('questionType').value;
+            const optionsSection = document.getElementById('optionsSection');
+            
+            if (questionType === 'multiple') {
+                optionsSection.style.display = 'block';
+            } else {
+                optionsSection.style.display = 'none';
+            }
+        }
+
+        // Funzione per aggiungere una nuova domanda
+        async function addQuestion(event) {
+            event.preventDefault();
+            
+            const questionText = document.getElementById('questionText').value.trim();
+            const category = document.getElementById('questionCategory').value;
+            const type = document.getElementById('questionType').value;
+            const answer = document.getElementById('questionAnswer').value.trim();
+            
+            if (!questionText || !category || !answer) {
+                showError('Tutti i campi sono obbligatori.');
+                return;
+            }
+            
+            try {
+                // Crea oggetto domanda
+                const newQuestion = {
+                    question: questionText,
+                    category: category,
+                    type: type,
+                    answer: answer
+                };
+                
+                // Se la domanda è a scelta multipla, aggiungi le opzioni
+                if (type === 'multiple') {
+                    const optionInputs = document.querySelectorAll('.option-input');
+                    const options = Array.from(optionInputs).map(input => input.value.trim());
+                    
+                    // Controlla che ci siano almeno 2 opzioni e che nessuna sia vuota
+                    if (options.length < 2 || options.some(opt => !opt)) {
+                        showError('Devi fornire almeno 2 opzioni valide per una domanda a scelta multipla.');
+                        return;
+                    }
+                    
+                    // Controlla che la risposta sia tra le opzioni
+                    if (!options.includes(answer)) {
+                        showError('La risposta corretta deve essere una delle opzioni fornite.');
+                        return;
+                    }
+                    
+                    newQuestion.options = options;
+                }
+                
+                // Invia la domanda all'API
+                const response = await fetch(`${window.API_URL}/api/questions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newQuestion)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const addedQuestion = await response.json();
+                console.log('Domanda aggiunta:', addedQuestion);
+                
+                // Resetta il form
+                document.getElementById('newQuestionForm').reset();
+                document.getElementById('optionsContainer').innerHTML = '';
+                
+                // Aggiorna la lista delle domande
+                loadQuestionData();
+                
+                showSuccess('Domanda aggiunta con successo!');
+            } catch (error) {
+                console.error('Errore nell\'aggiunta della domanda:', error);
+                showError('Errore nell\'aggiunta della domanda. Riprova più tardi.');
             }
         }
 
@@ -798,6 +925,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded - setting up event listeners');
             loadQuestionData();
+            
+            // Aggiungi event listener
+            document.getElementById('questionType').addEventListener('change', toggleOptions);
+            document.getElementById('newQuestionForm').addEventListener('submit', addQuestion);
+            document.getElementById('addOptionButton').addEventListener('click', addOption);
+            
+            // Aggiungi le prime due opzioni per le domande multiple
+            addOption();
+            addOption();
         });
     </script>
 </body>

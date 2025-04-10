@@ -1507,6 +1507,87 @@ exports.handler = async function(event, context) {
     try {
         console.log('Questions function started - Using hardcoded data');
         
+        // Gestisci i metodi HTTP diversi da GET
+        if (event.httpMethod === 'POST') {
+            try {
+                // Aggiungi una nuova domanda
+                const body = JSON.parse(event.body);
+                console.log('Richiesta di aggiungere una nuova domanda:', body);
+                
+                // Verifica che i dati siano validi
+                if (!body.question || !body.category || !body.answer) {
+                    return {
+                        statusCode: 400,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                            'Access-Control-Allow-Headers': 'Content-Type'
+                        },
+                        body: JSON.stringify({ error: 'Dati domanda incompleti' })
+                    };
+                }
+                
+                // Crea un nuovo ID basato sull'ultimo ID esistente + 1
+                const lastId = Math.max(...questionsData.questions.map(q => q.id), 0);
+                const newId = lastId + 1;
+                
+                // Crea la nuova domanda
+                const newQuestion = {
+                    id: newId,
+                    category: body.category,
+                    type: body.type || 'text',
+                    question: body.question,
+                    answer: body.answer
+                };
+                
+                // Aggiungi le opzioni se necessario
+                if (body.type === 'multiple' && body.options && Array.isArray(body.options)) {
+                    newQuestion.options = body.options;
+                }
+                
+                // Aggiungi la domanda all'array delle domande
+                questionsData.questions.push(newQuestion);
+                
+                return {
+                    statusCode: 201,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                        'Access-Control-Allow-Headers': 'Content-Type'
+                    },
+                    body: JSON.stringify(newQuestion)
+                };
+            } catch (error) {
+                console.error('Errore nella creazione della domanda:', error);
+                return {
+                    statusCode: 500,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                        'Access-Control-Allow-Headers': 'Content-Type'
+                    },
+                    body: JSON.stringify({ 
+                        error: 'Errore nella creazione della domanda',
+                        message: error.message
+                    })
+                };
+            }
+        } else if (event.httpMethod === 'OPTIONS') {
+            // Gestisci le richieste CORS preflight
+            return {
+                statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                    'Access-Control-Allow-Headers': 'Content-Type'
+                },
+                body: ''
+            };
+        }
+        
         // Filtra le domande per categoria se specificata
         const category = event.queryStringParameters?.category;
         console.log('Requested category:', category);
@@ -1521,7 +1602,9 @@ exports.handler = async function(event, context) {
             statusCode: 200,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
             body: JSON.stringify(filteredQuestions)
         };
@@ -1531,7 +1614,9 @@ exports.handler = async function(event, context) {
             statusCode: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
             body: JSON.stringify({ 
                 error: 'Internal server error',

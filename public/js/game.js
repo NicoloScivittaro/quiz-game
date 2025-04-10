@@ -2011,236 +2011,154 @@ function debugModal() {
  * @param {boolean} isChosenCategory - Se la categoria è stata scelta dal giocatore (opzionale)
  */
 function displayQuestion(question, modal, isChosenCategory = false) {
-    try {
-        console.log('displayQuestion chiamata con:', question);
-        console.log('Tipo della domanda:', question.type);
-        console.log('isChosenCategory:', isChosenCategory);
-        
-        // Se la domanda viene dalla categoria scelta, imposta il flag
-        if (isChosenCategory) {
-            const player = players[currentPlayerIndex];
-            player.usedCategoryChoice = true;
-            console.log('Impostato flag usedCategoryChoice per il giocatore', player.name);
-        }
-        
-        // Reset remaining steps to ensure the turn can end properly
-        const player = players[currentPlayerIndex];
-        if (player.remainingSteps > 0) {
-            console.log('Reset dei passi rimanenti per consentire la fine del turno');
-            player.remainingSteps = 0;
-        }
-        
-        // Elimina il modale esistente nella pagina se presente
-        const existingModal = document.getElementById('quizModal');
-        if (existingModal && existingModal.parentNode) {
-            console.log('Rimozione modale esistente');
-            existingModal.parentNode.removeChild(existingModal);
-        }
-        
-        // Assicurati che question.type sia un valore valido
-        if (!question.type || (question.type !== 'multiple' && question.type !== 'boolean' && question.type !== 'text')) {
-            console.log('Tipo di domanda non valido o mancante, default a text:', question.type);
-            question.type = 'text';
-        }
-        
-        // Crea un nuovo modale con inline style per forzare la visualizzazione
-        modal = document.createElement('div');
-        modal.className = 'modal active';
-        modal.id = 'quizModal';
-        modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex !important; justify-content: center; align-items: center; z-index: 9999;';
-        
-        // Aggiungi immediatamente al body
-        document.body.appendChild(modal);
-        console.log('Nuovo modale creato e aggiunto al DOM con stile forzato');
-        
-        // Costruisci HTML in base al tipo di domanda
-        let optionsHTML = '';
-        
-        if (question.type === 'multiple') {
-            // Controlla che le opzioni esistano
-            if (!question.options || !Array.isArray(question.options) || question.options.length === 0) {
-                console.error('Opzioni mancanti per domanda di tipo multiple:', question);
-                // Fallback a domanda di tipo testo
-                question.type = 'text';
-            } else {
-                // Mescola le opzioni
-                const options = [...question.options];
-                for (let i = options.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [options[i], options[j]] = [options[j], options[i]];
-                }
-                
-                options.forEach((option) => {
-                    optionsHTML += `
-                        <button class="option-button" data-value="${option}">
-                            ${option}
-                        </button>
-                    `;
-                });
-            }
-        } else if (question.type === 'boolean') {
-            // Per domande vero/falso con grid layout e stili migliorati
-            optionsHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;">
-                    <button class="option-button true-option" data-value="true" 
-                            style="background: rgba(76, 175, 80, 0.2); border: 2px solid rgba(76, 175, 80, 0.5); 
-                                   padding: 20px; transition: all 0.3s ease; border-radius: 8px;">
-                        <i class="fas fa-check" style="color: #4CAF50; margin-right: 10px;"></i> Vero
-                    </button>
-                    <button class="option-button false-option" data-value="false" 
-                            style="background: rgba(244, 67, 54, 0.2); border: 2px solid rgba(244, 67, 54, 0.5);
-                                   padding: 20px; transition: all 0.3s ease; border-radius: 8px;">
-                        <i class="fas fa-times" style="color: #f44336; margin-right: 10px;"></i> Falso
-                    </button>
+    // Chiudi qualsiasi altra modale aperta prima di mostare la domanda
+    const modals = document.querySelectorAll('.modal.active');
+    modals.forEach(m => m.classList.remove('active'));
+    
+    console.log('Showing question:', question);
+    
+    // Crea una nuova modale per la domanda
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'questionModal';
+    
+    let questionHTML = `
+        <div class="modal-content">
+            <span class="category-badge">${question.category}</span>
+            <h2>Domanda</h2>
+            <div class="question-text">${question.question}</div>
+            <div class="timer-container">
+                <div class="timer-bar"></div>
+            </div>
+    `;
+
+    if (question.type === 'multiple') {
+        questionHTML += `<div class="question-options">`;
+        question.options.forEach((option, index) => {
+            const letter = String.fromCharCode(65 + index); // A, B, C, D
+            questionHTML += `
+                <div class="option" data-value="${option}">
+                    <span class="option-letter">${letter}</span>
+                    <span class="option-text">${option}</span>
                 </div>
             `;
-        }
-        
-        // Costruisci HTML per domande di tipo testo o fallback
-        let textInputHTML = '';
-        if (question.type === 'text' || optionsHTML === '') {
-            textInputHTML = `
-                <div class="form-control" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                    <input type="text" id="text-answer" class="quiz-input" 
-                           style="display: block; width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); 
-                                  border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; 
-                                  font-size: 1.1rem;"
-                           placeholder="Inserisci la tua risposta qui...">
-                    <button class="option-button" id="submitAnswer" 
-                            style="display: block; width: 100%; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-                                   color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; 
-                                   transition: all 0.3s ease;">
-                        Conferma Risposta
-                    </button>
-                </div>
-            `;
-        }
-        
-        // Prepara il timer
-        const timerHTML = timerEnabled ? `
-            <div class="timer-container" style="height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; margin: 20px 0;">
-                <div class="timer-bar" id="timer-bar" style="height: 100%; width: 100%; background: linear-gradient(90deg, #8B5CF6, #FCD34D); transition: width 1s linear;"></div>
+        });
+        questionHTML += `</div>`;
+    } else if (question.type === 'boolean') {
+        questionHTML += `
+            <div class="question-options">
+                <button class="option-button" data-value="true">
+                    <i class="fas fa-check"></i> Vero
+                </button>
+                <button class="option-button" data-value="false">
+                    <i class="fas fa-times"></i> Falso
+                </button>
             </div>
-        ` : '';
-        
-        // Contenuto della domanda
-        const modalContent = document.createElement('div');
-        modalContent.className = 'modal-content';
-        modalContent.style.cssText = 'background: rgba(30, 41, 59, 0.95); color: white; padding: 30px; border-radius: 10px; max-width: 600px; width: 90%; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);';
-        modalContent.innerHTML = `
-            <div class="category-badge" style="display: inline-block; background: var(--primary); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">${question.category}</div>
-            <h2 class="question-text" style="color: #FFD700; margin-bottom: 20px; font-size: 1.4rem; line-height: 1.5;">${question.question}</h2>
-            
-            ${timerHTML}
-            
-            <div class="question-options" style="margin-top: 15px;">
-                ${optionsHTML}
-            </div>
-            
-            ${textInputHTML}
         `;
-        
-        // Aggiungi la modal content al modale
-        modal.appendChild(modalContent);
-        
-        console.log('Modal domanda creato e aggiunto al DOM');
-        
-        // Avvia timer solo se abilitato
-        if (timerEnabled) {
-            startQuestionTimer(20, () => {
-                try {
-                    timeOver(question.answer);
-                } catch (timerError) {
-                    console.error('Errore nel timer:', timerError);
-                    nextPlayer();
-                }
-            });
-        }
-        
-        // Forza la visualizzazione con un doppio controllo
-        setTimeout(() => {
-            if (modal.style.display !== 'flex') {
-                modal.style.display = 'flex';
-                console.log('Forzata visualizzazione del modale dopo timeout');
-            }
-        }, 50);
-        
-        console.log('Configurazione degli event listeners per le risposte');
-        
-        // Aggiungi event listener per le risposte in base al tipo
-        if (question.type === 'multiple' || question.type === 'boolean') {
-            const optionButtons = modal.querySelectorAll('.option-button');
-            optionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    try {
-                        const selectedAnswer = this.getAttribute('data-value');
-                        let isCorrect = false;
-                        
-                        // Converti la risposta corretta in stringa per il confronto (per boolean)
-                        const correctAnswer = String(question.answer).toLowerCase();
-                        isCorrect = selectedAnswer.toLowerCase() === correctAnswer;
-                        
-                        showQuestionResult(isCorrect, question.answer);
-                    } catch (err) {
-                        console.error('Errore nella gestione della risposta:', err);
-                        showQuestionResult(false, question.answer);
-                    }
-                });
-            });
-        }
-        
-        // Gestione delle risposte di testo
-        const submitButton = document.getElementById('submitAnswer');
-        if (submitButton) {
-            submitButton.addEventListener('click', function() {
-                try {
-                    const textInput = document.getElementById('text-answer');
-                    const textAnswer = textInput ? textInput.value.trim() : '';
-                    
-                    // Usa la funzione di confronto delle risposte con tolleranza
-                    const isCorrect = textAnswer && checkTextAnswer(textAnswer, question.answer);
-                    showQuestionResult(isCorrect, question.answer);
-                } catch (err) {
-                    console.error('Errore nella gestione della risposta text:', err);
-                    showQuestionResult(false, question.answer);
-                }
-            });
-            
-            // Aggiungi anche l'evento per premere Invio sull'input di testo
-            const textInput = document.getElementById('text-answer');
-            if (textInput) {
-                textInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        try {
-                            const textAnswer = this.value.trim();
-                            const isCorrect = checkTextAnswer(textAnswer, question.answer);
-                            showQuestionResult(isCorrect, question.answer);
-                        } catch (err) {
-                            console.error('Errore nella gestione della risposta text (keypress):', err);
-                            showQuestionResult(false, question.answer);
-                        }
-                    }
-                });
+    } else {
+        // Tipo text o default
+        questionHTML += `
+            <div class="form-control">
+                <input type="text" id="answerInput" placeholder="Scrivi la tua risposta..." autocomplete="off">
+                <button id="submitAnswer" class="primary-button">Invia</button>
+            </div>
+        `;
+    }
+
+    questionHTML += `</div>`;
+    modal.innerHTML = questionHTML;
+    document.body.appendChild(modal);
+
+    // Attiva la modale
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 100);
+
+    // Imposta il timer
+    const timerDuration = 30; // Secondi
+    startQuestionTimer(timerDuration, () => {
+        timeOver(question.answer);
+    });
+
+    // Gestisci gli eventi per i diversi tipi di domande
+    if (question.type === 'multiple') {
+        const options = modal.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                const selectedValue = this.dataset.value;
                 
-                // Focus sull'input di testo
+                // Evidenzia l'opzione selezionata
+                options.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Controlla risposta dopo un breve ritardo
                 setTimeout(() => {
-                    textInput.focus();
-                }, 300);
+                    const isCorrect = selectedValue === question.answer;
+                    
+                    // Evidenzia risposta corretta/sbagliata
+                    options.forEach(opt => {
+                        if (opt.dataset.value === question.answer) {
+                            opt.classList.add('correct');
+                        } else if (opt === this && !isCorrect) {
+                            opt.classList.add('incorrect');
+                        }
+                    });
+                    
+                    showQuestionResult(isCorrect, question.answer);
+                }, 500);
+            });
+        });
+    } else if (question.type === 'boolean') {
+        const buttons = modal.querySelectorAll('.option-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const selectedValue = this.dataset.value;
+                
+                // Evidenzia l'opzione selezionata
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Controlla risposta dopo un breve ritardo
+                setTimeout(() => {
+                    const correctValue = question.answer === 'Vero' ? 'true' : 'false';
+                    const isCorrect = selectedValue === correctValue;
+                    
+                    // Evidenzia risposta corretta/sbagliata
+                    buttons.forEach(btn => {
+                        if (btn.dataset.value === correctValue) {
+                            btn.classList.add('correct');
+                        } else if (btn === this && !isCorrect) {
+                            btn.classList.add('incorrect');
+                        }
+                    });
+                    
+                    showQuestionResult(isCorrect, question.answer);
+                }, 500);
+            });
+        });
+    } else {
+        const submitButton = modal.querySelector('#submitAnswer');
+        const inputField = modal.querySelector('#answerInput');
+        
+        // Attiva l'invio anche premendo Enter
+        inputField.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitButton.click();
             }
-        }
+        });
         
-        console.log('displayQuestion completata con successo');
-    } catch (error) {
-        console.error('Errore durante la visualizzazione della domanda:', error);
-        showAnimatedNotification('Errore durante la visualizzazione della domanda', 'error');
+        // Focus sul campo input
+        setTimeout(() => {
+            inputField.focus();
+        }, 300);
         
-        // Rimuovi il modale in caso di errore
-        if (modal && modal.parentNode) {
-            modal.parentNode.removeChild(modal);
-        }
-        
-        // Assicurati che il gioco continui
-        setTimeout(nextPlayer, 2000);
+        submitButton.addEventListener('click', function() {
+            const userAnswer = inputField.value.trim();
+            if (userAnswer) {
+                const isCorrect = checkTextAnswer(userAnswer, question.answer);
+                showQuestionResult(isCorrect, question.answer);
+            }
+        });
     }
 }
 
