@@ -1,0 +1,674 @@
+{
+  "categories": [
+    "Storia",
+    "Geografia",
+    "Scienza",
+    "Sport",
+    "Arte",
+    "Musica",
+    "Cinema",
+    "Letteratura"
+  ],
+  "questions": [
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è l'elemento più abbondante nell'universo?",
+      "answer": "Idrogeno"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "L'acqua è composta da idrogeno e ossigeno?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è il pianeta più grande del Sistema Solare?",
+      "answer": "Giove"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Chi ha formulato la teoria della relatività?",
+      "answer": "Albert Einstein"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "Il DNA si trova nel nucleo delle cellule?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è l'organo più grande del corpo umano?",
+      "answer": "La pelle"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "A quanti gradi Celsius l'acqua bolle a livello del mare?",
+      "answer": "100°C"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Quale gas usiamo per respirare?",
+      "answer": "Ossigeno, O₂"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "La fotosintesi clorofilliana avviene nelle piante?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è l'unità di misura della corrente elettrica?",
+      "answer": "Ampere"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "I diamanti sono fatti di quale elemento?",
+      "answer": "Carbonio"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "Il sole è una stella?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è il pianeta più vicino al sole?",
+      "answer": "Mercurio"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "La forza di gravità sulla Luna è più forte che sulla Terra?",
+      "answer": "Falso"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "L’ozono è composto da quanti atomi di ossigeno?",
+      "answer": "Tre, O₃"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Chi ha scoperto la teoria dell'evoluzione?",
+      "answer": "Charles Darwin"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Qual è la velocità della luce nel vuoto?",
+      "answer": "Circa 300.000 km/s"
+    },
+    {
+      "category": "Scienza",
+      "type": "boolean",
+      "question": "I pinguini possono volare?",
+      "answer": "Falso"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "Quale strumento si usa per misurare i terremoti?",
+      "answer": "Sismografo"
+    },
+    {
+      "category": "Scienza",
+      "type": "text",
+      "question": "La Terra impiega quanti giorni per fare un giro intorno al Sole?",
+      "answer": "365 giorni circa"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Quale squadra ha vinto il maggior numero di Champions League?",
+      "answer": "Real Madrid"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Il calcio è lo sport più seguito al mondo?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Michael Jordan ha giocato nella NBA?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Qual è il nome del trofeo assegnato ai vincitori della Coppa del Mondo FIFA?",
+      "answer": "Coppa del Mondo FIFA"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Chi ha vinto il primo Mondiale di calcio nel 1930?",
+      "answer": "Uruguay"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Usain Bolt è il detentore del record mondiale dei 100 metri?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Quale sport si gioca a Wimbledon?",
+      "answer": "Tennis"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Il Tour de France è una competizione di ciclismo?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Qual è lo sport nazionale del Giappone?",
+      "answer": "Sumo"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Nel basket, quanti punti vale un tiro da fuori l'area dei tre punti?",
+      "answer": "Tre punti"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Cristiano Ronaldo ha giocato per il Manchester United?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Le Olimpiadi si tengono ogni quattro anni?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Il baseball è nato negli Stati Uniti?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Quale paese ospitò le Olimpiadi del 2008?",
+      "answer": "Cina, Pechino"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "In Formula 1, quante gomme ha un'auto?",
+      "answer": "Quattro"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Il rugby è uno sport con la palla ovale?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "La pallavolo si gioca con quanti giocatori per squadra?",
+      "answer": "Sei"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Chi ha vinto più Palloni d'Oro tra Messi e Ronaldo?",
+      "answer": "Messi, attualmente"
+    },
+    {
+      "category": "Sport",
+      "type": "boolean",
+      "question": "Il golf si gioca con una palla?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Sport",
+      "type": "text",
+      "question": "Chi ha segnato il 'Mano de Dios' ai Mondiali 1986?",
+      "answer": "Diego Maradona"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "In che anno è caduto l'Impero Romano d'Occidente?",
+      "answer": "476 d.C."
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi fu il primo imperatore di Roma?",
+      "answer": "Augusto"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "In che anno iniziò la Rivoluzione Francese?",
+      "answer": "1789"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Quale esploratore scoprì l'America nel 1492?",
+      "answer": "Cristoforo Colombo"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "La Prima Guerra Mondiale iniziò nel 1914?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi era il presidente degli Stati Uniti durante la Guerra Civile Americana?",
+      "answer": "Abraham Lincoln"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Quale paese ha costruito la Grande Muraglia?",
+      "answer": "Cina"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi era il re di Francia durante la Rivoluzione Francese?",
+      "answer": "Luigi XVI"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "Il Titanic affondò nel 1912?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Quale evento segnò l'inizio della Seconda Guerra Mondiale?",
+      "answer": "L'invasione della Polonia da parte della Germania"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi scrisse \"Il Principe\"?",
+      "answer": "Niccolò Machiavelli"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "L'antica città di Troia esisteva davvero?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi guidò la Rivoluzione russa del 1917?",
+      "answer": "Lenin"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi è stato l'ultimo faraone dell'Egitto?",
+      "answer": "Cleopatra VII"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Quale paese ha lanciato il primo satellite nello spazio?",
+      "answer": "Unione Sovietica, Sputnik 1"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "Napoleone Bonaparte è morto nel 1821?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "La Magna Carta è stata firmata nel 1215?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi era il dittatore italiano durante la Seconda Guerra Mondiale? (nome e cognome)",
+      "answer": "Benito Mussolini"
+    },
+    {
+      "category": "Storia",
+      "type": "boolean",
+      "question": "L'Impero Romano ha avuto due capitali dopo il 330 d.C.?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Storia",
+      "type": "text",
+      "question": "Chi ha scoperto la penicillina?",
+      "answer": "Alexander Fleming"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è la capitale del Canada?",
+      "answer": "Ottawa"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume più lungo del mondo è l'Amazzonia?",
+      "answer": "Falso, è il Nilo"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Quale continente è il più popoloso?",
+      "answer": "Asia"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è il deserto più grande del mondo?",
+      "answer": "Sahara"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è il monte più alto d'Europa?",
+      "answer": "Monte Elbrus"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "L'Australia è un continente?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è la capitale del Giappone?",
+      "answer": "Tokyo"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Mar Morto è in realtà un mare?",
+      "answer": "Falso, è un lago"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "In quale paese si trova Machu Picchu?",
+      "answer": "Perù"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è il paese più grande del mondo?",
+      "answer": "Russia"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Polo Sud si trova in Antartide?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Quale città è conosciuta come 'la città eterna'?",
+      "answer": "Roma"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "In quale paese si trova il Grand Canyon?",
+      "answer": "USA"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume Po è il più lungo d’Italia?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Quale oceano bagna la costa orientale degli Stati Uniti?",
+      "answer": "Atlantico"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è la montagna più alta d'Africa?",
+      "answer": "Kilimangiaro"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il deserto del Gobi si trova in Asia?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è il paese più piccolo del mondo?",
+      "answer": "Vaticano"
+    },
+    {
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Rio delle Amazzoni attraversa il Brasile?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Geografia",
+      "type": "text",
+      "question": "Qual è la capitale della Corea del Sud?",
+      "answer": "Seul"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Chi ha dipinto la Gioconda?",
+      "answer": "Leonardo da Vinci"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Quale movimento artistico è associato a Vincent van Gogh?",
+      "options": [
+        "Impressionismo",
+        "Espressionismo",
+        "Post-impressionismo",
+        "Cubismo"
+      ],
+      "answer": "Post-impressionismo"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "Il surrealismo è un movimento artistico nato nel XX secolo?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Chi ha dipinto 'La Notte Stellata'?",
+      "answer": "Vincent van Gogh"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Quale artista è noto per le opere di pittura a getto tipiche dell'action painting?",
+      "options": [
+        "Jackson Pollock",
+        "Andy Warhol",
+        "Roy Lichtenstein",
+        "Salvador Dalí"
+      ],
+      "answer": "Jackson Pollock"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Qual è il nome della tecnica che prevede l'uso di piccoli puntini di colore per formare un'immagine?",
+      "answer": "Pointillismo"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "L'arte barocca si è sviluppata principalmente nel XVII secolo?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Quale artista è celebre per il dipinto 'Il bacio'?",
+      "options": [
+        "Gustav Klimt",
+        "Edvard Munch",
+        "Henri Matisse",
+        "Pablo Picasso"
+      ],
+      "answer": "Gustav Klimt"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Chi ha realizzato il celebre dipinto 'Guernica'?",
+      "answer": "Pablo Picasso"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Quale stile artistico, caratterizzato da forme geometriche e colori primari, è esemplificato dalle opere di Piet Mondrian?",
+      "options": [
+        "Cubismo",
+        "Futurismo",
+        "Neoplasticismo",
+        "Realismo"
+      ],
+      "answer": "Neoplasticismo"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "L'arte rinascimentale ha avuto origine in Italia?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Qual è il nome del famoso scultore che ha realizzato il David?",
+      "answer": "Michelangelo"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "A quale corrente artistica è associato Salvador Dalí?",
+      "options": [
+        "Surrealismo",
+        "Impressionismo",
+        "Rinascimento",
+        "Barocco"
+      ],
+      "answer": "Surrealismo"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "Il cubismo ha rivoluzionato la prospettiva tradizionale in pittura?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Quale tecnica di incisione prevede l'uso di una lastra di rame e l'azione di un acido?",
+      "answer": "Acquaforte"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Chi ha dipinto 'L'urlo'?",
+      "options": [
+        "Edvard Munch",
+        "Gustav Klimt",
+        "Francis Bacon",
+        "René Magritte"
+      ],
+      "answer": "Edvard Munch"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "L'arte moderna comprende opere create tra il 1860 e il 1970?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "text",
+      "question": "Quale scultore francese è celebre per la statua 'Il Pensatore'?",
+      "answer": "Auguste Rodin"
+    },
+    {
+      "category": "Arte",
+      "type": "multiple",
+      "question": "Quale movimento artistico è noto per l'uso di oggetti di consumo e immagini della cultura pop?",
+      "options": [
+        "Dadaismo",
+        "Pop Art",
+        "Futurismo",
+        "Espressionismo"
+      ],
+      "answer": "Pop Art"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "Il Rinascimento fu un periodo di grande innovazione artistica in Europa?",
+      "answer": "Vero"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "Michelangelo ha dipinto 'La Nascita di Venere'?",
+      "answer": "Falso"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "Il surrealismo è nato nel XIX secolo?",
+      "answer": "Falso"
+    },
+    {
+      "category": "Arte",
+      "type": "boolean",
+      "question": "La Pop Art si è sviluppata in Italia nel dopoguerra?",
+      "answer": "Falso"
+    }
+  ]
+}

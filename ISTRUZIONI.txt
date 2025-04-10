@@ -1,0 +1,66 @@
+============================================
+ISTRUZIONI PER AVVIARE QUIZ PARTY
+============================================
+
+1. INSTALLAZIONE
+----------------
+- Assicurati di avere Node.js installato sul tuo computer
+  (scaricabile da https://nodejs.org/it/)
+- Apri un terminale (prompt dei comandi) nella cartella del gioco
+- Esegui il comando: npm install
+
+
+2. AVVIO DEL SERVER
+-------------------
+- Dopo l'installazione, esegui il comando: npm start
+- Attendi che il server si avvii
+- Vedrai un messaggio che indica: "Server avviato su http://localhost:3000"
+
+
+3. AVVIO DEL GIOCO
+------------------
+- Apri un browser web (Chrome, Firefox, ecc.)
+- Digita nella barra degli indirizzi: http://localhost:3000
+- Ora sei nella pagina principale del gioco!
+
+
+4. GESTIONE DELLE DOMANDE
+-------------------------
+- Per gestire le domande, fai clic su "Gestisci Domande"
+- Qui puoi:
+  • Visualizzare tutte le domande esistenti
+  • Aggiungere nuove domande
+  • Modificare domande esistenti
+  • Eliminare domande
+  • Aggiungere o eliminare categorie
+
+
+5. INIZIARE UNA PARTITA
+-----------------------
+- Dalla pagina principale, scegli il numero di giocatori
+- Imposta il numero di stelle necessarie per vincere
+- Fai clic su "Continua"
+- Personalizza i nomi e gli avatar dei giocatori
+- Fai clic su "Inizia il Gioco!"
+- Divertiti a giocare!
+
+
+6. STRUTTURA DEI FILE
+---------------------
+- La cartella "public" contiene tutti i file dell'interfaccia utente
+- La cartella "data" contiene i database delle domande e categorie
+- Il file "server.js" è il server che gestisce le API
+- Le cartelle "css" e "js" contengono gli stili e gli script
+
+
+RISOLUZIONE PROBLEMI
+--------------------
+• Se il server non si avvia, controlla di avere Node.js installato correttamente
+• Se il gioco non carica le domande, verifica che il server sia in esecuzione
+• In caso di errori di connessione al server, il gioco utilizzerà i dati salvati nel browser
+• Per ripristinare le domande di default, elimina il file db.json nella cartella "data"
+• In caso di errori, riavvia il server con: npm start
+
+
+Buon divertimento con Quiz Party!
+============================================ 

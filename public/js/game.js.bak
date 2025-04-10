@@ -1,0 +1,2043 @@
+/**
+ * Quiz Party - Game Logic
+ * Gestisce la logica del gioco e la board interattiva
+ */
+
+// Verifica che API_URL sia definita, altrimenti la definisce
+if (typeof API_URL === 'undefined') {
+    console.warn('API_URL non definita in common.js, utilizzo valore di fallback');
+    API_URL = 'http://localhost:3000/api';
+}
+
+// Costanti di gioco
+const BOARD_SIZE = 7; // Dimensione della griglia 7x7
+const DICE_MIN = 1;
+const DICE_MAX = 6;
+
+// Variabili di stato del gioco
+let gameData = null;
+let players = [];
+let currentPlayerIndex = 0;
+let gameBoard = [];
+let availableCategories = [];
+let selectedCategories = [];
+let starGoal = 3;
+let diceRolling = false;
+let gameStarted = false;
+let currentQuestion = null; // Per tenere traccia della domanda corrente
+
+// Posizioni speciali sulla board
+let starPositions = [];
+let specialPositions = [];
+
+// Riferimenti UI
+let gameBoardElement;
+let diceButton;
+let shopButton; // Riferimento al pulsante dello shop
+
+// Inizializzazione quando il DOM è caricato
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Game page loaded');
+    
+    // Assegna riferimenti UI
+    gameBoardElement = document.getElementById('gameBoard');
+    diceButton = document.getElementById('diceButton');
+    shopButton = document.getElementById('shopButton'); // Ottieni riferimento al pulsante shop
+    
+    // Carica dati di gioco da localStorage
+    loadGameData();
+    
+    // Inizializza la scacchiera di gioco
+    initGameBoard();
+    
+    // Renderizza le informazioni dei giocatori
+    renderPlayerInfo();
+    
+    // Aggiunge i giocatori sulla scacchiera
+    placePlayersOnBoard();
+    
+    // Inizializza gli eventi
+    initEvents();
+    
+    // Avvia il gioco
+    startGame();
+});
+
+/**
+ * Carica dati di gioco salvati
+ */
+function loadGameData() {
+    const savedData = localStorage.getItem('quizPartyGameData');
+    if (!savedData) {
+        console.log('Nessun dato di gioco trovato, inizializzazione nuova partita');
+        
+        // Inizializza una nuova partita
+        gameData = {
+            players: [
+                {
+                    name: 'Giocatore 1',
+                    avatar: '👤',
+                    color: '#FF5733',
+                    stars: 0,
+                    stats: { correct: 0, incorrect: 0, moves: 0 },
+                    credits: 50
+                }
+            ],
+            categories: ["Storia", "Geografia", "Scienza", "Sport", "Arte", "Musica", "Cinema", "Letteratura"],
+            starCount: 3
+        };
+        
+        // Salva i dati iniziali
+        localStorage.setItem('quizPartyGameData', JSON.stringify(gameData));
+        
+        // Estrai dati
+        players = gameData.players;
+        availableCategories = gameData.categories;
+        starGoal = gameData.starCount;
+        
+        console.log('Nuova partita inizializzata:', gameData);
+        return;
+    }
+    
+    try {
+        gameData = JSON.parse(savedData);
+        console.log('Game data loaded:', gameData);
+        
+        // Estrai dati
+        players = gameData.players;
+        availableCategories = gameData.categories;
+        starGoal = gameData.starCount || 3;
+        
+        // Inizializza i dati mancanti per ogni giocatore
+        players.forEach(player => {
+            // Inizializza stelle se non presenti
+            if (player.stars === undefined) {
+                player.stars = 0;
+            }
+            
+            // Inizializza statistiche se non presenti
+            if (!player.stats) {
+                player.stats = { correct: 0, incorrect: 0, moves: 0 };
+            }
+            
+            // Inizializza crediti se non presenti
+            if (player.credits === undefined) {
+                player.credits = 50; // Ogni giocatore inizia con 50 crediti
+            }
+        });
+        
+        // Aggiorna l'obiettivo delle stelle nella UI
+        const starGoalElement = document.getElementById('starGoal');
+        if (starGoalElement) {
+            starGoalElement.textContent = starGoal;
+        }
+        
+        console.log('Dati di gioco inizializzati con successo:', players);
+    } catch (error) {
+        console.error('Error parsing game data:', error);
+        showAnimatedNotification('Formato dati di gioco non valido', 'error');
+    }
+}
+
+/**
+ * Inizializza la board di gioco
+ */
+function initGameBoard() {
+    if (!gameBoardElement) return;
+    
+    gameBoardElement.innerHTML = '';
+    gameBoard = [];
+    
+    // Genera le caratteristiche casuali della board
+    generateBoardFeatures();
+    
+    // Crea la scacchiera 7x7
+    for (let row = 0; row < BOARD_SIZE; row++) {
+        gameBoard[row] = [];
+        
+        for (let col = 0; col < BOARD_SIZE; col++) {
+            const space = document.createElement('div');
+            const position = { row, col };
+            let spaceType = 'empty';
+            
+            // Determina il tipo di spazio
+            if (isEdgePosition(row, col) || isMiddleCross(row, col)) {
+                spaceType = 'quiz';
+                
+                // Verifica se è una posizione stella
+                if (isPositionInList(position, starPositions)) {
+                    spaceType = 'star';
+                }
+                
+                // Verifica se è una posizione speciale
+                if (isPositionInList(position, specialPositions)) {
+                    spaceType = 'special';
+                }
+            }
+            
+            // Imposta l'elemento spazio
+            space.className = `space ${spaceType}`;
+            space.dataset.row = row;
+            space.dataset.col = col;
+            space.dataset.type = spaceType;
+            
+            // Aggiungi iconа in base al tipo
+            if (spaceType === 'quiz') {
+                space.innerHTML = '<i class="fas fa-question"></i>';
+            } else if (spaceType === 'star') {
+                space.innerHTML = '<i class="fas fa-star"></i>';
+            } else if (spaceType === 'special') {
+                space.innerHTML = '<i class="fas fa-magic"></i>';
+            }
+            
+            // Evento click per debug
+            space.addEventListener('click', function() {
+                console.log(`Clicked space: [${row},${col}] - Type: ${spaceType}`);
+            });
+            
+            // Salva riferimento nella matrice
+            gameBoard[row][col] = {
+                element: space,
+                type: spaceType,
+                position: { row, col }
+            };
+            
+            // Aggiungi alla scacchiera
+            gameBoardElement.appendChild(space);
+        }
+    }
+    
+    console.log('Game board initialized');
+}
+
+/**
+ * Genera caratteristiche della board (stelle e spazi speciali)
+ */
+function generateBoardFeatures() {
+    starPositions = [];
+    specialPositions = [];
+    
+    // Genera posizioni delle stelle (6-8 stelle)
+    const starCount = Math.floor(Math.random() * 3) + 6;
+    for (let i = 0; i < starCount; i++) {
+        const position = generateRandomBoardPosition(starPositions);
+        if (position && (isEdgePosition(position.row, position.col) || isMiddleCross(position.row, position.col))) {
+            starPositions.push(position);
+        }
+    }
+    
+    // Genera posizioni speciali (4-6 posizioni)
+    const specialCount = Math.floor(Math.random() * 3) + 4;
+    for (let i = 0; i < specialCount; i++) {
+        const position = generateRandomBoardPosition([...starPositions, ...specialPositions]);
+        if (position && (isEdgePosition(position.row, position.col) || isMiddleCross(position.row, position.col))) {
+            specialPositions.push(position);
+        }
+    }
+    
+    console.log('Star positions:', starPositions);
+    console.log('Special positions:', specialPositions);
+}
+
+/**
+ * Verifica se una posizione è sul bordo della board
+ */
+function isEdgePosition(row, col) {
+    return row === 0 || row === BOARD_SIZE - 1 || col === 0 || col === BOARD_SIZE - 1;
+}
+
+/**
+ * Verifica se una posizione fa parte della croce centrale
+ */
+function isMiddleCross(row, col) {
+    const middle = Math.floor(BOARD_SIZE / 2);
+    return row === middle || col === middle;
+}
+
+/**
+ * Genera una posizione casuale sulla board che non è nell'elenco escluso
+ */
+function generateRandomBoardPosition(excludeList = []) {
+    const validPositions = [];
+    
+    // Raccogli tutte le posizioni valide
+    for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+            if (isEdgePosition(row, col) || isMiddleCross(row, col)) {
+                const position = { row, col };
+                
+                // Escludi le posizioni già nell'elenco
+                if (!isPositionInList(position, excludeList)) {
+                    validPositions.push(position);
+                }
+            }
+        }
+    }
+    
+    if (validPositions.length === 0) return null;
+    
+    // Scegli una posizione casuale
+    const randomIndex = Math.floor(Math.random() * validPositions.length);
+    return validPositions[randomIndex];
+}
+
+/**
+ * Controlla se una posizione è nell'elenco
+ */
+function isPositionInList(position, list) {
+    return list.some(pos => pos.row === position.row && pos.col === position.col);
+}
+
+/**
+ * Renderizza le informazioni dei giocatori
+ */
+function renderPlayerInfo() {
+    const playerInfoContainer = document.getElementById('playerCards');
+    if (!playerInfoContainer || !players.length) {
+        console.error("Elemento playerCards non trovato o nessun giocatore disponibile");
+        return;
+    }
+    
+    playerInfoContainer.innerHTML = '';
+    
+    players.forEach((player, index) => {
+        const isActive = index === currentPlayerIndex;
+        
+        const playerCard = document.createElement('div');
+        playerCard.className = `player-card ${isActive ? 'active' : ''}`;
+        playerCard.id = `player-${index}`;
+        
+        // Inizializza il punteggio delle stelle e le statistiche se non esistono
+        if (player.stars === undefined) {
+            player.stars = 0;
+        }
+        if (!player.stats) {
+            player.stats = { correct: 0, incorrect: 0, moves: 0 };
+        }
+        
+        playerCard.innerHTML = `
+            <h3>
+                <span class="player-avatar" style="background-color: ${player.color}">
+                    ${player.avatar}
+                </span>
+                ${player.name}
+            </h3>
+            <p>
+                <span>Stelle:</span>
+                <span class="star-count">
+                    ${generateStarIcons(player.stars)}
+                </span>
+            </p>
+            <p>
+                <span>Risposte Corrette:</span>
+                <span>${player.stats.correct || 0}</span>
+            </p>
+            <p>
+                <span>Risposte Errate:</span>
+                <span>${player.stats.incorrect || 0}</span>
+            </p>
+            <p>
+                <span>Mosse:</span>
+                <span>${player.stats.moves || 0}</span>
+            </p>
+            <p>
+                <span>Crediti:</span>
+                <span>${player.credits || 0} <i class="fas fa-coins" style="color: gold;"></i></span>
+            </p>
+        `;
+        
+        playerInfoContainer.appendChild(playerCard);
+    });
+    
+    // Aggiorna anche l'indicatore del turno
+    updateTurnIndicator();
+}
+
+/**
+ * Aggiorna l'indicatore del turno del giocatore
+ */
+function updateTurnIndicator() {
+    const turnAnnouncement = document.getElementById('turnAnnouncement');
+    const turnAvatar = document.getElementById('turnAvatar');
+    const turnName = document.getElementById('turnName');
+    
+    if (!turnAnnouncement || !turnAvatar || !turnName || !players.length) {
+        console.error("Elementi per l'indicazione del turno non trovati");
+        return;
+    }
+    
+    const currentPlayer = players[currentPlayerIndex];
+    
+    // Imposta i dati del giocatore corrente
+    turnAvatar.style.backgroundColor = currentPlayer.color;
+    turnAvatar.textContent = currentPlayer.avatar;
+    turnName.textContent = currentPlayer.name;
+    
+    // Mostra l'annuncio del turno
+    turnAnnouncement.classList.add('active');
+    
+    // Nascondi dopo 2 secondi
+    setTimeout(() => {
+        turnAnnouncement.classList.remove('active');
+    }, 2000);
+}
+
+/**
+ * Genera le icone delle stelle
+ */
+function generateStarIcons(starCount) {
+    let stars = '';
+    for (let i = 0; i < starCount; i++) {
+        stars += '<i class="fas fa-star star-icon"></i>';
+    }
+    return stars;
+}
+
+/**
+ * Posiziona i giocatori sulla scacchiera
+ */
+function placePlayersOnBoard() {
+    // Rimuovi i giocatori esistenti
+    const existingPlayers = document.querySelectorAll('.player');
+    existingPlayers.forEach(p => p.remove());
+    
+    // Posizione iniziale (centro della board)
+    const centerRow = Math.floor(BOARD_SIZE / 2);
+    const centerCol = Math.floor(BOARD_SIZE / 2);
+    
+    // Crea e posiziona i giocatori
+    players.forEach((player, index) => {
+        // Salva la posizione iniziale nel giocatore se non esiste
+        if (!player.position) {
+            player.position = { row: centerRow, col: centerCol };
+        }
+        
+        const playerElement = document.createElement('div');
+        playerElement.className = 'player';
+        playerElement.id = `player-token-${index}`;
+        playerElement.textContent = player.avatar;
+        playerElement.style.backgroundColor = player.color;
+        
+        // Offset circolare per posizionare i giocatori intorno al centro
+        const offset = 10;
+        const angle = (index / players.length) * Math.PI * 2;
+        const offsetX = Math.cos(angle) * offset;
+        const offsetY = Math.sin(angle) * offset;
+        
+        // Posiziona il giocatore sulla scacchiera
+        const space = gameBoard[player.position.row][player.position.col].element;
+        const spaceRect = space.getBoundingClientRect();
+        const boardRect = gameBoardElement.getBoundingClientRect();
+        
+        playerElement.style.left = `${(spaceRect.left - boardRect.left) + (spaceRect.width / 2) - 17.5 + offsetX}px`;
+        playerElement.style.top = `${(spaceRect.top - boardRect.top) + (spaceRect.height / 2) - 17.5 + offsetY}px`;
+        
+        gameBoardElement.appendChild(playerElement);
+    });
+}
+
+/**
+ * Inizializza gli eventi di gioco
+ */
+function initEvents() {
+    // Pulsante per lanciare il dado
+    if (diceButton) {
+        diceButton.addEventListener('click', rollDice);
+    }
+    
+    // Pulsante per aprire lo shop
+    if (shopButton) {
+        shopButton.addEventListener('click', function() {
+            if (!diceRolling) {
+                showShop();
+            }
+        });
+    }
+    
+    // Pulsante torna alla home
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) {
+        homeButton.addEventListener('click', function() {
+            if (confirm('Sei sicuro di voler abbandonare la partita?')) {
+                window.location.href = 'index.html';
+            }
+        });
+    }
+}
+
+/**
+ * Avvia il gioco
+ */
+function startGame() {
+    gameStarted = true;
+    currentPlayerIndex = 0;
+    
+    // Evidenzia il giocatore attuale
+    highlightCurrentPlayer();
+    
+    // Abilita il lancio del dado
+    if (diceButton) {
+        diceButton.disabled = false;
+    }
+    
+    // Mostra notifica di inizio
+    showAnimatedNotification('Inizia il gioco! Tocca a ' + players[currentPlayerIndex].name, 'success');
+}
+
+/**
+ * Evidenzia il giocatore corrente
+ */
+function highlightCurrentPlayer() {
+    document.querySelectorAll('.player-card').forEach((card, index) => {
+        card.classList.toggle('active', index === currentPlayerIndex);
+    });
+}
+
+/**
+ * Gestisce il tiro del dado
+ */
+function rollDice() {
+    if (diceRolling || !gameStarted) return;
+    
+    diceRolling = true;
+    diceButton.disabled = true;
+    
+    // Disabilita il pulsante dello shop durante il turno
+    if (shopButton) {
+        shopButton.disabled = true;
+    }
+    
+    // Animazione del dado
+    let rollCount = 0;
+    const maxRolls = 10;
+    const rollInterval = setInterval(() => {
+        const randomValue = Math.floor(Math.random() * (DICE_MAX - DICE_MIN + 1)) + DICE_MIN;
+        diceButton.textContent = randomValue;
+        
+        rollCount++;
+        if (rollCount >= maxRolls) {
+            clearInterval(rollInterval);
+            const finalValue = Math.floor(Math.random() * (DICE_MAX - DICE_MIN + 1)) + DICE_MIN;
+            diceButton.textContent = finalValue;
+            
+            // Dopo il lancio
+            setTimeout(() => {
+                diceRolling = false;
+                movePlayer(finalValue);
+            }, 500);
+        }
+    }, 100);
+}
+
+/**
+ * Muove il giocatore corrente
+ */
+function movePlayer(steps) {
+    const player = players[currentPlayerIndex];
+    
+    // Aggiorna contatori statistiche
+    if (!player.stats) player.stats = { correct: 0, incorrect: 0, moves: 0 };
+    player.stats.moves++;
+    
+    // Riproduci suono movimento
+    playSound('move');
+    
+    // Mostra sempre il selettore di direzione
+    const possibleDirections = [
+        { dr: 0, dc: 1, name: 'Destra' },
+        { dr: 0, dc: -1, name: 'Sinistra' },
+        { dr: 1, dc: 0, name: 'Giù' },
+        { dr: -1, dc: 0, name: 'Su' }
+    ];
+    
+    showDirectionSelector(possibleDirections, steps);
+}
+
+/**
+ * Mostra il selettore di direzione
+ */
+function showDirectionSelector(directions, steps) {
+    // Disabilita il pulsante shop durante la scelta della direzione
+    if (shopButton) {
+        shopButton.disabled = true;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'directionModal';
+    
+    let directionsHTML = '';
+    directions.forEach((dir, index) => {
+        directionsHTML += `
+            <button class="direction-btn" data-index="${index}">
+                <i class="fas fa-arrow-${dir.name === 'Su' ? 'up' : dir.name === 'Giù' ? 'down' : dir.name === 'Sinistra' ? 'left' : 'right'}"></i>
+                ${dir.name}
+            </button>
+        `;
+    });
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>Scegli la direzione</h3>
+            <p>Passi rimasti: <strong>${steps}</strong></p>
+            <div class="direction-buttons">
+                ${directionsHTML}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Aggiungi event listeners ai pulsanti
+    const buttons = modal.querySelectorAll('.direction-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const dirIndex = parseInt(button.dataset.index);
+            const direction = directions[dirIndex];
+            
+            // Rimuovi il modale
+            modal.remove();
+            
+            // Muovi il giocatore nella direzione selezionata
+            const player = players[currentPlayerIndex];
+            player.remainingSteps = steps; // Salva i passi rimanenti
+            const newPosition = moveInDirection(player.position, direction, steps);
+            player.position = newPosition;
+            updatePlayerPosition(currentPlayerIndex);
+            renderPlayerInfo();
+            
+            // Solo se non ci sono più passi rimanenti, controlla lo spazio
+            if (!player.remainingSteps || player.remainingSteps <= 0) {
+                checkSpace(newPosition);
+                
+                // Riabilita il pulsante shop solo se non ci sono più passi da fare
+                if (shopButton) {
+                    shopButton.disabled = false;
+                }
+            }
+        });
+    });
+}
+
+/**
+ * Muove il giocatore nella direzione specificata per un numero di passi
+ */
+function moveInDirection(startPosition, direction, steps) {
+    let { row, col } = startPosition;
+    const middle = Math.floor(BOARD_SIZE / 2);
+    let remainingSteps = steps;
+    let currentPosition = { row, col };
+    let lastValidPosition = { row, col };
+    
+    // Muovi nella direzione selezionata per il numero di passi
+    for (let i = 0; i < steps; i++) {
+        const newRow = row + direction.dr;
+        const newCol = col + direction.dc;
+        
+        // Verifica se la nuova posizione è valida (all'interno della board e su una casella valida)
+        if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE) {
+            // Verifica se la nuova posizione è su una casella valida (bordo o croce centrale)
+            if (isEdgePosition(newRow, newCol) || isMiddleCross(newRow, newCol)) {
+                lastValidPosition = { row, col };
+                row = newRow;
+                col = newCol;
+                remainingSteps--;
+                
+                // Aggiorna la posizione visuale del giocatore ad ogni passo
+                currentPosition = { row, col };
+                
+                // Se è l'ultimo passo, assegna questa posizione come finale e ferma il movimento
+                if (remainingSteps === 0) {
+                    break;
+                }
+            } else {
+                // Se non è una casella valida, interrompiamo il movimento
+                console.log("Posizione non valida: non è sul bordo o sulla croce centrale");
+                break;
+            }
+        } else {
+            // Se abbiamo raggiunto un bordo, interrompiamo il movimento
+            console.log("Raggiunto un limite della board con " + remainingSteps + " passi rimanenti");
+            
+            // Se ci sono ancora passi da fare, mostra nuovamente il selettore di direzione
+            if (remainingSteps > 0) {
+                const player = players[currentPlayerIndex];
+                
+                // Aggiorna la posizione del giocatore all'ultima posizione valida
+                player.position = currentPosition;
+                updatePlayerPosition(currentPlayerIndex);
+                
+                // Memorizza i passi rimanenti per il selettore di direzione
+                player.remainingSteps = remainingSteps;
+                
+                // Filtra le direzioni valide dalla posizione corrente
+                const possibleDirections = [
+                    { dr: 0, dc: 1, name: 'Destra' },
+                    { dr: 0, dc: -1, name: 'Sinistra' },
+                    { dr: 1, dc: 0, name: 'Giù' },
+                    { dr: -1, dc: 0, name: 'Su' }
+                ];
+                
+                const validDirections = possibleDirections.filter(dir => {
+                    const nextRow = currentPosition.row + dir.dr;
+                    const nextCol = currentPosition.col + dir.dc;
+                    return nextRow >= 0 && nextRow < BOARD_SIZE && 
+                           nextCol >= 0 && nextCol < BOARD_SIZE &&
+                           (isEdgePosition(nextRow, nextCol) || isMiddleCross(nextRow, nextCol));
+                });
+                
+                if (validDirections.length > 0) {
+                    setTimeout(() => {
+                        showDirectionSelector(validDirections, remainingSteps);
+                    }, 500);
+                    return currentPosition;
+                }
+            }
+            break;
+        }
+    }
+    
+    return { row, col, remainingSteps: 0 };
+}
+
+/**
+ * Calcola la prossima posizione
+ */
+function calculateNextPosition(currentPosition, steps) {
+    // Funzione mantenuta per compatibilità, ora utilizziamo il selettore di direzione
+    const possibleDirections = getPossibleDirections(currentPosition);
+    
+    if (possibleDirections.length === 0) {
+        console.warn("Nessuna direzione disponibile, ritorno alla posizione attuale");
+        return currentPosition;
+    }
+    
+    // Scegli una direzione casuale tra quelle disponibili
+    const direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+    
+    return moveInDirection(currentPosition, direction, steps);
+}
+
+/**
+ * Aggiorna la posizione visiva del giocatore
+ */
+function updatePlayerPosition(playerIndex) {
+    const player = players[playerIndex];
+    const playerToken = document.getElementById(`player-token-${playerIndex}`);
+    
+    if (!playerToken) return;
+    
+    const space = gameBoard[player.position.row][player.position.col].element;
+    const spaceRect = space.getBoundingClientRect();
+    const boardRect = gameBoardElement.getBoundingClientRect();
+    
+    // Offset casuale di pochi pixel per evitare sovrapposizioni perfette
+    const randomOffset = (Math.random() * 10) - 5;
+    
+    // Animazione del movimento
+    playerToken.style.left = `${(spaceRect.left - boardRect.left) + (spaceRect.width / 2) - 17.5 + randomOffset}px`;
+    playerToken.style.top = `${(spaceRect.top - boardRect.top) + (spaceRect.height / 2) - 17.5 + randomOffset}px`;
+}
+
+/**
+ * Controlla lo spazio su cui è atterrato il giocatore
+ */
+function checkSpace(position) {
+    const { row, col } = position;
+    const space = gameBoard[row][col];
+    
+    if (!space) return;
+    
+    // Rimuovi eventuali highlight precedenti prima di evidenziare lo spazio attivo
+    const allSpaces = document.querySelectorAll('.space');
+    allSpaces.forEach(s => s.classList.remove('active'));
+    
+    // Evidenzia lo spazio attivo
+    space.element.classList.add('active');
+    
+    // Verifica se il giocatore ha ancora passi da fare
+    const player = players[currentPlayerIndex];
+    if (player.remainingSteps && player.remainingSteps > 0) {
+        // Se ci sono ancora passi da fare, non attivare la casella
+        return;
+    }
+    
+    // Gestisci in base al tipo di spazio
+    switch(space.type) {
+        case 'quiz':
+            showQuestion();
+            break;
+        case 'star':
+            // Mostra il prompt per l'acquisto della stella
+            const player = players[currentPlayerIndex];
+            if (player.credits >= 100) {
+                if (confirm('Vuoi acquistare questa stella per 100 crediti?')) {
+                    player.credits -= 100;
+                    player.stars++;
+                    renderPlayerInfo();
+                    showStarCollectionEffect();
+                    showAnimatedNotification('Hai acquistato una stella!', 'success');
+                    playSound('star');
+                    
+                    // Controlla se il giocatore ha vinto
+                    if (checkWinCondition()) {
+                        return;
+                    }
+                }
+            } else {
+                showAnimatedNotification('Non hai abbastanza crediti per acquistare questa stella!', 'error');
+            }
+            setTimeout(nextPlayer, 2000);
+            break;
+        case 'special':
+            activateSpecialEffect();
+            break;
+        default:
+            // Passa al prossimo giocatore
+            nextPlayer();
+    }
+}
+
+/**
+ * Raccoglie una stella quando il giocatore atterra su una casella stella
+ */
+function collectStar() {
+    const player = players[currentPlayerIndex];
+    
+    // Aumenta il contatore delle stelle
+    player.stars++;
+    
+    // Aggiorna UI
+    renderPlayerInfo();
+    
+    // Riproduci suono
+    playSound('star');
+    
+    // Mostra effetti visivi
+    showStarCollectionEffect();
+    
+    // Mostra notifica
+    showAnimatedNotification(`${player.name} ha ottenuto una stella!`, 'success');
+    
+    // Premia il giocatore con crediti
+    const creditBonus = 20;
+    player.credits += creditBonus;
+    showAnimatedNotification(`+${creditBonus} crediti!`, 'info');
+    
+    // Controlla se abbiamo un vincitore
+    if (checkWinCondition()) {
+        return; // Fine del gioco
+    }
+    
+    // Passa al prossimo giocatore
+    setTimeout(nextPlayer, 2000);
+}
+
+/**
+ * Attiva un effetto speciale quando il giocatore atterra su una casella speciale
+ */
+function activateSpecialEffect() {
+    // Effetti speciali casuali
+    const effects = [
+        {
+            name: 'Crediti Bonus',
+            action: () => {
+                const bonus = Math.floor(Math.random() * 30) + 10; // 10-40 crediti
+                players[currentPlayerIndex].credits += bonus;
+                renderPlayerInfo();
+                showAnimatedNotification(`+${bonus} crediti bonus!`, 'success');
+                playSound('success');
+            }
+        },
+        {
+            name: 'Lancio Extra',
+            action: () => {
+                showAnimatedNotification('Lancio del dado extra!', 'success');
+                setTimeout(() => {
+                    if (diceButton) {
+                        diceButton.disabled = false;
+                        diceRolling = false;
+                    }
+                }, 2000);
+                return false; // Non passare al prossimo giocatore
+            }
+        },
+        {
+            name: 'Teletrasporto',
+            action: () => {
+                const randomRow = Math.floor(Math.random() * BOARD_SIZE);
+                const randomCol = Math.floor(Math.random() * BOARD_SIZE);
+                
+                // Trova uno spazio valido
+                const middle = Math.floor(BOARD_SIZE / 2);
+                let validPosition = null;
+                
+                if (isEdgePosition(randomRow, randomCol) || isMiddleCross(randomRow, randomCol)) {
+                    validPosition = { row: randomRow, col: randomCol };
+                } else {
+                    // Se non è valido, usa il centro
+                    validPosition = { row: middle, col: middle };
+                }
+                
+                showAnimatedNotification('Teletrasporto attivato!', 'info');
+                
+                // Aggiorna la posizione del giocatore
+                players[currentPlayerIndex].position = validPosition;
+                updatePlayerPosition(currentPlayerIndex);
+                
+                // Controlla il nuovo spazio (senza passare al prossimo giocatore)
+                setTimeout(() => checkSpace(validPosition), 1000);
+                return false; // Non passare al prossimo giocatore
+            }
+        },
+        {
+            name: 'Scambio Posizione',
+            action: () => {
+                if (players.length < 2) return true; // Solo un giocatore, nessuno scambio
+                
+                // Trova un altro giocatore casuale
+                let otherPlayerIndex;
+                do {
+                    otherPlayerIndex = Math.floor(Math.random() * players.length);
+                } while (otherPlayerIndex === currentPlayerIndex);
+                
+                // Scambia le posizioni
+                const currentPos = { ...players[currentPlayerIndex].position };
+                players[currentPlayerIndex].position = { ...players[otherPlayerIndex].position };
+                players[otherPlayerIndex].position = currentPos;
+                
+                // Aggiorna la UI
+                updatePlayerPosition(currentPlayerIndex);
+                updatePlayerPosition(otherPlayerIndex);
+                
+                showAnimatedNotification(`Posizioni scambiate con ${players[otherPlayerIndex].name}!`, 'info');
+                playSound('special');
+            }
+        },
+        {
+            name: 'Salta il Turno',
+            action: () => {
+                // Trova un altro giocatore casuale
+                if (players.length < 2) return true; // Solo un giocatore, nessun effetto
+                
+                let otherPlayerIndex;
+                do {
+                    otherPlayerIndex = Math.floor(Math.random() * players.length);
+                } while (otherPlayerIndex === currentPlayerIndex);
+                
+                players[otherPlayerIndex].skipTurn = true;
+                
+                showAnimatedNotification(`${players[otherPlayerIndex].name} salterà il prossimo turno!`, 'warning');
+                playSound('special');
+            }
+        }
+    ];
+    
+    // Seleziona un effetto casuale
+    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+    
+    // Mostra notifica dell'effetto
+    showAnimatedNotification(`Effetto Speciale: ${randomEffect.name}`, 'info');
+    
+    // Esegui l'effetto
+    const result = randomEffect.action();
+    
+    // Se l'effetto restituisce false, non passare al prossimo giocatore
+    if (result === false) {
+        return;
+    }
+    
+    // Passa al prossimo giocatore dopo un ritardo
+    setTimeout(nextPlayer, 2000);
+}
+
+/**
+ * Mostra una domanda
+ */
+function showQuestion() {
+    // Controllo che ci siano categorie disponibili
+    if (!availableCategories || availableCategories.length === 0) {
+        console.error('Nessuna categoria disponibile per le domande');
+        showAnimatedNotification('Errore: nessuna categoria disponibile', 'error');
+        setTimeout(nextPlayer, 2000);
+        return;
+    }
+    
+    const player = players[currentPlayerIndex];
+    
+    // Verifica se il giocatore ha il powerup per scegliere la categoria
+    if (player.powerups && player.powerups.categoryChoice && player.powerups.categoryChoice > 0) {
+        // Chiedi se vuole usare il powerup
+        if (confirm('Hai il powerup "Scelta Categoria". Vuoi scegliere la categoria della domanda?')) {
+            player.powerups.categoryChoice--;
+            showCategorySelector();
+            return;
+        }
+    }
+    
+    // Sceglie una categoria casuale tra quelle disponibili
+    const randomCategoryIndex = Math.floor(Math.random() * availableCategories.length);
+    const selectedCategory = availableCategories[randomCategoryIndex];
+    
+    console.log(`Categoria selezionata: ${selectedCategory}`);
+    
+    // Carica una domanda dalla categoria selezionata
+    loadRandomQuestion(selectedCategory);
+    
+    // Non chiamare nextPlayer qui, verrà chiamato dopo che la domanda è stata risolta
+}
+
+/**
+ * Mostra il selettore di categoria
+ */
+function showCategorySelector() {
+    // Controllo che ci siano categorie disponibili
+    if (!availableCategories || availableCategories.length === 0) {
+        console.error('Nessuna categoria disponibile');
+        showAnimatedNotification('Errore: nessuna categoria disponibile', 'error');
+        setTimeout(nextPlayer, 2000);
+        return;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'categoryModal';
+    
+    let categoriesHTML = '';
+    availableCategories.forEach((category, index) => {
+        categoriesHTML += `
+            <button class="category-btn" data-category="${category}">
+                ${category}
+            </button>
+        `;
+    });
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>Scegli una categoria</h3>
+            <div class="category-buttons">
+                ${categoriesHTML}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Aggiungi event listeners ai pulsanti
+    const buttons = modal.querySelectorAll('.category-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedCategory = button.dataset.category;
+            
+            // Rimuovi il modale
+            modal.remove();
+            
+            // Carica una domanda dalla categoria selezionata
+            loadRandomQuestion(selectedCategory);
+        });
+    });
+}
+
+/**
+ * Gestisce l'acquisto di un elemento dello shop
+ */
+function purchaseItem(itemId, shopItems, modal) {
+    const player = players[currentPlayerIndex];
+    const item = shopItems.find(i => i.id === itemId);
+    
+    if (!item) return;
+    
+    if (player.credits >= item.price) {
+        // Sottrai i crediti
+        player.credits -= item.price;
+        
+        // Esegui l'azione dell'oggetto
+        item.action();
+        
+        // Aggiorna UI
+        renderPlayerInfo();
+        
+        // Rimuovi il modale dello shop
+        modal.remove();
+        
+        // Riproduci suono acquisto
+        playSound('success');
+    } else {
+        showAnimatedNotification('Crediti insufficienti!', 'error');
+    }
+}
+
+/**
+ * Inizializza gli eventi di tastiera
+ */
+function initKeyboardEvents() {
+    document.addEventListener('keydown', function(event) {
+        // Apri lo shop con il tasto S
+        if (event.key === 's' || event.key === 'S') {
+            // Verifica che il giocatore non abbia passi rimanenti da completare
+            const player = players[currentPlayerIndex];
+            if (player && player.remainingSteps && player.remainingSteps > 0) {
+                showAnimatedNotification('Devi prima completare il movimento', 'error');
+                return;
+            }
+            
+            // Se c'è già uno shop modale aperto, chiudilo invece di aprirne un altro
+            const existingShop = document.getElementById('shopModal');
+            if (existingShop) {
+                existingShop.remove();
+            } else if (!diceRolling) { // Apri lo shop solo se non si sta lanciando il dado
+                showShop();
+            } else {
+                showAnimatedNotification('Non puoi usare lo shop durante il tiro del dado', 'error');
+            }
+        }
+    });
+}
+
+/**
+ * Inizializza il gioco
+ */
+function initGame() {
+    console.log('Inizializzazione del gioco...');
+    
+    // Carica i dati di gioco
+    loadGameData();
+    
+    // Inizializza la board
+    initGameBoard();
+    
+    // Posiziona i giocatori
+    placePlayersOnBoard();
+    
+    // Inizializza eventi
+    initEvents();
+    
+    // Inizializza eventi da tastiera
+    initKeyboardEvents();
+    
+    // Inizializza lo stato dello shop
+    initShopState();
+    
+    // Mostra le informazioni dei giocatori
+    renderPlayerInfo();
+    
+    // Mostra animazione di benvenuto
+    showWelcomeAnimation();
+}
+
+/**
+ * Inizializza lo stato dello shop
+ */
+function initShopState() {
+    // Assicurati che i giocatori non abbiano passi rimanenti all'inizio del gioco
+    players.forEach(player => {
+        player.remainingSteps = 0;
+    });
+    
+    // Abilita lo shop all'inizio del gioco se c'è un pulsante dello shop
+    if (shopButton && gameStarted) {
+        shopButton.disabled = false;
+    }
+}
+
+/**
+ * Mostra un effetto visivo per la raccolta di una stella
+ */
+function showStarCollectionEffect() {
+    // Crea container per l'effetto
+    const effectContainer = document.createElement('div');
+    effectContainer.className = 'visual-effect';
+    document.body.appendChild(effectContainer);
+    
+    // Genera stelle che volano
+    for (let i = 0; i < 15; i++) {
+        const star = document.createElement('div');
+        star.className = 'flying-star';
+        star.innerHTML = '<i class="fas fa-star"></i>';
+        
+        // Posizione casuale
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        
+        // Stile
+        star.style.left = `${startX}px`;
+        star.style.top = `${startY}px`;
+        star.style.fontSize = `${Math.random() * 20 + 10}px`;
+        star.style.animationDuration = `${Math.random() * 3 + 1}s`;
+        star.style.animationDelay = `${Math.random() * 0.5}s`;
+        
+        effectContainer.appendChild(star);
+    }
+    
+    // Rimuovi l'effetto dopo 3 secondi
+    setTimeout(() => {
+        if (effectContainer && effectContainer.parentNode) {
+            document.body.removeChild(effectContainer);
+        }
+    }, 3000);
+}
+
+/**
+ * Mostra l'animazione di benvenuto all'inizio del gioco
+ */
+function showWelcomeAnimation() {
+    // Crea un elemento per il messaggio di benvenuto
+    const welcomeElement = document.createElement('div');
+    welcomeElement.className = 'welcome-message';
+    welcomeElement.innerHTML = `
+        <h2>Benvenuto a Quiz Party!</h2>
+        <p>Pronto a iniziare?</p>
+    `;
+    welcomeElement.style.position = 'fixed';
+    welcomeElement.style.top = '50%';
+    welcomeElement.style.left = '50%';
+    welcomeElement.style.transform = 'translate(-50%, -50%)';
+    welcomeElement.style.background = 'rgba(30, 41, 59, 0.9)';
+    welcomeElement.style.padding = '30px';
+    welcomeElement.style.borderRadius = '12px';
+    welcomeElement.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.5)';
+    welcomeElement.style.zIndex = '1000';
+    welcomeElement.style.textAlign = 'center';
+    welcomeElement.style.opacity = '0';
+    welcomeElement.style.transition = 'opacity 0.5s, transform 0.5s';
+    
+    document.body.appendChild(welcomeElement);
+    
+    // Mostra l'animazione
+    setTimeout(() => {
+        welcomeElement.style.opacity = '1';
+        welcomeElement.style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 100);
+    
+    // Rimuovi dopo 2 secondi
+    setTimeout(() => {
+        welcomeElement.style.opacity = '0';
+        welcomeElement.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        setTimeout(() => {
+            if (welcomeElement.parentNode) {
+                document.body.removeChild(welcomeElement);
+            }
+        }, 500);
+    }, 2000);
+}
+
+/**
+ * Controlla se c'è un vincitore
+ * @returns {boolean} true se c'è un vincitore, false altrimenti
+ */
+function checkWinCondition() {
+    const player = players[currentPlayerIndex];
+    if (!player) return false;
+    
+    if (player.stars >= starGoal) {
+        // Mostra la modalità di vittoria
+        const victoryModal = document.createElement('div');
+        victoryModal.className = 'modal';
+        victoryModal.innerHTML = `
+            <div class="modal-content">
+                <h2>🎉 Vittoria! 🎉</h2>
+                <p>${player.name} ha vinto la partita!</p>
+                <p>Ha collezionato ${player.stars} stelle!</p>
+                <button onclick="location.reload()">Nuova Partita</button>
+            </div>
+        `;
+        document.body.appendChild(victoryModal);
+        
+        // Aggiungi l'effetto confetti
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti-container';
+        document.body.appendChild(confettiContainer);
+        
+        // Crea i confetti
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDelay = Math.random() * 2 + 's';
+            confettiContainer.appendChild(confetti);
+        }
+        
+        // Ferma il gioco
+        gameStarted = false;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Mostra gli effetti di vittoria 
+ */
+function showVictoryEffects(winner) {
+    // Crea un effetto di confetti
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.backgroundColor = getRandomColor();
+        document.body.appendChild(confetti);
+        
+        // Rimuovi il confetto dopo l'animazione
+        setTimeout(() => {
+            if (confetti.parentNode) {
+                document.body.removeChild(confetti);
+            }
+        }, 5000);
+    }
+    
+    // Mostra una modale di vittoria
+    setTimeout(() => {
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.id = 'victoryModal';
+        
+        modal.innerHTML = `
+            <div class="modal-content victory-modal">
+                <h2>🎉 Vittoria! 🎉</h2>
+                <div class="winner-avatar" style="background-color: ${winner.color}">
+                    ${winner.avatar}
+                </div>
+                <h3>${winner.name} ha vinto!</h3>
+                <p>Ha collezionato ${winner.stars} stelle su ${starGoal}</p>
+                
+                <div class="victory-stars">
+                    ${generateStarIcons(winner.stars)}
+                </div>
+                
+                <button id="playAgainBtn" class="btn btn-primary">Gioca ancora</button>
+                <button id="homeBtn" class="btn btn-secondary">Torna alla home</button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Aggiungi event listeners ai pulsanti
+        document.getElementById('playAgainBtn').addEventListener('click', () => {
+            window.location.reload();
+        });
+        
+        document.getElementById('homeBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }, 1000);
+}
+
+/**
+ * Genera un colore casuale per i confetti
+ */
+function getRandomColor() {
+    const colors = [
+        '#8b5cf6', // viola
+        '#06b6d4', // ciano
+        '#fcd34d', // giallo
+        '#ef4444', // rosso
+        '#10b981', // verde
+        '#f97316'  // arancione
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+/**
+ * Carica una domanda casuale dalla categoria specificata
+ * @param {string} category - La categoria da cui caricare una domanda
+ */
+async function loadRandomQuestion(category) {
+    try {
+        console.log('loadRandomQuestion chiamata per categoria:', category);
+        
+        // Mostra un indicatore di caricamento
+        const loadingModal = document.createElement('div');
+        loadingModal.className = 'modal active';
+        loadingModal.id = 'loadingQuizModal';
+        loadingModal.innerHTML = `
+            <div class="modal-content">
+                <div class="loading">
+                    <div></div><div></div><div></div>
+                </div>
+                <p>Caricamento domanda...</p>
+            </div>
+        `;
+        document.body.appendChild(loadingModal);
+        
+        console.log('Caricamento domande dal server per la categoria:', category);
+        
+        // Assicuriamoci che API_URL sia definito
+        if (typeof API_URL === 'undefined' || !API_URL) {
+            console.warn('API_URL non definito, utilizzo URL di default');
+            API_URL = 'http://localhost:3000/api';
+        }
+        
+        // Recupera domande tramite API
+        let questions = [];
+        try {
+            console.log('Tentativo di recupero domande da API_URL:', API_URL);
+            // Richiediamo tutte le domande anziché una singola per ID
+            const response = await fetch(`${API_URL}/questions`);
+            
+            console.log('Risposta API ricevuta, status:', response.status, response.ok);
+            
+            if (!response.ok) {
+                throw new Error(`Errore di rete: ${response.status}`);
+            }
+            
+            questions = await response.json();
+            console.log(`Caricate ${questions.length} domande`);
+        } catch (apiError) {
+            console.error('Errore API:', apiError);
+            // Fallback a domande predefinite in caso di errore
+            showAnimatedNotification('Errore di connessione al server, utilizzo domande predefinite', 'warning');
+            questions = getDefaultQuestions();
+            console.log('Utilizzo domande predefinite:', questions);
+        }
+        
+        // Rimuovi il modale di caricamento
+        if (loadingModal && loadingModal.parentNode) {
+            loadingModal.parentNode.removeChild(loadingModal);
+        }
+        
+        // Filtra domande per categoria
+        console.log(`Filtro per categoria '${category}', domande disponibili:`, questions.length);
+        const categoryQuestions = questions.filter(q => q.category === category);
+        console.log(`Trovate ${categoryQuestions.length} domande nella categoria ${category}`);
+        
+        if (categoryQuestions.length === 0) {
+            console.warn(`Nessuna domanda trovata per la categoria: ${category}`);
+            showAnimatedNotification(`Nessuna domanda trovata nella categoria ${category}`, 'warning');
+            
+            setTimeout(nextPlayer, 2000);
+            return;
+        }
+        
+        // Seleziona una domanda casuale
+        const randomIndex = Math.floor(Math.random() * categoryQuestions.length);
+        const selectedQuestion = categoryQuestions[randomIndex];
+        
+        console.log('Domanda selezionata:', selectedQuestion);
+        
+        if (!selectedQuestion) {
+            throw new Error('Nessuna domanda disponibile');
+        }
+        
+        // Assicurati che la domanda abbia tutti i campi necessari
+        if (!selectedQuestion.question || !selectedQuestion.answer) {
+            console.error('Domanda malformata:', selectedQuestion);
+            throw new Error('Formato domanda non valido');
+        }
+        
+        // Visualizza la domanda
+        console.log('Chiamata a displayQuestion con domanda:', selectedQuestion);
+        displayQuestion(selectedQuestion);
+        
+    } catch (error) {
+        console.error('Errore durante il caricamento delle domande:', error);
+        showAnimatedNotification('Errore durante il caricamento delle domande. Passo al giocatore successivo.', 'error');
+        
+        // Rimuovi eventuali modali aperti
+        const loadingModal = document.getElementById('loadingQuizModal');
+        if (loadingModal && loadingModal.parentNode) {
+            document.body.removeChild(loadingModal);
+        }
+        
+        // Assicurati che il gioco continui
+        setTimeout(nextPlayer, 2000);
+    }
+}
+
+/**
+ * Fornisce un set di domande predefinito in caso di errore API
+ * @returns {Array} Domande predefinite
+ */
+function getDefaultQuestions() {
+    return [
+        {
+            id: 1,
+            category: "Storia",
+            type: "text",
+            question: "In che anno è caduto l'Impero Romano d'Occidente?",
+            answer: "476 d.C."
+        },
+        {
+            id: 2,
+            category: "Geografia",
+            type: "text",
+            question: "Qual è la capitale del Canada?",
+            answer: "Ottawa"
+        },
+        {
+            id: 3,
+            category: "Scienza",
+            type: "text",
+            question: "Qual è l'elemento più abbondante nell'universo?",
+            answer: "Idrogeno"
+        },
+        {
+            id: 4,
+            category: "Sport",
+            type: "text",
+            question: "In quale sport si gioca a Wimbledon?",
+            answer: "Tennis"
+        },
+        {
+            id: 5,
+            category: "Arte",
+            type: "text",
+            question: "Chi ha dipinto la Gioconda?",
+            answer: "Leonardo da Vinci"
+        }
+    ];
+}
+
+/**
+ * Visualizza una domanda
+ * @param {Object} question - La domanda da visualizzare
+ * @param {HTMLElement} modal - Il modale in cui visualizzare la domanda 
+ */
+function displayQuestion(question, modal) {
+    try {
+        // Elimina il modale esistente nella pagina se presente
+        const existingModal = document.getElementById('quizModal');
+        if (existingModal && existingModal.parentNode) {
+            existingModal.parentNode.removeChild(existingModal);
+        }
+        
+        // Crea un nuovo modale
+        modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.id = 'quizModal';
+        document.body.appendChild(modal);
+        
+        console.log('displayQuestion - Domanda selezionata:', question);
+        
+        // Verifica che la domanda sia valida
+        if (!question || !question.type || !question.question || !question.answer) {
+            console.error('Domanda non valida:', question);
+            throw new Error('Domanda non valida o malformata');
+        }
+        
+        // Costruisci HTML in base al tipo di domanda
+        let optionsHTML = '';
+        
+        if (question.type === 'multiple') {
+            // Controlla che le opzioni esistano
+            if (!question.options || !Array.isArray(question.options) || question.options.length === 0) {
+                console.error('Opzioni mancanti per domanda di tipo multiple:', question);
+                // Fallback a domanda di tipo testo
+                question.type = 'text';
+            } else {
+                // Mescola le opzioni
+                const options = [...question.options];
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+                
+                options.forEach((option) => {
+                    optionsHTML += `
+                        <button class="option-button" data-value="${option}">
+                            ${option}
+                        </button>
+                    `;
+                });
+            }
+        }
+        
+        // Costruisci HTML in base al tipo (con fallback)
+        if (question.type === 'text' || optionsHTML === '') {
+            optionsHTML = `
+                <div class="form-control">
+                    <input type="text" id="text-answer" placeholder="Inserisci la risposta">
+                    <button class="option-button" id="submitAnswer">Conferma</button>
+                </div>
+            `;
+        } else if (question.type === 'boolean') {
+            // Per le domande vero/falso
+            optionsHTML = `
+                <button class="option-button" data-value="true">Vero</button>
+                <button class="option-button" data-value="false">Falso</button>
+            `;
+        }
+        
+        // Prepara il timer
+        const timerHTML = `
+            <div class="timer-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+        `;
+        
+        // Contenuto della domanda
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        modalContent.innerHTML = `
+            <div class="category-badge">${question.category}</div>
+            <h2 class="question-text">${question.question}</h2>
+            
+            ${timerHTML}
+            
+            <div class="question-options">
+                ${optionsHTML}
+            </div>
+        `;
+        
+        // Aggiungi la modal content al modale
+        modal.appendChild(modalContent);
+        
+        console.log('Modal domanda creato e aggiunto al DOM');
+        
+        // Avvia timer
+        startQuestionTimer(20, () => {
+            try {
+                timeOver(question.answer);
+            } catch (timerError) {
+                console.error('Errore nel timer:', timerError);
+                nextPlayer();
+            }
+        });
+        
+        // Aggiungi event listener per le risposte in base al tipo
+        if (question.type === 'multiple') {
+            const optionButtons = modal.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const selectedAnswer = this.getAttribute('data-value');
+                        const isCorrect = selectedAnswer === question.answer;
+                        showQuestionResult(isCorrect, question.answer);
+                    } catch (err) {
+                        console.error('Errore nella gestione della risposta multiple:', err);
+                        showQuestionResult(false, question.answer);
+                    }
+                });
+            });
+        } else if (question.type === 'boolean') {
+            const optionButtons = modal.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const selectedAnswer = this.getAttribute('data-value') === 'true';
+                        const correctAnswer = question.answer.toLowerCase() === 'vero';
+                        const isCorrect = selectedAnswer === correctAnswer;
+                        showQuestionResult(isCorrect, question.answer);
+                    } catch (err) {
+                        console.error('Errore nella gestione della risposta boolean:', err);
+                        showQuestionResult(false, question.answer);
+                    }
+                });
+            });
+        } else if (question.type === 'text') {
+            const submitButton = document.getElementById('submitAnswer');
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    try {
+                        const textInput = document.getElementById('text-answer');
+                        const textAnswer = textInput ? textInput.value.trim() : '';
+                        const isCorrect = textAnswer.toLowerCase() === question.answer.toLowerCase();
+                        showQuestionResult(isCorrect, question.answer);
+                    } catch (err) {
+                        console.error('Errore nella gestione della risposta text:', err);
+                        showQuestionResult(false, question.answer);
+                    }
+                });
+                
+                // Aggiungi anche l'evento per premere Invio
+                const textInput = document.getElementById('text-answer');
+                if (textInput) {
+                    textInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            try {
+                                const textAnswer = this.value.trim();
+                                const isCorrect = textAnswer.toLowerCase() === question.answer.toLowerCase();
+                                showQuestionResult(isCorrect, question.answer);
+                            } catch (err) {
+                                console.error('Errore nella gestione della risposta text (keypress):', err);
+                                showQuestionResult(false, question.answer);
+                            }
+                        }
+                    });
+                    
+                    // Focus sull'input di testo
+                    setTimeout(() => textInput.focus(), 300);
+                }
+            }
+        }
+        
+        console.log('Event listeners aggiunti, domanda pronta');
+        
+    } catch (error) {
+        console.error('Errore nella visualizzazione della domanda:', error);
+        showAnimatedNotification('Errore nella visualizzazione della domanda. Passo al giocatore successivo.', 'error');
+        
+        // Chiudi il modale se presente
+        if (modal && modal.parentNode) {
+            modal.parentNode.removeChild(modal);
+        }
+        
+        // Assicurati che il gioco continui
+        setTimeout(nextPlayer, 2000);
+    }
+}
+
+// Variabile per il timer
+let timerTimeout;
+
+/**
+ * Avvia il timer per la domanda
+ * @param {number} seconds - Secondi disponibili per rispondere
+ * @param {Function} callback - Funzione da chiamare quando il tempo scade
+ */
+function startQuestionTimer(seconds, callback) {
+    // Cancella eventuali timer precedenti
+    if (timerTimeout) {
+        clearTimeout(timerTimeout);
+    }
+    
+    const timerBar = document.getElementById('timer-bar');
+    if (!timerBar) return;
+    
+    // Imposta la larghezza iniziale al 100%
+    timerBar.style.width = '100%';
+    timerBar.style.transition = `width ${seconds}s linear`;
+    
+    // Dopo un brevissimo ritardo, impostiamo la larghezza a 0
+    setTimeout(() => {
+        timerBar.style.width = '0%';
+    }, 50);
+    
+    // Imposta il timeout per il tempo scaduto
+    timerTimeout = setTimeout(callback, seconds * 1000);
+}
+
+/**
+ * Gestisce lo scadere del tempo per una domanda
+ * @param {string} correctAnswer - La risposta corretta alla domanda
+ */
+function timeOver(correctAnswer) {
+    // Mostra il risultato come risposta sbagliata
+    showQuestionResult(false, correctAnswer);
+    showAnimatedNotification('Tempo scaduto!', 'error');
+}
+
+/**
+ * Mostra il risultato della risposta a una domanda
+ * @param {boolean} isCorrect - Se la risposta è corretta
+ * @param {string} correctAnswer - La risposta corretta alla domanda
+ */
+function showQuestionResult(isCorrect, correctAnswer) {
+    // Cancella il timer
+    if (timerTimeout) {
+        clearTimeout(timerTimeout);
+    }
+    
+    // Ottieni il giocatore corrente
+    const player = players[currentPlayerIndex];
+    
+    // Aggiorna le statistiche del giocatore
+    if (!player.stats) {
+        player.stats = { correct: 0, incorrect: 0, moves: 0 };
+    }
+    
+    // Controlla se il giocatore ha lo scudo attivo in caso di risposta sbagliata
+    if (!isCorrect && player.powerups && player.powerups.shields && player.powerups.shields > 0) {
+        if (confirm('Hai uno scudo disponibile. Vuoi usarlo per proteggere questa risposta sbagliata?')) {
+            player.powerups.shields--;
+            isCorrect = true; // Consideriamo la risposta come corretta
+            showAnimatedNotification('Scudo attivato!', 'success');
+        }
+    }
+    
+    // Definisci il premio in crediti
+    const creditReward = 10;
+    
+    // Aggiorna le statistiche e assegna crediti
+    if (isCorrect) {
+        player.stats.correct++;
+        
+        // Premia con crediti per risposta corretta
+        player.credits += creditReward;
+        
+        // Notifica
+        showAnimatedNotification('Risposta corretta! +' + creditReward + ' crediti', 'success');
+        playSound('success');
+    } else {
+        player.stats.incorrect++;
+        showAnimatedNotification('Risposta sbagliata! La risposta corretta era: ' + correctAnswer, 'error');
+        playSound('error');
+    }
+    
+    // Aggiorna l'UI
+    renderPlayerInfo();
+    
+    // Evidenzia il risultato nella UI
+    const quizModal = document.getElementById('quizModal');
+    if (quizModal) {
+        const modalContent = quizModal.querySelector('.modal-content');
+        if (modalContent) {
+            // Aggiungi classe per lo stile del risultato
+            modalContent.classList.add(isCorrect ? 'correct-answer' : 'wrong-answer');
+            
+            // Aggiorna il contenuto per mostrare il risultato
+            const resultHTML = `
+                <div class="result-message ${isCorrect ? 'success' : 'error'}">
+                    <h3>${isCorrect ? 'Risposta Corretta!' : 'Risposta Sbagliata!'}</h3>
+                    ${!isCorrect ? `<p>La risposta corretta era: ${correctAnswer}</p>` : ''}
+                    ${isCorrect ? `<p>Hai guadagnato ${creditReward} crediti!</p>` : ''}
+                </div>
+            `;
+            
+            // Aggiungi il messaggio di risultato
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'question-result';
+            resultDiv.innerHTML = resultHTML;
+            modalContent.appendChild(resultDiv);
+            
+            // Disabilita tutti i pulsanti delle opzioni
+            const optionButtons = modalContent.querySelectorAll('.option-button, #submitAnswer');
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                button.style.opacity = '0.5';
+                button.style.cursor = 'not-allowed';
+            });
+        }
+    }
+    
+    // Chiudi la modale della domanda dopo un po'
+    setTimeout(() => {
+        if (quizModal && quizModal.parentNode) {
+            document.body.removeChild(quizModal);
+        }
+        
+        // Passa al giocatore successivo solo se non ci sono passi rimanenti
+        if (!player.remainingSteps || player.remainingSteps === 0) {
+            setTimeout(nextPlayer, 1000);
+        }
+    }, 2000);
+}
+
+/**
+ * Mostra lo shop per acquistare oggetti
+ */
+function showShop() {
+    if (!gameStarted) return;
+    
+    // Verifica se lo shop è già aperto
+    if (document.getElementById('shopModal')) {
+        return; // Esci se c'è già uno shop modale aperto
+    }
+    
+    // Verifica se è possibile usare lo shop (solo prima del lancio del dado e quando non ci sono passi rimanenti)
+    if (diceRolling) {
+        showAnimatedNotification('Non puoi usare lo shop durante il tiro del dado', 'error');
+        return;
+    }
+    
+    // Verifica che il giocatore non abbia passi rimanenti da completare
+    const player = players[currentPlayerIndex];
+    if (player.remainingSteps && player.remainingSteps > 0) {
+        showAnimatedNotification('Devi prima completare il movimento', 'error');
+        return;
+    }
+    
+    if (!player.credits) player.credits = 0;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'shopModal';
+    
+    // Preparare gli articoli dello shop
+    const shopItems = [
+        {
+            id: 'extra-dice',
+            name: 'Dado Extra',
+            description: 'Lancia il dado un'altra volta in questo turno',
+            price: 30,
+            action: function() {
+                // Abilita il pulsante del dado immediatamente
+                if (diceButton) {
+                    diceButton.disabled = false;
+                    diceRolling = false;
+                }
+                showAnimatedNotification('Ora puoi lanciare il dado di nuovo!', 'success');
+            }
+        },
+        {
+            id: 'extra-star',
+            name: 'Stella Extra',
+            description: 'Ottieni immediatamente una stella',
+            price: 50,
+            action: function() {
+                const player = players[currentPlayerIndex];
+                player.stars++;
+                renderPlayerInfo();
+                
+                // Effetti visivi
+                playSound('star');
+                showStarCollectionEffect();
+                
+                showAnimatedNotification('Hai ottenuto una stella!', 'success');
+                
+                // Controlla vittoria
+                checkWinCondition();
+            }
+        },
+        {
+            id: 'shield',
+            name: 'Scudo',
+            description: 'Protegge da una risposta sbagliata',
+            price: 40,
+            action: function() {
+                const player = players[currentPlayerIndex];
+                if (!player.powerups) player.powerups = {};
+                if (!player.powerups.shields) player.powerups.shields = 0;
+                
+                player.powerups.shields++;
+                showAnimatedNotification('Scudo attivato! Ti proteggerà da una risposta sbagliata', 'success');
+            }
+        },
+        {
+            id: 'category-choice',
+            name: 'Scelta Categoria',
+            description: 'Scegli la categoria della prossima domanda',
+            price: 25,
+            action: function() {
+                const player = players[currentPlayerIndex];
+                if (!player.powerups) player.powerups = {};
+                if (!player.powerups.categoryChoice) player.powerups.categoryChoice = 0;
+                
+                player.powerups.categoryChoice++;
+                showAnimatedNotification('Ora puoi scegliere la categoria della prossima domanda!', 'success');
+            }
+        }
+    ];
+    
+    // Genera l'HTML per gli articoli
+    let itemsHTML = '';
+    shopItems.forEach(item => {
+        const canAfford = player.credits >= item.price;
+        itemsHTML += `
+            <div class="shop-item ${!canAfford ? 'disabled' : ''}">
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <div class="item-price">${item.price} <i class="fas fa-coins"></i></div>
+                <button class="shop-buy-btn" data-item-id="${item.id}" ${!canAfford ? 'disabled' : ''}>
+                    ${canAfford ? 'Acquista' : 'Crediti insufficienti'}
+                </button>
+            </div>
+        `;
+    });
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2><i class="fas fa-store"></i> Negozio</h2>
+            <p>Crediti disponibili: <strong>${player.credits} <i class="fas fa-coins" style="color: gold;"></i></strong></p>
+            
+            <div class="shop-items">
+                ${itemsHTML}
+            </div>
+            
+            <button id="closeShopBtn" class="btn btn-secondary">Chiudi</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Aggiungi event listeners
+    document.getElementById('closeShopBtn').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // Aggiungi event listeners per i pulsanti di acquisto
+    const buyButtons = modal.querySelectorAll('.shop-buy-btn:not([disabled])');
+    buyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const itemId = button.dataset.itemId;
+            purchaseItem(itemId, shopItems, modal);
+        });
+    });
+}
+
+/**
+ * Riproduce un suono di gioco
+ * @param {string} soundType - Tipo di suono da riprodurre ('move', 'star', 'success', 'error', ecc.)
+ */
+function playSound(soundType) {
+    // Implementazione di base (può essere espansa con suoni reali)
+    console.log(`Riproduci suono: ${soundType}`);
+    
+    // In una versione completa, qui ci sarebbe una vera riproduzione di suoni
+    // Ad esempio:
+    // const sound = new Audio(`assets/sounds/${soundType}.mp3`);
+    // sound.play();
+}
+
+/**
+ * Mostra una notifica animata
+ * @param {string} message - Il messaggio da mostrare
+ * @param {string} type - Il tipo di notifica (success, error, info)
+ */
+function showAnimatedNotification(message, type = 'info') {
+    // Crea l'elemento della notifica
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    // Aggiungi la notifica al documento
+    document.body.appendChild(notification);
+    
+    // Mostra la notifica con animazione
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Rimuovi la notifica dopo 3 secondi
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Passa al giocatore successivo
+ */
+function nextPlayer() {
+    if (!gameStarted) return;
+    
+    // Rimuovi evidenziazione spazio
+    document.querySelectorAll('.space').forEach(s => s.classList.remove('active'));
+    
+    // Se il giocatore corrente ha ancora passi da fare, non cambiare turno
+    if (players[currentPlayerIndex] && players[currentPlayerIndex].remainingSteps > 0) {
+        console.log("Il giocatore ha ancora " + players[currentPlayerIndex].remainingSteps + " passi da fare");
+        return;
+    }
+    
+    // Resetta i passi rimanenti per il giocatore corrente
+    if (players[currentPlayerIndex]) {
+        players[currentPlayerIndex].remainingSteps = 0;
+    }
+    
+    // Passa al prossimo giocatore
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    
+    // Mostra notifica
+    showAnimatedNotification(`Tocca a ${players[currentPlayerIndex].name}`, 'info');
+    
+    // Evidenzia il giocatore corrente
+    highlightCurrentPlayer();
+    
+    // Aggiorna la UI
+    renderPlayerInfo();
+    updateTurnIndicator();
+    
+    // Abilita nuovamente il pulsante del dado
+    if (diceButton) {
+        diceButton.disabled = false;
+    }
+    
+    // Abilita nuovamente il pulsante dello shop
+    if (shopButton) {
+        shopButton.disabled = false;
+    }
+} 

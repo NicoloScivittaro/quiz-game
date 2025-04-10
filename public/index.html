@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Party</title>
+    <link rel="stylesheet" href="css/enhanced-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="Quiz Party - Un divertente gioco a quiz per sfidare i tuoi amici!">
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h1>Quiz Party</h1>
+        
+        <!-- Game Settings Screen -->
+        <div id="game-settings">
+            <div class="selection-group animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <label for="playerCount">Numero di Giocatori:</label>
+                <select id="playerCount">
+                    <option value="2">2 Giocatori</option>
+                    <option value="3">3 Giocatori</option>
+                    <option value="4">4 Giocatori</option>
+                    <option value="5">5 Giocatori</option>
+                </select>
+            </div>
+
+            <div class="selection-group animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <label for="starCount">Stelle per Vincere:</label>
+                <div class="form-control">
+                    <input type="number" id="starCount" min="1" max="10" value="3">
+                </div>
+                <div class="stars-preview" id="starsPreview"></div>
+            </div>
+            
+            <div class="selection-group animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+                <label for="initialCredits">Crediti Iniziali:</label>
+                <div class="form-control">
+                    <input type="number" id="initialCredits" min="10" max="500" value="50">
+                </div>
+            </div>
+            
+            <div class="selection-group animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
+                <label for="timerEnabled">Timer per le Domande:</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="timerEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span id="timerStatus">Attivo</span>
+                </div>
+            </div>
+
+            <div class="selection-group animate__animated animate__fadeInUp" style="animation-delay: 0.7s;">
+                <label for="categories">Categorie da Giocare:</label>
+                <div id="categoryCheckboxes" class="category-options">
+                    <!-- Le categorie saranno caricate dinamicamente qui -->
+                </div>
+            </div>
+
+            <button id="continueBtn" class="animate__animated animate__bounceIn" style="animation-delay: 0.9s;">
+                <i class="fas fa-arrow-right"></i> Continua
+            </button>
+            
+            <button class="edit-questions-button animate__animated animate__fadeInUp" style="animation-delay: 1s;" onclick="window.location.href='questions-editor.html'">
+                <i class="fas fa-edit"></i> Gestisci Domande
+            </button>
+        </div>
+        
+        <!-- Player Customization Screen -->
+        <div id="player-setup" class="player-setup">
+            <h2 class="animate__animated animate__fadeIn">Personalizza i Giocatori</h2>
+            <div id="player-forms"></div>
+            
+            <div class="navigation-buttons">
+                <button class="back-button" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> Indietro
+                </button>
+                <button id="startGameBtn">
+                    <i class="fas fa-play"></i> Inizia il Gioco!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html> 

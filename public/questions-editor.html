@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Party - Gestione Domande</title>
+    <link rel="stylesheet" href="css/enhanced-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/common.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--background), #070b16);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: inline-block;
+            animation: glow 3s infinite alternate;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--glass);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: var(--glass);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab i {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .tab:hover i {
+            transform: scale(1.2);
+        }
+
+        .tab.active {
+            background: rgba(252, 211, 77, 0.2);
+            color: var(--accent);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--glass);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .option-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .option-group input {
+            flex: 1;
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+
+        .option-group button {
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-group button:hover {
+            background: var(--error);
+            transform: translateY(-2px);
+        }
+
+        .add-option {
+            background: rgba(16, 185, 129, 0.8);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .add-option:hover {
+            background: var(--success);
+            transform: translateY(-2px);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 15px;
+        }
+
+        .secondary-button {
+            background: linear-gradient(135deg, #475569, #334155);
+        }
+
+        .secondary-button:hover {
+            box-shadow: 0 10px 25px -5px rgba(71, 85, 105, 0.5);
+        }
+
+        .category-list {
+            margin-bottom: 25px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .category-item:hover {
+            background: var(--glass-hover);
+            transform: translateX(5px);
+            border-left-color: var(--accent);
+        }
+
+        .category-item button {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .questions-list {
+            margin-top: 25px;
+        }
+
+        .question-item {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            position: relative;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .question-item:hover {
+            background: var(--glass-hover);
+            transform: translateX(5px);
+            border-left-color: var(--primary);
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .question-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .question-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .question-actions button {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        .filter-container {
+            display: flex;
+            margin-bottom: 25px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-container select {
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .delete-button {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+        }
+
+        .delete-button:hover {
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.5);
+        }
+
+        .edit-button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .edit-button:hover {
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+            border-left: 5px solid;
+            animation: slideInDown 0.5s;
+            position: relative;
+            padding-right: 40px;
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .alert::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 10px;
+        }
+
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert.success::before {
+            content: '\f058'; /* check-circle */
+        }
+
+        .alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .alert.error::before {
+            content: '\f057'; /* times-circle */
+        }
+
+        .alert.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--info);
+            color: var(--info);
+        }
+
+        .alert.info::before {
+            content: '\f05a'; /* info-circle */
+        }
+
+        .close-alert {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close-alert:hover {
+            opacity: 1;
+        }
+
+        /* Nuovi stili per selezione categoria */
+        .category-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category-checkbox {
+            display: none;
+        }
+
+        .category-label {
+            background: var(--glass);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .category-label:hover {
+            background: var(--glass-hover);
+            transform: translateY(-2px);
+        }
+
+        .category-checkbox:checked + .category-label {
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid var(--primary);
+        }
+
+        /* Aggiungi badge per il tipo di domanda */
+        .question-type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .question-type-badge.multiple {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .question-type-badge.boolean {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .question-type-badge.text {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+        }
+
+        /* Empty state per nessuna domanda */
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestione Domande</h1>
+
+        <div class="alert success" id="successAlert">
+            <span id="successText"></span>
+            <span class="close-alert" onclick="closeAlert('success')">&times;</span>
+        </div>
+        <div class="alert error" id="errorAlert">
+            <span id="errorText"></span>
+            <span class="close-alert" onclick="closeAlert('error')">&times;</span>
+        </div>
+        <div class="alert info" id="infoAlert">
+            <span id="infoText"></span>
+            <span class="close-alert" onclick="closeAlert('info')">&times;</span>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="openTab('viewQuestions')">
+                <i class="fas fa-list"></i> Visualizza Domande
+            </div>
+            <div class="tab" onclick="openTab('addQuestion')">
+                <i class="fas fa-plus-circle"></i> Aggiungi Domanda
+            </div>
+            <div class="tab" onclick="openTab('manageCategories')">
+                <i class="fas fa-tags"></i> Gestisci Categorie
+            </div>
+        </div>
+
+        <div class="tab-content active" id="viewQuestions">
+            <div class="card">
+                <h2>Tutte le Domande</h2>
+                <div class="filter-container">
+                    <select id="categoryFilter" onchange="filterQuestions()">
+                        <option value="all">Tutte le categorie</option>
+                        <!-- Categories will be loaded here -->
+                    </select>
+                    <select id="typeFilter" onchange="filterQuestions()">
+                        <option value="all">Tutti i tipi</option>
+                        <option value="multiple">Scelta multipla</option>
+                        <option value="boolean">Vero/Falso</option>
+                        <option value="text">Risposta aperta</option>
+                    </select>
+                </div>
+
+                <div class="questions-list" id="questionsList">
+                    <!-- Questions will be loaded here -->
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="secondary-button" onclick="window.location.href='index.html'">Torna al Menu</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="addQuestion">
+            <div class="card">
+                <h2>Aggiungi Nuova Domanda</h2>
+                <form id="questionForm">
+                    <label for="questionCategory">Categoria:</label>
+                    <select id="questionCategory" required>
+                        <!-- Categories will be loaded here -->
+                    </select>
+
+                    <label for="questionType">Tipo di Domanda:</label>
+                    <select id="questionType" onchange="toggleOptions()" required>
+                        <option value="multiple">Scelta multipla</option>
+                        <option value="boolean">Vero/Falso</option>
+                        <option value="text">Risposta aperta</option>
+                    </select>
+
+                    <label for="questionText">Domanda:</label>
+                    <textarea id="questionText" placeholder="Inserisci la domanda..." required></textarea>
+
+                    <div id="optionsContainer">
+                        <label>Opzioni:</label>
+                        <div id="optionsList">
+                            <div class="option-group">
+                                <input type="text" name="option1" placeholder="Opzione 1" required>
+                                <button type="button" onclick="removeOption(this)">-</button>
+                            </div>
+                            <div class="option-group">
+                                <input type="text" name="option2" placeholder="Opzione 2" required>
+                                <button type="button" onclick="removeOption(this)">-</button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-option" onclick="addOption()">+ Aggiungi Opzione</button>
+                    </div>
+
+                    <div id="booleanOptions" style="display: none;">
+                        <label>Scegli la risposta corretta:</label>
+                        <select id="booleanAnswer" name="booleanAnswer">
+                            <option value="Vero">Vero</option>
+                            <option value="Falso">Falso</option>
+                        </select>
+                    </div>
+
+                    <label for="correctAnswer" id="correctAnswerLabel">Risposta corretta:</label>
+                    <input type="text" id="correctAnswer" name="correctAnswer" placeholder="Inserisci la risposta corretta..." required>
+
+                    <div class="button-group">
+                        <button type="button" class="secondary-button" onclick="resetForm()">Cancella</button>
+                        <button type="submit">Salva Domanda</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="tab-content" id="manageCategories">
+            <div class="card">
+                <h2>Gestisci Categorie</h2>
+                <div class="category-list" id="categoriesList">
+                    <!-- Categories will be loaded here -->
+                </div>
+                <form id="categoryForm">
+                    <label for="newCategory">Nuova Categoria:</label>
+                    <div class="option-group">
+                        <input type="text" id="newCategory" placeholder="Nome categoria..." required>
+                        <button type="submit">Aggiungi</button>
+                    </div>
+                </form>
+            </div>
+            <div class="button-group">
+                <button class="secondary-button" onclick="window.location.href='index.html'">Torna al Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verifica che API_URL sia definita correttamente
+        console.log("API_URL from common.js:", API_URL);
+
+        // Global variables to store questions and categories
+        let questionData = {
+            categories: [],
+            questions: []
+        };
+        let editingQuestionIndex = -1;
+
+        // Load question data from JSON Server API
+        async function loadQuestionData() {
+            console.log("Loading question data from API...");
+            
+            try {
+                // Use the common.js utility functions
+                const categories = await loadCategories();
+                questionData.categories = categories;
+                console.log("Categories loaded:", questionData.categories.length);
+                populateCategories();
+                
+                const questions = await loadQuestions();
+                questionData.questions = questions;
+                console.log("Questions loaded:", questionData.questions.length);
+                populateQuestions();
+                showSuccess("Dati caricati con successo dal server!");
+            } catch (error) {
+                console.error("Error loading data from API:", error);
+                showError("Errore durante il caricamento dei dati. Verificare che il server sia in esecuzione.");
+                
+                // Fallback: try to load from localStorage
+                loadFromLocalStorage();
+            }
+        }
+
+        // Fallback: load from localStorage if API fails
+        function loadFromLocalStorage() {
+            console.log("Trying to load from localStorage as fallback...");
+            const savedData = localStorage.getItem('savedQuestionData');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    if (data && Array.isArray(data.categories) && Array.isArray(data.questions)) {
+                        questionData = data;
+                        console.log("Data loaded from localStorage");
+                        populateCategories();
+                        populateQuestions();
+                        showInfo("Dati caricati dalla cache locale. Il server sembra non essere raggiungibile.");
+                        return true;
+                    }
+                } catch (error) {
+                    console.error("Error parsing localStorage data:", error);
+                }
+            }
+            
+            // Initialize with default data if nothing else works
+            initializeWithDefaultData();
+            return false;
+        }
+
+        // Initialize with default data
+        function initializeWithDefaultData() {
+            console.log("Initializing with default data");
+            questionData = {
+                categories: ["Storia", "Geografia", "Scienza", "Sport", "Arte", "Musica", "Cinema", "Letteratura"],
+                questions: []
+            };
+            populateCategories();
+            populateQuestions();
+            showInfo("Inizializzato con categorie predefinite. Il server non è raggiungibile.");
+        }
+
+        // Save question data to JSON Server API
+        async function saveQuestionData() {
+            try {
+                console.log("Saving data to API...");
+                
+                // Save categories using common.js utility
+                await saveData('categories', questionData.categories);
+                console.log("Categories saved successfully");
+                
+                // Save to localStorage as backup
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+                
+                showSuccess("Dati salvati con successo!");
+            } catch (error) {
+                console.error("Error saving data to API:", error);
+                // Try saving to localStorage as fallback
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+                showInfo("Impossibile salvare sul server. Dati salvati localmente.");
+            }
+        }
+
+        // Populate category dropdowns and lists
+        function populateCategories() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const questionCategory = document.getElementById('questionCategory');
+            const categoriesList = document.getElementById('categoriesList');
+            
+            // Clear existing options
+            categoryFilter.innerHTML = '<option value="all">Tutte le categorie</option>';
+            questionCategory.innerHTML = '';
+            categoriesList.innerHTML = '';
+            
+            // Add each category to the dropdowns and list
+            questionData.categories.forEach(category => {
+                // Add to filter dropdown
+                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+                
+                // Add to question form dropdown
+                questionCategory.innerHTML += `<option value="${category}">${category}</option>`;
+                
+                // Add to categories list with delete button
+                categoriesList.innerHTML += `
+                    <div class="category-item">
+                        <span>${category}</span>
+                        <button type="button" class="delete-button" onclick="deleteCategory('${category}')">Elimina</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Populate questions list
+        function populateQuestions() {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            
+            console.log("Populating questions list. Total questions:", questionData.questions.length);
+            
+            if (!questionData.questions || questionData.questions.length === 0) {
+                questionsList.innerHTML = '<p>Nessuna domanda disponibile. Aggiungi nuove domande!</p>';
+                console.log("No questions available");
+                return;
+            }
+            
+            questionData.questions.forEach((question, index) => {
+                let typeText = "";
+                switch(question.type) {
+                    case 'multiple': typeText = "Scelta multipla"; break;
+                    case 'boolean': typeText = "Vero/Falso"; break;
+                    case 'text': typeText = "Risposta aperta"; break;
+                }
+                
+                console.log(`Rendering question ${index}: ${question.question}`);
+                
+                let optionsHtml = '';
+                if (question.options) {
+                    optionsHtml = `<p>Opzioni: ${question.options.join(', ')}</p>`;
+                }
+                
+                questionsList.innerHTML += `
+                    <div class="question-item" data-category="${question.category}" data-type="${question.type}">
+                        <div class="question-meta">
+                            <span>${question.category}</span>
+                            <span>${typeText}</span>
+                        </div>
+                        <div class="question-title">${question.question}</div>
+                        <p>Risposta: ${question.answer}</p>
+                        ${optionsHtml}
+                        <div class="question-actions">
+                            <button class="edit-button" onclick="editQuestion(${index})">Modifica</button>
+                            <button class="delete-button" onclick="deleteQuestion(${index})">Elimina</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Filter questions by category and type
+        function filterQuestions() {
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const typeValue = document.getElementById('typeFilter').value;
+            const questionItems = document.querySelectorAll('.question-item');
+            
+            questionItems.forEach(item => {
+                const categoryMatch = categoryValue === 'all' || item.dataset.category === categoryValue;
+                const typeMatch = typeValue === 'all' || item.dataset.type === typeValue;
+                
+                if (categoryMatch && typeMatch) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Add a new option input field
+        function addOption() {
+            const optionsList = document.getElementById('optionsList');
+            const optionCount = optionsList.children.length;
+            
+            const optionGroup = document.createElement('div');
+            optionGroup.className = 'option-group';
+            optionGroup.innerHTML = `
+                <input type="text" name="option${optionCount + 1}" placeholder="Opzione ${optionCount + 1}" required>
+                <button type="button" onclick="removeOption(this)">-</button>
+            `;
+            
+            optionsList.appendChild(optionGroup);
+        }
+
+        // Remove an option input field
+        function removeOption(button) {
+            const optionsList = document.getElementById('optionsList');
+            
+            // Ensure we keep at least 2 options
+            if (optionsList.children.length <= 2) {
+                showError("È necessario avere almeno 2 opzioni.");
+                return;
+            }
+            
+            const optionGroup = button.parentNode;
+            optionsList.removeChild(optionGroup);
+        }
+
+        // Toggle options based on question type
+        function toggleOptions() {
+            const questionType = document.getElementById('questionType').value;
+            const optionsContainer = document.getElementById('optionsContainer');
+            const booleanOptions = document.getElementById('booleanOptions');
+            const correctAnswer = document.getElementById('correctAnswer');
+            const correctAnswerLabel = document.getElementById('correctAnswerLabel');
+            const optionInputs = document.querySelectorAll('#optionsList input');
+            
+            // Hide/show elements based on question type
+            switch(questionType) {
+                case 'multiple':
+                    optionsContainer.style.display = 'block';
+                    booleanOptions.style.display = 'none';
+                    correctAnswer.style.display = 'block';
+                    correctAnswerLabel.style.display = 'block';
+                    
+                    // Enable requirements for visible fields
+                    correctAnswer.required = true;
+                    optionInputs.forEach(input => {
+                        input.required = true;
+                    });
+                    
+                    break;
+                    
+                case 'boolean':
+                    optionsContainer.style.display = 'none';
+                    booleanOptions.style.display = 'block';
+                    correctAnswer.style.display = 'none';
+                    correctAnswerLabel.style.display = 'none';
+                    
+                    // Disable requirements for hidden fields
+                    correctAnswer.required = false;
+                    optionInputs.forEach(input => {
+                        input.required = false;
+                    });
+                    
+                    break;
+                    
+                case 'text':
+                    optionsContainer.style.display = 'none';
+                    booleanOptions.style.display = 'none';
+                    correctAnswer.style.display = 'block';
+                    correctAnswerLabel.style.display = 'block';
+                    
+                    // Enable requirements for visible fields, disable for hidden
+                    correctAnswer.required = true;
+                    optionInputs.forEach(input => {
+                        input.required = false;
+                    });
+                    
+                    break;
+            }
+        }
+
+        // Add a new question or update an existing one
+        function handleQuestionForm(event) {
+            event.preventDefault();
+            console.log("Form submitted - processing question data");
+            
+            try {
+                const category = document.getElementById('questionCategory').value;
+                const type = document.getElementById('questionType').value;
+                const question = document.getElementById('questionText').value.trim();
+                
+                // Validazione di base
+                if (!category || category.trim() === '') {
+                    showError("Seleziona una categoria");
+                    return;
+                }
+                
+                if (!question || question.trim() === '') {
+                    showError("Inserisci il testo della domanda");
+                    return;
+                }
+                
+                console.log("Form values:", { category, type, question });
+                
+                // Get answer and options based on question type
+                let answer = '';
+                let options = [];
+                
+                if (type === 'boolean') {
+                    answer = document.getElementById('booleanAnswer').value;
+                    console.log("Boolean answer:", answer);
+                } else {
+                    answer = document.getElementById('correctAnswer').value.trim();
+                    console.log("Text/multiple answer:", answer);
+                    
+                    if (!answer || answer.trim() === '') {
+                        showError("Inserisci la risposta corretta");
+                        return;
+                    }
+                    
+                    if (type === 'multiple') {
+                        const optionInputs = document.querySelectorAll('#optionsList input');
+                        console.log("Options inputs found:", optionInputs.length);
+                        
+                        // Verifica che ci siano almeno 2 opzioni
+                        if (optionInputs.length < 2) {
+                            showError("Inserisci almeno 2 opzioni");
+                            return;
+                        }
+                        
+                        // Verifica che tutte le opzioni visibili abbiano un valore
+                        let hasEmptyOption = false;
+                        
+                        optionInputs.forEach((input, index) => {
+                            const value = input.value.trim();
+                            console.log(`Option ${index + 1}:`, value);
+                            
+                            if (!value && input.required) {
+                                hasEmptyOption = true;
+                                return;
+                            }
+                            
+                            if (value) {
+                                options.push(value);
+                            }
+                        });
+                        
+                        if (hasEmptyOption) {
+                            showError("Tutte le opzioni devono essere compilate");
+                            return;
+                        }
+                        
+                        // Check if the correct answer is among the options
+                        if (!options.includes(answer)) {
+                            console.error("Answer not in options:", answer, options);
+                            showError("La risposta corretta deve essere una delle opzioni.");
+                            return;
+                        }
+                    }
+                }
+                
+                // Create the question object
+                const questionObj = {
+                    category,
+                    type,
+                    question,
+                    answer
+                };
+                
+                // Add options for multiple choice questions
+                if (type === 'multiple') {
+                    questionObj.options = options;
+                }
+                
+                console.log("Question object created:", questionObj);
+                
+                // Add or update the question
+                if (editingQuestionIndex >= 0) {
+                    // Include the ID when updating
+                    const originalId = questionData.questions[editingQuestionIndex].id;
+                    questionObj.id = originalId;
+                    console.log("Updating question with ID:", originalId);
+                    
+                    // Update existing question
+                    updateQuestion(questionObj, editingQuestionIndex);
+                    showSuccess("Domanda aggiornata con successo!");
+                    editingQuestionIndex = -1;
+                } else {
+                    console.log("Adding new question:", questionObj);
+                    // Add new question
+                    addQuestion(questionObj);
+                    showSuccess("Domanda aggiunta con successo!");
+                }
+                
+                // Reset form and switch tab
+                resetForm();
+                openTab('viewQuestions');
+            } catch (error) {
+                console.error("Error in handleQuestionForm:", error);
+                showError("Si è verificato un errore durante il salvataggio della domanda");
+            }
+        }
+
+        // Edit a question
+        function editQuestion(index) {
+            const question = questionData.questions[index];
+            editingQuestionIndex = index;
+            
+            // Fill the form with the question data
+            document.getElementById('questionCategory').value = question.category;
+            document.getElementById('questionType').value = question.type;
+            document.getElementById('questionText').value = question.question;
+            
+            // Handle different question types
+            toggleOptions();
+            
+            if (question.type === 'boolean') {
+                document.getElementById('booleanAnswer').value = question.answer;
+            } else {
+                document.getElementById('correctAnswer').value = question.answer;
+                
+                if (question.type === 'multiple') {
+                    // Clear existing options
+                    document.getElementById('optionsList').innerHTML = '';
+                    
+                    // Add option inputs
+                    question.options.forEach((option, i) => {
+                        const optionGroup = document.createElement('div');
+                        optionGroup.className = 'option-group';
+                        optionGroup.innerHTML = `
+                            <input type="text" name="option${i + 1}" value="${option}" required>
+                            <button type="button" onclick="removeOption(this)">-</button>
+                        `;
+                        document.getElementById('optionsList').appendChild(optionGroup);
+                    });
+                }
+            }
+            
+            // Switch to the add question tab
+            openTab('addQuestion');
+        }
+
+        // Delete a question
+        function deleteQuestion(index) {
+            const question = questionData.questions[index];
+            if (!question || !question.id) {
+                showError("ID domanda non valido!");
+                return;
+            }
+            
+            if (confirm("Sei sicuro di voler eliminare questa domanda?")) {
+                // Call the API delete function
+                deleteQuestionFromAPI(question.id);
+                showSuccess("Domanda eliminata con successo!");
+            }
+        }
+
+        // Reset the question form
+        function resetForm() {
+            document.getElementById('questionForm').reset();
+            
+            // Reset options for multiple choice
+            document.getElementById('optionsList').innerHTML = `
+                <div class="option-group">
+                    <input type="text" name="option1" placeholder="Opzione 1" required>
+                    <button type="button" onclick="removeOption(this)">-</button>
+                </div>
+                <div class="option-group">
+                    <input type="text" name="option2" placeholder="Opzione 2" required>
+                    <button type="button" onclick="removeOption(this)">-</button>
+                </div>
+            `;
+            
+            // Reset editing state
+            editingQuestionIndex = -1;
+            
+            // Set appropriate visibility
+            toggleOptions();
+        }
+
+        // Switch between tabs
+        function openTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            // Deactivate all tabs
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate the selected tab
+            const tabIndex = tabName === 'viewQuestions' ? 0 : (tabName === 'addQuestion' ? 1 : 2);
+            tabs[tabIndex].classList.add('active');
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            showNotification(message, 'success');
+        }
+
+        // Show error message
+        function showError(message) {
+            showNotification(message, 'error');
+        }
+
+        // Show info message
+        function showInfo(message) {
+            showNotification(message, 'info');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded - setting up event listeners");
+            
+            // Set up form event listeners
+            const questionForm = document.getElementById('questionForm');
+            if (questionForm) {
+                questionForm.addEventListener('submit', function(e) {
+                    console.log("Question form submitted");
+                    console.log("Form elements:", {
+                        category: document.getElementById('questionCategory').value,
+                        type: document.getElementById('questionType').value,
+                        question: document.getElementById('questionText').value,
+                        correctAnswer: document.getElementById('correctAnswer').value,
+                        booleanAnswer: document.getElementById('booleanAnswer').value,
+                        options: Array.from(document.querySelectorAll('#optionsList input')).map(i => i.value)
+                    });
+                    handleQuestionForm(e);
+                });
+            } else {
+                console.error("Could not find questionForm element!");
+            }
+            
+            const categoryForm = document.getElementById('categoryForm');
+            if (categoryForm) {
+                categoryForm.addEventListener('submit', function(e) {
+                    console.log("Category form submitted");
+                    addCategory(e);
+                });
+            } else {
+                console.error("Could not find categoryForm element!");
+            }
+            
+            // Initialization of form state
+            toggleOptions();
+            
+            // Load questions data
+            loadQuestionData();
+        });
+
+        // Add a new category
+        function addCategory(event) {
+            event.preventDefault();
+            
+            const newCategoryInput = document.getElementById('newCategory');
+            const newCategory = newCategoryInput.value.trim();
+            
+            if (newCategory === '') {
+                showError("Il nome della categoria non può essere vuoto.");
+                return;
+            }
+            
+            if (questionData.categories.includes(newCategory)) {
+                showError("Questa categoria esiste già.");
+                return;
+            }
+            
+            // Add the new category
+            questionData.categories.push(newCategory);
+            
+            // Update UI
+            populateCategories();
+            newCategoryInput.value = '';
+            showSuccess("Categoria aggiunta con successo!");
+            
+            // Save changes
+            saveQuestionData();
+        }
+
+        // Delete a category
+        function deleteCategory(category) {
+            // Check if any questions use this category
+            const hasQuestions = questionData.questions.some(q => q.category === category);
+            
+            if (hasQuestions) {
+                showError("Non puoi eliminare questa categoria perché è in uso da alcune domande.");
+                return;
+            }
+            
+            if (confirm(`Sei sicuro di voler eliminare la categoria "${category}"?`)) {
+                // Remove the category
+                questionData.categories = questionData.categories.filter(c => c !== category);
+                
+                // Update UI
+                populateCategories();
+                showSuccess("Categoria eliminata con successo!");
+                
+                // Save changes
+                saveQuestionData();
+            }
+        }
+
+        // Add a new question
+        async function addQuestion(questionObj) {
+            console.log("addQuestion called with:", questionObj);
+            
+            try {
+                console.log("Attempting to save to API...");
+                
+                // Preparo la richiesta POST
+                const apiUrl = `${API_URL}/questions`;
+                console.log(`POST request to ${apiUrl}`);
+                
+                // Eseguo direttamente la richiesta fetch invece di usare saveData 
+                // per avere maggiore controllo sul processo
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(questionObj)
+                });
+                
+                console.log(`API response status: ${response.status} ${response.statusText}`);
+                
+                if (!response.ok) {
+                    let errorText = "Unknown error";
+                    try {
+                        errorText = await response.text();
+                    } catch (e) {}
+                    
+                    throw new Error(`API error: ${response.status} - ${errorText}`);
+                }
+                
+                // Leggo la risposta JSON
+                const savedQuestion = await response.json();
+                console.log("Question added to API successfully:", savedQuestion);
+                
+                // Add to local data
+                questionData.questions.push(savedQuestion);
+                console.log("Updated local question count:", questionData.questions.length);
+                
+                // Update UI
+                populateQuestions();
+                
+                // Save to localStorage as backup
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+                console.log("Data saved to localStorage");
+                
+                return savedQuestion;
+            } catch (error) {
+                console.error("Error details:", error);
+                console.error("Error adding question to API:", error.message);
+                
+                // Mostro messaggio di errore più dettagliato
+                showError(`Errore durante l'aggiunta della domanda: ${error.message}. La domanda è stata salvata solo localmente.`);
+                
+                // Add to local data without API
+                const localQuestion = { ...questionObj, id: Date.now() }; // Use timestamp as temporary ID
+                console.log("Created local question with ID:", localQuestion.id);
+                questionData.questions.push(localQuestion);
+                console.log("Updated local question count:", questionData.questions.length);
+                populateQuestions();
+                
+                // Save to localStorage as fallback
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+                console.log("Fallback data saved to localStorage");
+                
+                return localQuestion;
+            }
+        }
+        
+        // Update an existing question
+        async function updateQuestion(questionObj, index) {
+            try {
+                // Update in API
+                const updatedQuestion = await saveData(`questions/${questionObj.id}`, questionObj, 'PUT');
+                console.log("Question updated in API:", updatedQuestion);
+                
+                // Update in local data
+                questionData.questions[index] = updatedQuestion;
+                
+                // Update UI
+                populateQuestions();
+                
+                // Save to localStorage as backup
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+            } catch (error) {
+                console.error("Error updating question:", error);
+                showError("Errore durante l'aggiornamento della domanda. La domanda è stata aggiornata solo localmente.");
+                
+                // Update in local data without API
+                questionData.questions[index] = questionObj;
+                populateQuestions();
+                
+                // Save to localStorage as fallback
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+            }
+        }
+        
+        // Delete a question from API
+        async function deleteQuestionFromAPI(id) {
+            try {
+                // Delete from API using common.js utility
+                await deleteData(`questions/${id}`);
+                console.log("Question deleted from API:", id);
+                
+                // Remove from local data
+                questionData.questions = questionData.questions.filter(q => q.id !== id);
+                
+                // Update UI
+                populateQuestions();
+                
+                // Save to localStorage as backup
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+            } catch (error) {
+                console.error("Error deleting question:", error);
+                showError("Errore durante l'eliminazione della domanda. La domanda è stata rimossa solo localmente.");
+                
+                // Remove from local data without API
+                questionData.questions = questionData.questions.filter(q => q.id !== id);
+                populateQuestions();
+                
+                // Save to localStorage as fallback
+                localStorage.setItem('savedQuestionData', JSON.stringify(questionData));
+            }
+        }
+    </script>
+</body>
+</html> 
