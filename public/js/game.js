@@ -1662,15 +1662,30 @@ function getRandomColor() {
 async function loadRandomQuestion(category, isChosenCategory = false) {
     try {
         console.log('Loading questions for category:', category, 'isChosenCategory:', isChosenCategory);
+        
+        // Show loading message
+        const loadingMessage = document.createElement('div');
+        loadingMessage.className = 'loading-message';
+        loadingMessage.textContent = 'Caricamento domanda...';
+        document.body.appendChild(loadingMessage);
+
         const response = await fetch('/data/db.json');
         if (!response.ok) {
-            throw new Error('Failed to load questions');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
+        console.log('Data loaded:', data);
+        
+        if (!data.questions || !Array.isArray(data.questions)) {
+            throw new Error('Invalid data format: questions array not found');
+        }
+        
         const questions = data.questions.filter(q => q.category === category);
+        console.log('Filtered questions:', questions);
         
         if (questions.length === 0) {
-            console.log('No questions found for category:', category);
+            console.warn('No questions found for category:', category);
             // Fallback to default questions
             const defaultQuestions = [
                 {
@@ -1687,9 +1702,22 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         const randomIndex = Math.floor(Math.random() * questions.length);
         const selectedQuestion = questions[randomIndex];
         console.log('Selected question:', selectedQuestion);
+        
+        // Remove loading message
+        document.body.removeChild(loadingMessage);
+        
         displayQuestion(selectedQuestion, isChosenCategory);
     } catch (error) {
         console.error('Error loading questions:', error);
+        // Remove loading message if it exists
+        const loadingMessage = document.querySelector('.loading-message');
+        if (loadingMessage) {
+            document.body.removeChild(loadingMessage);
+        }
+        
+        // Show error notification
+        showAnimatedNotification('Errore nel caricamento delle domande', 'error');
+        
         // Fallback to default question
         const defaultQuestion = {
             question: "What is the capital of France?",
