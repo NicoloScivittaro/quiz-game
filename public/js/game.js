@@ -4,7 +4,7 @@
  */
 
 // Verifica che API_URL sia definita, altrimenti la definisce
-if (typeof API_URL === 'undefined') {
+if (typeof window.API_URL === 'undefined') {
     console.warn('API_URL non definita, utilizzo valore di fallback');
     window.API_URL = window.location.origin;
 }
@@ -1675,20 +1675,17 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         loadingMessage.textContent = 'Caricamento domanda...';
         document.body.appendChild(loadingMessage);
 
-        const response = await fetch('/data/db.json');
+        const response = await fetch(`${window.API_URL}/api/questions?category=${encodeURIComponent(category)}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const data = await response.json();
-        console.log('Data loaded:', data);
+        const questions = await response.json();
+        console.log('Questions loaded:', questions);
         
-        if (!data.questions || !Array.isArray(data.questions)) {
+        if (!questions || !Array.isArray(questions)) {
             throw new Error('Invalid data format: questions array not found');
         }
-        
-        const questions = data.questions.filter(q => q.category === category);
-        console.log('Filtered questions:', questions);
         
         if (questions.length === 0) {
             console.warn('No questions found for category:', category);

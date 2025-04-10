@@ -1,5 +1,7 @@
-// Configurazione API
-const API_URL = window.location.origin;
+// Verifica se API_URL è già definita
+if (typeof window.API_URL === 'undefined') {
+    window.API_URL = window.location.origin;
+}
 
 /**
  * Loads questions from the API
@@ -8,7 +10,7 @@ const API_URL = window.location.origin;
 async function loadQuestions() {
     try {
         console.log('Loading questions from API...');
-        const response = await fetch(`${API_URL}/api/questions`);
+        const response = await fetch(`${window.API_URL}/api/questions`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -34,7 +36,7 @@ async function loadQuestions() {
 async function loadCategories() {
     try {
         console.log('loadCategories: Caricamento categorie da API iniziato');
-        const response = await fetch(`${API_URL}/api/categories`);
+        const response = await fetch(`${window.API_URL}/api/categories`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -82,7 +84,7 @@ async function saveData(endpoint, data, method = 'PUT') {
     
     try {
         // Costruisce l'URL completo dell'API
-        const apiUrl = `${API_URL}/${endpoint}`;
+        const apiUrl = `${window.API_URL}/${endpoint}`;
         console.log(`Making API request to ${apiUrl}`, { method, headers: { 'Content-Type': 'application/json' }});
         
         // Esegue la richiesta Fetch
@@ -204,7 +206,7 @@ function showNotification(message, type = 'info') {
  */
 async function deleteData(endpoint) {
     try {
-        const response = await fetch(`${API_URL}/${endpoint}`, { 
+        const response = await fetch(`${window.API_URL}/${endpoint}`, { 
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });

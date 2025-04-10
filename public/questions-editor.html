@@ -647,8 +647,11 @@
     </div>
 
     <script>
-        // Configurazione API
-        const API_URL = window.location.origin;
+        // Verifica se API_URL è già definita
+        if (typeof window.API_URL === 'undefined') {
+            window.API_URL = window.location.origin;
+        }
+        console.log('questions-editor.html: API_URL è', window.API_URL);
 
         async function loadQuestionData() {
             console.log('Loading question data from API...');
