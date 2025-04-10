@@ -6,6 +6,9 @@
 // Configurazione API
 // const API_URL = 'http://localhost:3000/api';
 
+// Configurazione dell'API
+const API_URL = window.location.origin;
+
 // Costanti di gioco
 const BOARD_SIZE = 7; // Dimensione della griglia 7x7
 const DICE_MIN = 1;
@@ -1668,7 +1671,10 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         document.body.appendChild(loadingMessage);
 
         // Use Netlify Functions endpoint
-        const response = await fetch('/api/questions');
+        const response = await fetch(`${API_URL}/api/questions`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const questions = await response.json();
         
         // Remove loading message
@@ -1678,7 +1684,7 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         
         // Filter questions by category if specified
         const filteredQuestions = category 
-            ? questions.filter(q => q.category === category)
+            ? questions.filter(q => q.category && q.category.toLowerCase() === category.toLowerCase())
             : questions;
             
         if (filteredQuestions.length === 0) {
@@ -1693,6 +1699,11 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         return displayQuestion(selectedQuestion, null, isChosenCategory);
     } catch (error) {
         console.error('Error loading questions:', error);
+        // Remove loading message if it exists
+        const loadingMessage = document.querySelector('.loading-message');
+        if (loadingMessage) {
+            document.body.removeChild(loadingMessage);
+        }
         return displayQuestion(getDefaultQuestions()[0], null, isChosenCategory);
     }
 }
@@ -2900,3 +2911,21 @@ function saveGameData() {
         console.error('Errore durante il salvataggio del gioco:', error);
     }
 }
+
+// ... existing code ...
+async function loadCategories() {
+    try {
+        const response = await fetch(`${API_URL}/api/categories`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const categories = await response.json();
+        console.log('Categories loaded:', categories);
+        return categories;
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        // Return default categories if API fails
+        return ['Generale', 'Storia', 'Scienza', 'Arte', 'Sport'];
+    }
+}
+// ... existing code ...
