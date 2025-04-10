@@ -874,13 +874,16 @@
             const optionGroup = document.createElement('div');
             optionGroup.className = 'option-group';
             optionGroup.innerHTML = `
-                <input type="text" placeholder="Opzione ${optionNumber}" class="option-input">
+                <input type="text" class="option-input" name="option${optionNumber}" placeholder="Opzione ${optionNumber}">
                 <button type="button" onclick="removeOption(this)">
                     <i class="fas fa-times"></i>
                 </button>
             `;
             
             optionsContainer.appendChild(optionGroup);
+            
+            // Aggiorna required su tutte le opzioni
+            toggleOptions();
         }
 
         // Funzione per rimuovere un'opzione
@@ -889,36 +892,57 @@
             const optionsContainer = optionGroup.parentElement;
             optionsContainer.removeChild(optionGroup);
             
-            // Aggiorna il numero delle opzioni rimanenti
+            // Aggiorna il numero delle opzioni rimanenti e i loro nomi
             const optionInputs = optionsContainer.querySelectorAll('.option-input');
             optionInputs.forEach((input, index) => {
                 input.placeholder = `Opzione ${index + 1}`;
+                input.name = `option${index + 1}`;
             });
+            
+            // Aggiorna required su tutte le opzioni
+            toggleOptions();
         }
 
         // Mostra/nascondi le opzioni in base al tipo di domanda
         function toggleOptions() {
             const questionType = document.getElementById('questionType').value;
-            const optionsSection = document.getElementById('optionsContainer');
-            const correctAnswerInput = document.getElementById('correctAnswer');
+            const optionsContainer = document.getElementById('optionsContainer');
             const booleanOptions = document.getElementById('booleanOptions');
+            const correctAnswerInput = document.getElementById('correctAnswer');
             
             console.log('Toggling options for type:', questionType);
             
+            // Rimuovi l'attributo required da tutti i campi opzione
+            document.querySelectorAll('.option-input').forEach(input => {
+                input.required = false;
+            });
+            
             if (questionType === 'multiple') {
-                optionsSection.style.display = 'block';
+                optionsContainer.style.display = 'block';
                 booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
-                document.getElementById('correctAnswerLabel').textContent = 'Risposta corretta (una delle opzioni):';
+                
+                // Rendi required solo i primi due campi opzione quando sono visibili
+                const optionInputs = document.querySelectorAll('.option-input');
+                if (optionInputs.length >= 2) {
+                    optionInputs[0].required = true;
+                    optionInputs[1].required = true;
+                }
             } else if (questionType === 'boolean') {
-                optionsSection.style.display = 'none';
+                optionsContainer.style.display = 'none';
                 booleanOptions.style.display = 'block';
                 correctAnswerInput.style.display = 'none';
+                correctAnswerInput.required = false;
+                
+                // Imposta il valore di correctAnswer in base alla selezione
+                document.getElementById('booleanAnswer').addEventListener('change', function() {
+                    correctAnswerInput.value = this.value;
+                });
             } else {
-                optionsSection.style.display = 'none';
+                optionsContainer.style.display = 'none';
                 booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
-                document.getElementById('correctAnswerLabel').textContent = 'Risposta corretta:';
+                correctAnswerInput.required = true;
             }
         }
 

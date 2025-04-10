@@ -2231,34 +2231,55 @@ function levenshteinDistance(a, b) {
     return matrix[b.length][a.length];
 }
 
-// Variabile per il timer
-let timerTimeout;
+// Variabile globale per il timeout del timer
+let timerTimeout = null;
+let timerInterval = null;
 
 /**
- * Avvia il timer per la domanda
- * @param {number} seconds - Secondi disponibili per rispondere
- * @param {Function} callback - Funzione da chiamare quando il tempo scade
+ * Avvia un timer per la domanda corrente
+ * @param {number} seconds - Durata del timer in secondi
+ * @param {Function} callback - Funzione da chiamare allo scadere del timer
  */
 function startQuestionTimer(seconds, callback) {
-    // Cancella eventuali timer precedenti
-    if (timerTimeout) {
-        clearTimeout(timerTimeout);
+    // Trova l'elemento timer
+    const timerBar = document.querySelector('.timer-bar');
+    if (!timerBar) {
+        console.error('Timer bar non trovata');
+        return;
     }
-    
-    const timerBar = document.getElementById('timer-bar');
-    if (!timerBar) return;
     
     // Imposta la larghezza iniziale al 100%
     timerBar.style.width = '100%';
+    
+    // Imposta la transizione per una diminuzione fluida
     timerBar.style.transition = `width ${seconds}s linear`;
     
-    // Dopo un brevissimo ritardo, impostiamo la larghezza a 0
+    // Dopo un breve ritardo, avvia l'animazione
     setTimeout(() => {
         timerBar.style.width = '0%';
     }, 50);
     
-    // Imposta il timeout per il tempo scaduto
-    timerTimeout = setTimeout(callback, seconds * 1000);
+    // Pulisci eventuali timer precedenti
+    clearQuestionTimer();
+    
+    // Imposta il timeout per la fine del timer
+    timerTimeout = setTimeout(() => {
+        callback();
+    }, seconds * 1000);
+}
+
+/**
+ * Pulisce il timer delle domande
+ */
+function clearQuestionTimer() {
+    if (timerTimeout) {
+        clearTimeout(timerTimeout);
+        timerTimeout = null;
+    }
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
 }
 
 /**
@@ -2277,132 +2298,100 @@ function timeOver(correctAnswer) {
  * @param {string} correctAnswer - La risposta corretta alla domanda
  */
 function showQuestionResult(isCorrect, correctAnswer) {
-    // Cancella il timer
-    if (timerTimeout) {
-        clearTimeout(timerTimeout);
+    // Ottieni la modale attiva
+    const questionModal = document.getElementById('questionModal');
+    if (!questionModal) {
+        console.error('Modale della domanda non trovata');
+        return;
+    }
+
+    // Ferma il timer
+    clearQuestionTimer();
+    
+    // Ottieni il contenuto della modale
+    const modalContent = questionModal.querySelector('.modal-content');
+    if (!modalContent) {
+        console.error('Contenuto della modale non trovato');
+        return;
     }
     
-    // Ottieni il giocatore corrente
+    // Crea l'elemento per il risultato
+    const resultDiv = document.createElement('div');
+    resultDiv.className = `question-result ${isCorrect ? 'correct-answer' : 'wrong-answer'}`;
+    
+    // Imposta il contenuto del risultato
+    if (isCorrect) {
+        resultDiv.innerHTML = `
+            <div class="result-message success">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 24px; margin-bottom: 10px;"></i>
+                <h3>Risposta Corretta!</h3>
+                <p>Ottimo lavoro! La risposta era: "${correctAnswer}"</p>
+            </div>
+        `;
+        playSound('correct');
+    } else {
+        resultDiv.innerHTML = `
+            <div class="result-message error">
+                <i class="fas fa-times-circle" style="color: #f44336; font-size: 24px; margin-bottom: 10px;"></i>
+                <h3>Risposta Sbagliata</h3>
+                <p>La risposta corretta era: "${correctAnswer}"</p>
+            </div>
+        `;
+        playSound('wrong');
+    }
+    
+    // Aggiungi il bottone per continuare
+    const continueButton = document.createElement('button');
+    continueButton.className = 'primary-button';
+    continueButton.textContent = 'Continua';
+    continueButton.style.marginTop = '20px';
+    continueButton.addEventListener('click', () => {
+        closeQuestionModal();
+        nextPlayer();
+    });
+    
+    resultDiv.appendChild(continueButton);
+    
+    // Aggiungi il risultato alla modale
+    modalContent.appendChild(resultDiv);
+    
+    // Aggiungi il player attuale ai record
     const player = players[currentPlayerIndex];
     
-    // Flag per tracciare se il powerup di scelta categoria è stato usato per questa domanda
-    const categoryChoiceWasUsed = player.usedCategoryChoice === true;
-    
-    // Resetta il flag dopo aver controllato
-    player.usedCategoryChoice = false;
-    
-    // Aggiorna le statistiche del giocatore
-    if (!player.stats) {
-        player.stats = { correct: 0, incorrect: 0, moves: 0 };
-    }
-    
-    // Controlla se il giocatore ha lo scudo attivo in caso di risposta sbagliata
-    if (!isCorrect && player.powerups && player.powerups.shields && player.powerups.shields > 0) {
-        if (confirm('Hai uno scudo disponibile. Vuoi usarlo per proteggere questa risposta sbagliata?')) {
-            player.powerups.shields--;
-            isCorrect = true; // Consideriamo la risposta come corretta
-            showAnimatedNotification('Scudo attivato!', 'success');
-            addToGameLog(`${player.name} ha usato uno scudo per proteggere una risposta sbagliata`);
-            
-            // Salva lo stato del gioco
-            saveGameData();
-        }
-    }
-    
-    // Definisci il premio in crediti
-    const creditReward = 10;
-    
-    // Aggiorna le statistiche e assegna crediti
+    // Aggiorna le stelle in base alla risposta
     if (isCorrect) {
-        player.stats.correct++;
-        
-        // Premia con crediti per risposta corretta
-        player.credits += creditReward;
-        
-        // Aggiungi una stella solo se è stata usata l'abilità di scelta categoria
-        let starReward = false;
-        
-        if (categoryChoiceWasUsed) {
-            player.stars++;
-            starReward = true;
-            
-            // Effetti visivi per la stella
-            showStarCollectionEffect();
-        }
-        
-        // Notifica
-        if (starReward) {
-            showAnimatedNotification('Risposta corretta! +' + creditReward + ' crediti e +1 stella', 'success');
-            addToGameLog(`${player.name} ha risposto correttamente dopo aver scelto la categoria e guadagnato ${creditReward} crediti e una stella`);
-        } else {
-            showAnimatedNotification('Risposta corretta! +' + creditReward + ' crediti', 'success');
-            addToGameLog(`${player.name} ha risposto correttamente e guadagnato ${creditReward} crediti`);
-        }
-        
-        playSound('success');
-        
-        // Controlla se il giocatore ha vinto (solo se ha ottenuto una stella)
-        if (starReward && checkWinCondition()) {
-            return; // Esci se c'è un vincitore
-        }
+        // Fornisci la stella se la risposta è corretta
+        player.stars++;
+        saveGameData();
+        renderPlayerInfo();
+        addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
+        showStarCollectionEffect(player);
     } else {
-        player.stats.incorrect++;
-        showAnimatedNotification('Risposta sbagliata! La risposta corretta era: ' + correctAnswer, 'error');
-        addToGameLog(`${player.name} ha risposto in modo errato. Risposta corretta: ${correctAnswer}`);
-        playSound('error');
+        addToGameLog(`${player.name} ha risposto in modo errato.`);
     }
     
-    // Aggiorna l'UI
-    renderPlayerInfo();
-    
-    // Crea un modal per mostrare il risultato
-    const resultModal = document.createElement('div');
-    resultModal.className = 'modal active';
-    resultModal.id = 'resultModal';
-    resultModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex !important; justify-content: center; align-items: center; z-index: 9999;';
-    
-    // Crea il contenuto del modale dei risultati
-    const resultContent = document.createElement('div');
-    resultContent.className = 'modal-content';
-    resultContent.style.cssText = `background: rgba(30, 41, 59, 0.95); color: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); border: 2px solid ${isCorrect ? '#4CAF50' : '#f44336'};`;
-    
-    resultContent.innerHTML = `
-        <div class="result-message" style="text-align: center;">
-            <h2 style="color: ${isCorrect ? '#4CAF50' : '#f44336'}; margin-bottom: 20px;">
-                ${isCorrect ? 'Risposta Corretta!' : 'Risposta Sbagliata!'}
-            </h2>
-            ${!isCorrect ? `<p style="margin-bottom: 15px;">La risposta corretta era: <strong>${correctAnswer}</strong></p>` : ''}
-            ${isCorrect ? `
-                <p style="margin-bottom: 15px; color: gold;">
-                    Hai guadagnato ${creditReward} crediti
-                    ${categoryChoiceWasUsed ? ` e una stella! <i class="fas fa-star" style="color: gold; margin-left: 5px;"></i>` : ''}
-                </p>` : ''}
-        </div>
-    `;
-    
-    // Aggiungi il contenuto al modale
-    resultModal.appendChild(resultContent);
-    document.body.appendChild(resultModal);
-    
-    // Chiudi il modale della domanda se esiste
-    const quizModal = document.getElementById('quizModal');
-    if (quizModal && quizModal.parentNode) {
-        quizModal.parentNode.removeChild(quizModal);
-    }
-    
-    console.log('Modale risultato visualizzato');
-    
-    // Dopo 2 secondi, chiudi il modale e passa al prossimo giocatore
+    // Imposta un timer per chiudere automaticamente la modale dopo un po'
     setTimeout(() => {
-        if (resultModal && resultModal.parentNode) {
-            resultModal.parentNode.removeChild(resultModal);
+        if (document.getElementById('questionModal') && 
+            document.getElementById('questionModal').classList.contains('active')) {
+            closeQuestionModal();
+            nextPlayer();
         }
-        
-        // Resetta esplicitamente i passi rimanenti e passa al prossimo giocatore
-        player.remainingSteps = 0; // Resetta i passi rimanenti per evitare blocchi
-        console.log('Reset dei passi rimanenti e passaggio al prossimo giocatore');
-        setTimeout(nextPlayer, 500);
-    }, 2000);
+    }, 8000);
+}
+
+// Funzione per chiudere la modale delle domande
+function closeQuestionModal() {
+    const questionModal = document.getElementById('questionModal');
+    if (questionModal) {
+        questionModal.classList.remove('active');
+        // Rimuovi la modale dal DOM dopo l'animazione
+        setTimeout(() => {
+            if (questionModal.parentNode) {
+                questionModal.parentNode.removeChild(questionModal);
+            }
+        }, 300);
+    }
 }
 
 /**
