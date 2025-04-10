@@ -5,8 +5,8 @@ exports.handler = async function(event, context) {
     try {
         console.log('Questions function started');
         
-        // Percorso al file db.json
-        const dbPath = path.join(process.cwd(), 'public', 'data', 'db.json');
+        // Percorso al file db.json - usando __dirname per ottenere il percorso della funzione
+        const dbPath = path.join(__dirname, '..', '..', 'public', 'data', 'db.json');
         console.log('Looking for db.json at:', dbPath);
         
         // Verifica se il file esiste
