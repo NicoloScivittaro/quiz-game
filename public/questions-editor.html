@@ -675,13 +675,15 @@
         async function loadQuestionData() {
             console.log('Loading question data from API...');
             try {
-                const response = await fetch(`${window.API_URL}/api/categories`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                // Carica le categorie
+                const categoriesResponse = await fetch(`${window.API_URL}/api/categories`);
+                if (!categoriesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${categoriesResponse.status}`);
                 }
-                const categories = await response.json();
+                const categories = await categoriesResponse.json();
                 console.log('Categories loaded:', categories);
                 
+                // Carica le domande
                 const questionsResponse = await fetch(`${window.API_URL}/api/questions`);
                 if (!questionsResponse.ok) {
                     throw new Error(`HTTP error! status: ${questionsResponse.status}`);

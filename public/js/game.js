@@ -1675,7 +1675,11 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         loadingMessage.textContent = 'Caricamento domanda...';
         document.body.appendChild(loadingMessage);
 
-        const response = await fetch(`${window.API_URL}/api/questions?category=${encodeURIComponent(category)}`);
+        // Assicurati che category sia una stringa
+        const categoryParam = typeof category === 'string' ? category : '';
+        console.log('Category parameter:', categoryParam);
+
+        const response = await fetch(`${window.API_URL}/api/questions${categoryParam ? `?category=${encodeURIComponent(categoryParam)}` : ''}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
