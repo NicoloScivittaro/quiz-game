@@ -672,6 +672,65 @@
             event.currentTarget.classList.add('active');
         }
 
+        function updateCategoryFilter(categories) {
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                // Mantieni l'opzione "Tutte le categorie"
+                categoryFilter.innerHTML = '<option value="all">Tutte le categorie</option>';
+                
+                // Aggiungi tutte le categorie disponibili
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+            }
+        }
+
+        function filterQuestions() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            
+            console.log('Filtering questions by:', { category: categoryFilter, type: typeFilter });
+            
+            loadFilteredQuestions(categoryFilter, typeFilter);
+        }
+
+        async function loadFilteredQuestions(category, type) {
+            try {
+                // Costruisci l'URL di base
+                let url = `${window.API_URL}/api/questions`;
+                
+                // Aggiungi il filtro per categoria se selezionato
+                if (category && category !== 'all') {
+                    url += `?category=${encodeURIComponent(category)}`;
+                }
+                
+                console.log('Loading questions from URL:', url);
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                let questions = await response.json();
+                console.log('Questions loaded:', questions.length);
+                
+                // Filtra per tipo se necessario (lato client)
+                if (type && type !== 'all') {
+                    questions = questions.filter(q => q.type === type);
+                    console.log('After type filtering:', questions.length);
+                }
+                
+                // Aggiorna la lista delle domande
+                updateQuestionsList(questions);
+            } catch (error) {
+                console.error('Error loading filtered questions:', error);
+                showError('Errore nel caricamento delle domande filtrate. Riprova più tardi.');
+            }
+        }
+
         async function loadQuestionData() {
             console.log('Loading question data from API...');
             try {
@@ -695,6 +754,7 @@
                 updateCategoriesList(categories);
                 updateQuestionsList(questions);
                 updateCategorySelects(categories);
+                updateCategoryFilter(categories);
             } catch (error) {
                 console.error('Error loading data:', error);
                 showError('Errore nel caricamento dei dati. Verifica la connessione e riprova.');
@@ -839,13 +899,39 @@
         // Mostra/nascondi le opzioni in base al tipo di domanda
         function toggleOptions() {
             const questionType = document.getElementById('questionType').value;
-            const optionsSection = document.getElementById('optionsSection');
+            const optionsSection = document.getElementById('optionsContainer');
+            const correctAnswerInput = document.getElementById('correctAnswer');
+            const booleanOptions = document.getElementById('booleanOptions');
+            
+            console.log('Toggling options for type:', questionType);
             
             if (questionType === 'multiple') {
                 optionsSection.style.display = 'block';
+                booleanOptions.style.display = 'none';
+                correctAnswerInput.style.display = 'block';
+                document.getElementById('correctAnswerLabel').textContent = 'Risposta corretta (una delle opzioni):';
+            } else if (questionType === 'boolean') {
+                optionsSection.style.display = 'none';
+                booleanOptions.style.display = 'block';
+                correctAnswerInput.style.display = 'none';
             } else {
                 optionsSection.style.display = 'none';
+                booleanOptions.style.display = 'none';
+                correctAnswerInput.style.display = 'block';
+                document.getElementById('correctAnswerLabel').textContent = 'Risposta corretta:';
             }
+        }
+
+        function resetForm() {
+            document.getElementById('questionForm').reset();
+            document.getElementById('optionsContainer').innerHTML = '';
+            
+            // Aggiungi due opzioni di default
+            addOption();
+            addOption();
+            
+            // Ripristina i display
+            toggleOptions();
         }
 
         // Funzione per aggiungere una nuova domanda
@@ -855,7 +941,15 @@
             const questionText = document.getElementById('questionText').value.trim();
             const category = document.getElementById('questionCategory').value;
             const type = document.getElementById('questionType').value;
-            const answer = document.getElementById('questionAnswer').value.trim();
+            
+            let answer;
+            if (type === 'boolean') {
+                answer = document.getElementById('booleanAnswer').value;
+            } else {
+                answer = document.getElementById('correctAnswer').value.trim();
+            }
+            
+            console.log('Adding question:', { type, category, questionText, answer });
             
             if (!questionText || !category || !answer) {
                 showError('Tutti i campi sono obbligatori.');
@@ -908,8 +1002,7 @@
                 console.log('Domanda aggiunta:', addedQuestion);
                 
                 // Resetta il form
-                document.getElementById('newQuestionForm').reset();
-                document.getElementById('optionsContainer').innerHTML = '';
+                resetForm();
                 
                 // Aggiorna la lista delle domande
                 loadQuestionData();
@@ -928,12 +1021,39 @@
             
             // Aggiungi event listener
             document.getElementById('questionType').addEventListener('change', toggleOptions);
-            document.getElementById('newQuestionForm').addEventListener('submit', addQuestion);
-            document.getElementById('addOptionButton').addEventListener('click', addOption);
+            document.getElementById('questionForm').addEventListener('submit', addQuestion);
+            
+            // Aggiungi event listener per il filtro
+            document.getElementById('categoryFilter').addEventListener('change', filterQuestions);
+            document.getElementById('typeFilter').addEventListener('change', filterQuestions);
             
             // Aggiungi le prime due opzioni per le domande multiple
-            addOption();
-            addOption();
+            const optionsContainer = document.getElementById('optionsContainer');
+            if (optionsContainer) {
+                const optionGroup1 = document.createElement('div');
+                optionGroup1.className = 'option-group';
+                optionGroup1.innerHTML = `
+                    <input type="text" class="option-input" placeholder="Opzione 1">
+                    <button type="button" onclick="removeOption(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                const optionGroup2 = document.createElement('div');
+                optionGroup2.className = 'option-group';
+                optionGroup2.innerHTML = `
+                    <input type="text" class="option-input" placeholder="Opzione 2">
+                    <button type="button" onclick="removeOption(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                optionsContainer.appendChild(optionGroup1);
+                optionsContainer.appendChild(optionGroup2);
+            }
+            
+            // Inizializza i display delle opzioni in base al tipo selezionato
+            toggleOptions();
         });
     </script>
 </body>

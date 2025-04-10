@@ -2010,7 +2010,7 @@ function debugModal() {
  * @param {Object} modal - L'elemento modale (opzionale)
  * @param {boolean} isChosenCategory - Se la categoria è stata scelta dal giocatore (opzionale)
  */
-function displayQuestion(question, modal, isChosenCategory = false) {
+function displayQuestion(question, isChosenCategory = false) {
     // Chiudi qualsiasi altra modale aperta prima di mostare la domanda
     const modals = document.querySelectorAll('.modal.active');
     modals.forEach(m => m.classList.remove('active'));
@@ -2018,9 +2018,15 @@ function displayQuestion(question, modal, isChosenCategory = false) {
     console.log('Showing question:', question);
     
     // Crea una nuova modale per la domanda
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.id = 'questionModal';
+    let questionModal = document.getElementById('questionModal');
+    
+    // Se la modale esiste già, riutilizzala, altrimenti creane una nuova
+    if (!questionModal) {
+        questionModal = document.createElement('div');
+        questionModal.className = 'modal';
+        questionModal.id = 'questionModal';
+        document.body.appendChild(questionModal);
+    }
     
     let questionHTML = `
         <div class="modal-content">
@@ -2066,12 +2072,11 @@ function displayQuestion(question, modal, isChosenCategory = false) {
     }
 
     questionHTML += `</div>`;
-    modal.innerHTML = questionHTML;
-    document.body.appendChild(modal);
-
+    questionModal.innerHTML = questionHTML;
+    
     // Attiva la modale
     setTimeout(() => {
-        modal.classList.add('active');
+        questionModal.classList.add('active');
     }, 100);
 
     // Imposta il timer
@@ -2082,7 +2087,7 @@ function displayQuestion(question, modal, isChosenCategory = false) {
 
     // Gestisci gli eventi per i diversi tipi di domande
     if (question.type === 'multiple') {
-        const options = modal.querySelectorAll('.option');
+        const options = questionModal.querySelectorAll('.option');
         options.forEach(option => {
             option.addEventListener('click', function() {
                 const selectedValue = this.dataset.value;
@@ -2109,7 +2114,7 @@ function displayQuestion(question, modal, isChosenCategory = false) {
             });
         });
     } else if (question.type === 'boolean') {
-        const buttons = modal.querySelectorAll('.option-button');
+        const buttons = questionModal.querySelectorAll('.option-button');
         buttons.forEach(button => {
             button.addEventListener('click', function() {
                 const selectedValue = this.dataset.value;
@@ -2137,8 +2142,8 @@ function displayQuestion(question, modal, isChosenCategory = false) {
             });
         });
     } else {
-        const submitButton = modal.querySelector('#submitAnswer');
-        const inputField = modal.querySelector('#answerInput');
+        const submitButton = questionModal.querySelector('#submitAnswer');
+        const inputField = questionModal.querySelector('#answerInput');
         
         // Attiva l'invio anche premendo Enter
         inputField.addEventListener('keypress', function(e) {
