@@ -913,11 +913,10 @@
             
             console.log('Toggling options for type:', questionType);
             
-            // Rimuovi l'attributo required da tutti i campi
+            // Rimuovi l'attributo required da tutti i campi di opzione
             document.querySelectorAll('.option-input').forEach(input => {
                 input.required = false;
             });
-            correctAnswerInput.required = false;
             
             if (questionType === 'multiple') {
                 optionsContainer.style.display = 'block';
@@ -925,10 +924,16 @@
                 correctAnswerInput.style.display = 'block';
                 correctAnswerLabel.textContent = 'Risposta corretta (una delle opzioni):';
                 correctAnswerInput.required = true;
+                
+                // Imposta required solo per le opzioni visibili
+                document.querySelectorAll('.option-input').forEach(input => {
+                    input.required = true;
+                });
             } else if (questionType === 'boolean') {
                 optionsContainer.style.display = 'none';
                 booleanOptions.style.display = 'block';
                 correctAnswerInput.style.display = 'none';
+                correctAnswerInput.required = false;
                 
                 // Imposta il valore di correctAnswer in base alla selezione
                 const booleanValue = document.getElementById('booleanAnswer').value;

@@ -464,10 +464,6 @@ function renderPlayerInfo() {
                 <span>${player.stats.moves || 0}</span>
             </p>
             <p>
-                <span>Monete:</span>
-                <span>${player.coins || 0} <i class="fas fa-coins" style="color: gold;"></i></span>
-            </p>
-            <p>
                 <span>Crediti:</span>
                 <span>${player.credits || 0} <i class="fas fa-gem" style="color: #3b82f6;"></i></span>
             </p>
@@ -1683,13 +1679,27 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         const categoryParam = typeof category === 'string' ? category : '';
         console.log('Category parameter:', categoryParam);
 
-        const response = await fetch(`${window.API_URL}/api/questions${categoryParam ? `?category=${encodeURIComponent(categoryParam)}` : ''}`);
+        // Aggiungi un timestamp per evitare il caching del browser
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${window.API_URL}/api/questions${categoryParam ? `?category=${encodeURIComponent(categoryParam)}` : ''}&_=${timestamp}`);
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
+        // Controlla che il content-type sia JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error(`Unexpected content type: ${contentType}. Expected application/json`);
+        }
+        
         const questions = await response.json();
         console.log('Questions loaded:', questions);
+        
+        // Remove loading message
+        if (loadingMessage.parentNode) {
+            document.body.removeChild(loadingMessage);
+        }
         
         if (!questions || !Array.isArray(questions)) {
             throw new Error('Invalid data format: questions array not found');
@@ -1698,15 +1708,21 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         if (questions.length === 0) {
             console.warn('No questions found for category:', category);
             // Fallback to default questions
-            const defaultQuestions = [
-                {
-                    question: "What is the capital of France?",
-                    answer: "Paris",
+            const defaultQuestions = getDefaultQuestions();
+            const categoryQuestions = defaultQuestions.filter(q => q.category === category);
+            
+            if (categoryQuestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * categoryQuestions.length);
+                displayQuestion(categoryQuestions[randomIndex], isChosenCategory);
+            } else {
+                // Se non ci sono domande per questa categoria, usa una domanda generica
+                displayQuestion({
+                    question: "Qual è la capitale d'Italia?",
+                    answer: "Roma",
                     category: category,
                     type: "text"
-                }
-            ];
-            displayQuestion(defaultQuestions[0], isChosenCategory);
+                }, isChosenCategory);
+            }
             return;
         }
 
@@ -1714,12 +1730,15 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         const selectedQuestion = questions[randomIndex];
         console.log('Selected question:', selectedQuestion);
         
-        // Remove loading message
-        document.body.removeChild(loadingMessage);
+        // Se il giocatore ha usato la scelta categoria, registralo
+        if (isChosenCategory) {
+            players[currentPlayerIndex].usedCategoryChoice = true;
+        }
         
         displayQuestion(selectedQuestion, isChosenCategory);
     } catch (error) {
         console.error('Error loading questions:', error);
+        
         // Remove loading message if it exists
         const loadingMessage = document.querySelector('.loading-message');
         if (loadingMessage) {
@@ -1729,14 +1748,22 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
         // Show error notification
         showAnimatedNotification('Errore nel caricamento delle domande', 'error');
         
-        // Fallback to default question
-        const defaultQuestion = {
-            question: "What is the capital of France?",
-            answer: "Paris",
-            category: category,
-            type: "text"
-        };
-        displayQuestion(defaultQuestion, isChosenCategory);
+        // Fallback to default questions
+        const defaultQuestions = getDefaultQuestions();
+        const categoryQuestions = defaultQuestions.filter(q => q.category === category);
+        
+        if (categoryQuestions.length > 0) {
+            const randomIndex = Math.floor(Math.random() * categoryQuestions.length);
+            displayQuestion(categoryQuestions[randomIndex], isChosenCategory);
+        } else {
+            // Se non ci sono domande per questa categoria, usa una domanda generica
+            displayQuestion({
+                question: "Qual è la capitale d'Italia?",
+                answer: "Roma",
+                category: category,
+                type: "text"
+            }, isChosenCategory);
+        }
     }
 }
 
@@ -2374,9 +2401,9 @@ function showQuestionResult(isCorrect, correctAnswer) {
         if (!player.stats) player.stats = { correct: 0, incorrect: 0 };
         player.stats.correct++;
         
-        // Aggiungi 10 monete per ogni risposta corretta
-        if (!player.coins) player.coins = 0;
-        player.coins += 10;
+        // Aggiungi 10 crediti per ogni risposta corretta
+        if (!player.credits) player.credits = 0;
+        player.credits += 10;
         
         // Fornisci la stella SOLO se ha l'abilità di guadagnare stelle oppure ha usato la scelta categoria
         if (hasStarEarningAbility || categoryChoiceUsed) {
@@ -2386,7 +2413,7 @@ function showQuestionResult(isCorrect, correctAnswer) {
             addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
             showStarCollectionEffect(player);
         } else {
-            addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato 10 monete! 💰`);
+            addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato 10 crediti! 💰`);
         }
     } else {
         // Incrementa il contatore delle risposte sbagliate
