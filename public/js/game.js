@@ -464,8 +464,12 @@ function renderPlayerInfo() {
                 <span>${player.stats.moves || 0}</span>
             </p>
             <p>
+                <span>Monete:</span>
+                <span>${player.coins || 0} <i class="fas fa-coins" style="color: gold;"></i></span>
+            </p>
+            <p>
                 <span>Crediti:</span>
-                <span>${player.credits || 0} <i class="fas fa-coins" style="color: gold;"></i></span>
+                <span>${player.credits || 0} <i class="fas fa-gem" style="color: #3b82f6;"></i></span>
             </p>
             ${powerupsHTML}
         `;
@@ -2370,6 +2374,10 @@ function showQuestionResult(isCorrect, correctAnswer) {
         if (!player.stats) player.stats = { correct: 0, incorrect: 0 };
         player.stats.correct++;
         
+        // Aggiungi 10 monete per ogni risposta corretta
+        if (!player.coins) player.coins = 0;
+        player.coins += 10;
+        
         // Fornisci la stella SOLO se ha l'abilità di guadagnare stelle oppure ha usato la scelta categoria
         if (hasStarEarningAbility || categoryChoiceUsed) {
             player.stars++;
@@ -2378,7 +2386,7 @@ function showQuestionResult(isCorrect, correctAnswer) {
             addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
             showStarCollectionEffect(player);
         } else {
-            addToGameLog(`${player.name} ha risposto correttamente.`);
+            addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato 10 monete! 💰`);
         }
     } else {
         // Incrementa il contatore delle risposte sbagliate

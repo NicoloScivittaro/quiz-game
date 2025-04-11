@@ -1082,5 +1082,198 @@
             correctAnswerInput.value = this.value;
         });
     </script>
+
+    <script>
+        // Funzione per eliminare una domanda
+        async function deleteQuestion(questionId) {
+            if (!confirm('Sei sicuro di voler eliminare questa domanda?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${window.API_URL}/api/questions/${questionId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                showSuccess('Domanda eliminata con successo!');
+                loadQuestionData(); // Ricarica i dati aggiornati
+            } catch (error) {
+                console.error('Errore durante l\'eliminazione della domanda:', error);
+                showError('Errore durante l\'eliminazione della domanda. Riprova più tardi.');
+            }
+        }
+
+        // Funzione per modificare una domanda
+        async function editQuestion(questionId) {
+            try {
+                // Carica i dettagli della domanda
+                const response = await fetch(`${window.API_URL}/api/questions/${questionId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const question = await response.json();
+                
+                // Passa alla tab di aggiunta domanda
+                openTab('addQuestion');
+                
+                // Popola il form con i dati della domanda
+                document.getElementById('questionText').value = question.question;
+                document.getElementById('questionCategory').value = question.category;
+                document.getElementById('questionType').value = question.type;
+                
+                // Gestisci le opzioni in base al tipo
+                if (question.type === 'multiple') {
+                    // Pulisci le opzioni esistenti
+                    document.getElementById('optionsList').innerHTML = '';
+                    
+                    // Aggiungi le opzioni della domanda
+                    question.options.forEach((option, index) => {
+                        const optionGroup = document.createElement('div');
+                        optionGroup.className = 'option-group';
+                        optionGroup.innerHTML = `
+                            <input type="text" class="option-input" name="option${index + 1}" value="${option}" placeholder="Opzione ${index + 1}">
+                            <button type="button" onclick="removeOption(this)">-</button>
+                        `;
+                        document.getElementById('optionsList').appendChild(optionGroup);
+                    });
+                    
+                    document.getElementById('correctAnswer').value = question.answer;
+                } else if (question.type === 'boolean') {
+                    document.getElementById('booleanAnswer').value = question.answer;
+                    document.getElementById('correctAnswer').value = question.answer;
+                } else {
+                    document.getElementById('correctAnswer').value = question.answer;
+                }
+                
+                // Aggiorna i display in base al tipo di domanda
+                toggleOptions();
+                
+                // Modifica l'event listener del form per gestire l'aggiornamento
+                const form = document.getElementById('questionForm');
+                
+                // Rimuovi eventuali listener precedenti
+                const newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+                
+                // Aggiungi il nuovo listener
+                newForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    updateQuestion(questionId);
+                });
+                
+                showInfo('Stai modificando una domanda esistente.');
+            } catch (error) {
+                console.error('Errore nel caricamento della domanda:', error);
+                showError('Errore nel caricamento della domanda. Riprova più tardi.');
+            }
+        }
+
+        // Funzione per aggiornare una domanda esistente
+        async function updateQuestion(questionId) {
+            const questionText = document.getElementById('questionText').value.trim();
+            const category = document.getElementById('questionCategory').value;
+            const type = document.getElementById('questionType').value;
+            
+            let answer;
+            if (type === 'boolean') {
+                answer = document.getElementById('booleanAnswer').value;
+            } else {
+                answer = document.getElementById('correctAnswer').value.trim();
+            }
+            
+            if (!questionText || !category || !answer) {
+                showError('Tutti i campi sono obbligatori.');
+                return;
+            }
+            
+            try {
+                // Crea oggetto domanda
+                const updatedQuestion = {
+                    id: questionId,
+                    question: questionText,
+                    category: category,
+                    type: type,
+                    answer: answer
+                };
+                
+                // Se la domanda è a scelta multipla, aggiungi le opzioni
+                if (type === 'multiple') {
+                    const optionInputs = document.querySelectorAll('.option-input');
+                    const options = Array.from(optionInputs).map(input => input.value.trim());
+                    
+                    // Controlla che ci siano almeno 2 opzioni e che nessuna sia vuota
+                    if (options.length < 2 || options.some(opt => !opt)) {
+                        showError('Devi fornire almeno 2 opzioni valide per una domanda a scelta multipla.');
+                        return;
+                    }
+                    
+                    // Controlla che la risposta sia tra le opzioni
+                    if (!options.includes(answer)) {
+                        showError('La risposta corretta deve essere una delle opzioni fornite.');
+                        return;
+                    }
+                    
+                    updatedQuestion.options = options;
+                }
+                
+                // Invia la domanda aggiornata all'API
+                const response = await fetch(`${window.API_URL}/api/questions/${questionId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedQuestion)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Resetta il form
+                resetForm();
+                
+                // Resetta il listener del form per tornare all'aggiunta di domande
+                const form = document.getElementById('questionForm');
+                const newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+                newForm.addEventListener('submit', addQuestion);
+                
+                // Aggiorna la lista delle domande
+                loadQuestionData();
+                
+                showSuccess('Domanda aggiornata con successo!');
+            } catch (error) {
+                console.error('Errore nell\'aggiornamento della domanda:', error);
+                showError('Errore nell\'aggiornamento della domanda. Riprova più tardi.');
+            }
+        }
+
+        // Funzione per mostrare info
+        function showInfo(message) {
+            const infoAlert = document.getElementById('infoAlert');
+            const infoText = document.getElementById('infoText');
+            if (infoAlert && infoText) {
+                infoText.textContent = message;
+                infoAlert.style.display = 'block';
+                setTimeout(() => {
+                    infoAlert.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Funzione per chiudere gli alert
+        function closeAlert(type) {
+            document.getElementById(`${type}Alert`).style.display = 'none';
+        }
+    </script>
 </body>
 </html> 
