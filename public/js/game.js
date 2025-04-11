@@ -3511,13 +3511,18 @@ function displayQuestion(question, isChosenCategory = false) {
         document.body.appendChild(questionModal);
     }
     
+    // Verifica se il giocatore ha il powerup di tempo extra
+    const currentPlayer = players[currentPlayerIndex];
+    const hasExtraTime = currentPlayer.powerups && currentPlayer.powerups.extraTime;
+    
     let questionHTML = `
         <div class="modal-content">
             <span class="category-badge">${question.category}</span>
             <h2>Domanda</h2>
+            ${hasExtraTime ? '<div class="extra-time-badge"><i class="fas fa-hourglass-half"></i> Tempo Extra Attivo</div>' : ''}
             <div class="question-text">${question.question}</div>
             <div class="timer-container">
-                <div class="timer-bar"></div>
+                <div class="timer-bar ${hasExtraTime ? 'extended-time' : ''}"></div>
             </div>
     `;
 
@@ -3560,25 +3565,28 @@ function displayQuestion(question, isChosenCategory = false) {
     // Attiva la modale
     setTimeout(() => {
         questionModal.classList.add('active');
+        
+        // Ritardo aggiuntivo per assicurarsi che la UI sia completamente caricata
+        setTimeout(() => {
+            // Imposta il timer
+            let timerDuration = 45; // Secondi (base)
+            
+            // Verifica se il giocatore ha il powerup di tempo extra
+            const currentPlayer = players[currentPlayerIndex];
+            if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
+                timerDuration += 15; // Aggiungi 15 secondi extra
+                // Mostra un'indicazione visiva che è stato utilizzato più tempo
+                const timerBar = questionModal.querySelector('.timer-bar');
+                if (timerBar) {
+                    timerBar.classList.add('extended-time');
+                }
+            }
+            
+            startQuestionTimer(timerDuration, () => {
+                timeOver(question.answer);
+            });
+        }, 300); // Piccolo ritardo per assicurarsi che la UI sia pronta
     }, 100);
-
-    // Imposta il timer
-    let timerDuration = 45; // Secondi (base)
-    
-    // Verifica se il giocatore ha il powerup di tempo extra
-    const currentPlayer = players[currentPlayerIndex];
-    if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
-        timerDuration += 15; // Aggiungi 15 secondi extra
-        // Mostra un'indicazione visiva che è stato utilizzato più tempo
-        const timerBar = questionModal.querySelector('.timer-bar');
-        if (timerBar) {
-            timerBar.classList.add('extended-time');
-        }
-    }
-    
-    startQuestionTimer(timerDuration, () => {
-        timeOver(question.answer);
-    });
 
     // Gestisci gli eventi per i diversi tipi di domande
     if (question.type === 'multiple') {
@@ -3897,14 +3905,25 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
     // Aggiorna UI player
     renderPlayerInfo();
     
+    // Variabile per tenere traccia se la modale è già stata chiusa manualmente
+    let modalClosed = false;
+    
+    // Aggiungo un event listener sul bottone Continua per tenere traccia della chiusura manuale
+    const continueButtonElement = modalContent.querySelector('.primary-button');
+    if (continueButtonElement) {
+        continueButtonElement.addEventListener('click', () => {
+            modalClosed = true;
+        });
+    }
+    
     // Imposta un timer per chiudere automaticamente la modale dopo un po'
     setTimeout(() => {
-        if (document.getElementById('questionModal') && 
+        if (!modalClosed && document.getElementById('questionModal') && 
             document.getElementById('questionModal').classList.contains('active')) {
             closeQuestionModal();
             nextPlayer();
         }
-    }, 8000);
+    }, 12000); // Aumentato da 8000 a 12000 ms
 }
 
 // Funzione per chiudere la modale delle domande
@@ -4296,6 +4315,9 @@ function showAnimatedNotification(message, type = 'info') {
 function nextPlayer() {
     if (!gameStarted) return;
     
+    // Pulisci eventuali timer precedenti
+    clearQuestionTimer();
+    
     // Rimuovi evidenziazione spazio
     document.querySelectorAll('.space').forEach(s => s.classList.remove('active'));
     
@@ -4631,6 +4653,10 @@ function displayTripleStarQuestion(question) {
     questionModal.className = 'modal active';
     questionModal.id = 'tripleStarModal';
     
+    // Verifica se il giocatore ha il powerup di tempo extra
+    const currentPlayer = players[currentPlayerIndex];
+    const hasExtraTime = currentPlayer.powerups && currentPlayer.powerups.extraTime;
+    
     let questionHTML = `
         <div class="modal-content">
             <span class="category-badge">${question.category}</span>
@@ -4640,9 +4666,10 @@ function displayTripleStarQuestion(question) {
                 <i class="fas fa-star" style="color: gold; font-size: 24px; margin: 0 3px;"></i>
                 <i class="fas fa-star" style="color: gold; font-size: 24px; margin: 0 3px;"></i>
             </div>
+            ${hasExtraTime ? '<div class="extra-time-badge"><i class="fas fa-hourglass-half"></i> Tempo Extra Attivo</div>' : ''}
             <div class="question-text">${question.question}</div>
             <div class="timer-container">
-                <div class="timer-bar"></div>
+                <div class="timer-bar ${hasExtraTime ? 'extended-time' : ''}"></div>
             </div>
     `;
 
@@ -4687,25 +4714,28 @@ function displayTripleStarQuestion(question) {
     // Attiva la modale
     setTimeout(() => {
         questionModal.classList.add('active');
+        
+        // Ritardo aggiuntivo per assicurarsi che la UI sia completamente caricata
+        setTimeout(() => {
+            // Imposta il timer
+            let timerDuration = 45; // Secondi (base)
+            
+            // Verifica se il giocatore ha il powerup di tempo extra
+            const currentPlayer = players[currentPlayerIndex];
+            if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
+                timerDuration += 15; // Aggiungi 15 secondi extra
+                // Mostra un'indicazione visiva che è stato utilizzato più tempo
+                const timerBar = questionModal.querySelector('.timer-bar');
+                if (timerBar) {
+                    timerBar.classList.add('extended-time');
+                }
+            }
+            
+            startQuestionTimer(timerDuration, () => {
+                showTripleStarResult(false, question.answer);
+            });
+        }, 300); // Piccolo ritardo per assicurarsi che la UI sia pronta
     }, 100);
-
-    // Imposta il timer
-    let timerDuration = 45; // Secondi (base)
-    
-    // Verifica se il giocatore ha il powerup di tempo extra
-    const currentPlayer = players[currentPlayerIndex];
-    if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
-        timerDuration += 15; // Aggiungi 15 secondi extra
-        // Mostra un'indicazione visiva che è stato utilizzato più tempo
-        const timerBar = questionModal.querySelector('.timer-bar');
-        if (timerBar) {
-            timerBar.classList.add('extended-time');
-        }
-    }
-    
-    startQuestionTimer(timerDuration, () => {
-        showTripleStarResult(false, question.answer);
-    });
 
     // Gestisci gli eventi per i diversi tipi di domande
     if (question.type === 'multiple') {
@@ -4863,7 +4893,12 @@ function showTripleStarResult(isCorrect, correctAnswer) {
     continueButton.className = 'primary-button';
     continueButton.textContent = 'Continua';
     continueButton.style.marginTop = '20px';
+    
+    // Variabile per tenere traccia se la modale è già stata chiusa manualmente
+    let modalClosed = false;
+    
     continueButton.addEventListener('click', () => {
+        modalClosed = true;
         modal.remove();
         
         // Aggiorna l'UI e salva i dati
@@ -4878,6 +4913,21 @@ function showTripleStarResult(isCorrect, correctAnswer) {
     
     // Aggiungi il risultato alla modale
     modalContent.appendChild(resultDiv);
+    
+    // Imposta un timer per chiudere automaticamente la modale dopo un po'
+    setTimeout(() => {
+        if (!modalClosed && document.getElementById('tripleStarModal')) {
+            modalClosed = true;
+            modal.remove();
+            
+            // Aggiorna l'UI e salva i dati
+            renderPlayerInfo();
+            saveGameData();
+            
+            // Controlla condizione di vittoria
+            checkWinCondition();
+        }
+    }, 12000); // 12 secondi
 }
 
 /**
