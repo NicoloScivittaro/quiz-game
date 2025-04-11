@@ -4099,7 +4099,7 @@ function showShop() {
             id: 'extra-star',
             name: 'Stella Extra',
             description: 'Ottieni immediatamente una stella',
-            price: 70,
+            price: 120,
             action: function() {
                 const player = players[currentPlayerIndex];
                 player.stars++;
