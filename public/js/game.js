@@ -314,7 +314,7 @@ function activateSpaceOnClick(position) {
             showQuestion();
             break;
         case 'star':
-            if (player.credits >= 150) {
+            if (player.credits >= 70) {
                 // Usa il modale personalizzato per l'acquisto della stella
                 showStarPurchaseModal(player);
             } else {
@@ -1064,7 +1064,7 @@ function checkSpace(position) {
             break;
         case 'star':
             // Mostra il prompt per l'acquisto della stella
-            if (player.credits >= 150) {
+            if (player.credits >= 70) {
                 // Usa un modale personalizzato invece di confirm
                 showStarPurchaseModal(player);
             } else {
@@ -1112,7 +1112,7 @@ function showStarPurchaseModal(player) {
             <i class="fas fa-star" style="margin-right: 10px;"></i> Acquista Stella
         </h2>
         <p style="font-size: 1.2rem; margin-bottom: 20px;">
-            Vuoi acquistare questa stella per 150 crediti?
+            Vuoi acquistare questa stella per 70 crediti?
         </p>
         <p style="margin-bottom: 25px;">
             I tuoi crediti: <strong>${player.credits}</strong> <i class="fas fa-coins" style="color: gold;"></i>
@@ -1137,7 +1137,7 @@ function showStarPurchaseModal(player) {
         modal.remove();
         
         // Esegui l'acquisto
-        player.credits -= 150;
+        player.credits -= 70;
         player.stars++;
         renderPlayerInfo();
         showStarCollectionEffect();
@@ -3751,16 +3751,16 @@ function startQuestionTimer(seconds, callback) {
         return;
     }
     
-    // Imposta la larghezza iniziale al 100%
+    // Reset dello stile per assicurarsi che la transizione funzioni
+    timerBar.style.transition = 'none';
     timerBar.style.width = '100%';
+    
+    // Forza un reflow per assicurarsi che il browser riconosca il cambio dello stile
+    void timerBar.offsetWidth;
     
     // Imposta la transizione per una diminuzione fluida
     timerBar.style.transition = `width ${seconds}s linear`;
-    
-    // Dopo un breve ritardo, avvia l'animazione
-    setTimeout(() => {
-        timerBar.style.width = '0%';
-    }, 50);
+    timerBar.style.width = '0%';
     
     // Pulisci eventuali timer precedenti
     clearQuestionTimer();
@@ -4023,7 +4023,7 @@ function showShop() {
             id: 'extra-star',
             name: 'Stella Extra',
             description: 'Ottieni immediatamente una stella',
-            price: 150,
+            price: 70,
             action: function() {
                 const player = players[currentPlayerIndex];
                 player.stars++;

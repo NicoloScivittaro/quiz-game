@@ -1745,9 +1745,9 @@ const questionsData = {
         {
             "id": 188,
             "category": "Scienza",
-            "type": "text",
-            "question": "Qual è la principale differenza tra un virus e un batterio?",
-            "answer": "I virus necessitano di una cellula ospite per replicarsi, mentre i batteri possono riprodursi autonomamente."
+            "type": "boolean",
+            "question": "la principale differenza tra un virus e un batterio è che i virus necessitano di una cellula ospite per riprodursi, mentre i batteri possono riprodursi autonomamente.",
+            "answer": "Vero"
         },
         {
             "id": 189,
