@@ -919,8 +919,8 @@
             });
             
             if (questionType === 'multiple') {
-                optionsContainer.style.display = 'block';
-                booleanOptions.style.display = 'none';
+                    optionsContainer.style.display = 'block';
+                    booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
                 correctAnswerLabel.textContent = 'Risposta corretta (una delle opzioni):';
                 correctAnswerInput.required = true;
@@ -930,17 +930,17 @@
                     input.required = true;
                 });
             } else if (questionType === 'boolean') {
-                optionsContainer.style.display = 'none';
-                booleanOptions.style.display = 'block';
+                    optionsContainer.style.display = 'none';
+                    booleanOptions.style.display = 'block';
                 correctAnswerInput.style.display = 'none';
                 correctAnswerInput.required = false;
-                
+                    
                 // Imposta il valore di correctAnswer in base alla selezione
                 const booleanValue = document.getElementById('booleanAnswer').value;
                 correctAnswerInput.value = booleanValue;
             } else {
-                optionsContainer.style.display = 'none';
-                booleanOptions.style.display = 'none';
+                    optionsContainer.style.display = 'none';
+                    booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
                 correctAnswerLabel.textContent = 'Risposta corretta:';
                 correctAnswerInput.required = true;
@@ -1155,7 +1155,7 @@
                 } else if (question.type === 'boolean') {
                     document.getElementById('booleanAnswer').value = question.answer;
                     document.getElementById('correctAnswer').value = question.answer;
-                } else {
+            } else {
                     document.getElementById('correctAnswer').value = question.answer;
                 }
                 
@@ -1218,15 +1218,15 @@
                     // Controlla che ci siano almeno 2 opzioni e che nessuna sia vuota
                     if (options.length < 2 || options.some(opt => !opt)) {
                         showError('Devi fornire almeno 2 opzioni valide per una domanda a scelta multipla.');
-                        return;
-                    }
-                    
+                return;
+            }
+            
                     // Controlla che la risposta sia tra le opzioni
                     if (!options.includes(answer)) {
                         showError('La risposta corretta deve essere una delle opzioni fornite.');
-                        return;
-                    }
-                    
+                return;
+            }
+            
                     updatedQuestion.options = options;
                 }
                 

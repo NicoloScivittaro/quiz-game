@@ -550,6 +550,14 @@ function renderPlayerInfo() {
                     <span>${player.powerups.categoryChoice}</span>
                 </p>`;
             }
+            
+            if (player.powerups.extraTime) {
+                powerupsHTML += `
+                <p class="player-powerup">
+                    <span><i class="fas fa-hourglass-half" style="color: #4CAF50;"></i> Tempo Extra:</span>
+                    <span>Attivo</span>
+                </p>`;
+            }
         }
         
         playerCard.innerHTML = `
@@ -1588,7 +1596,8 @@ function initShopState() {
         if (!player.powerups) {
             player.powerups = {
                 shields: 0,
-                categoryChoice: 0
+                categoryChoice: 0,
+                extraTime: false
             };
         }
     });
@@ -3554,7 +3563,19 @@ function displayQuestion(question, isChosenCategory = false) {
     }, 100);
 
     // Imposta il timer
-    const timerDuration = 30; // Secondi
+    let timerDuration = 45; // Secondi (base)
+    
+    // Verifica se il giocatore ha il powerup di tempo extra
+    const currentPlayer = players[currentPlayerIndex];
+    if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
+        timerDuration += 15; // Aggiungi 15 secondi extra
+        // Mostra un'indicazione visiva che è stato utilizzato più tempo
+        const timerBar = questionModal.querySelector('.timer-bar');
+        if (timerBar) {
+            timerBar.classList.add('extended-time');
+        }
+    }
+    
     startQuestionTimer(timerDuration, () => {
         timeOver(question.answer);
     });
@@ -3957,6 +3978,26 @@ function showShop() {
                 
                 // Mostra notifica
                 showAnimatedNotification('Ora puoi lanciare il dado di nuovo!', 'success');
+            }
+        },
+        {
+            id: 'extra-time',
+            name: 'Tempo Extra',
+            description: 'Ottieni 15 secondi in più per rispondere alle domande',
+            price: 30,
+            action: function() {
+                const player = players[currentPlayerIndex];
+                if (!player.powerups) player.powerups = {};
+                player.powerups.extraTime = true;
+                
+                addToGameLog(`${player.name} ha acquistato il powerup Tempo Extra`);
+                showAnimatedNotification('Hai 15 secondi in più per rispondere alle prossime domande!', 'success');
+                
+                // Salva lo stato del gioco
+                saveGameData();
+                
+                // Aggiorna l'UI per mostrare il powerup
+                renderPlayerInfo();
             }
         },
         {
@@ -4649,7 +4690,19 @@ function displayTripleStarQuestion(question) {
     }, 100);
 
     // Imposta il timer
-    const timerDuration = 30; // Secondi
+    let timerDuration = 45; // Secondi (base)
+    
+    // Verifica se il giocatore ha il powerup di tempo extra
+    const currentPlayer = players[currentPlayerIndex];
+    if (currentPlayer.powerups && currentPlayer.powerups.extraTime) {
+        timerDuration += 15; // Aggiungi 15 secondi extra
+        // Mostra un'indicazione visiva che è stato utilizzato più tempo
+        const timerBar = questionModal.querySelector('.timer-bar');
+        if (timerBar) {
+            timerBar.classList.add('extended-time');
+        }
+    }
+    
     startQuestionTimer(timerDuration, () => {
         showTripleStarResult(false, question.answer);
     });

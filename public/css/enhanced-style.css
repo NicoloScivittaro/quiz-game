@@ -578,10 +578,10 @@ h3::after {
 }
 
 .question-options {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 15px;
-    margin-bottom: 1.5rem;
+    margin-top: 20px;
 }
 
 .option-button {
@@ -627,10 +627,15 @@ h3::after {
 }
 
 .timer-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--error), var(--primary));
     width: 100%;
-    transition: width 1s linear;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 5px;
+}
+
+.timer-bar.extended-time {
+    background: linear-gradient(90deg, #4caf50, #2196f3);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
 }
 
 /* Animazioni per i punteggi */
