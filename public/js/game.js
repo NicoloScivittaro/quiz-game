@@ -1774,198 +1774,1496 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
 function getDefaultQuestions() {
     return [
         // Storia
-        {
-            id: 1,
-            category: "Storia",
-            type: "text",
-            question: "In che anno è caduto l'Impero Romano d'Occidente?",
-            answer: "476 d.C."
-        },
-        {
-            id: 2,
-            category: "Storia",
-            type: "multiple",
-            question: "Chi fu il primo imperatore romano?",
-            answer: "Augusto",
-            options: ["Augusto", "Giulio Cesare", "Nerone", "Traiano"]
-        },
-        {
-            id: 3,
-            category: "Storia",
-            type: "boolean",
-            question: "La Rivoluzione Francese è iniziata nel 1789.",
-            answer: "true"
-        },
-        
-        // Geografia
-        {
-            id: 4,
-            category: "Geografia",
-            type: "text",
-            question: "Qual è la capitale del Canada?",
-            answer: "Ottawa"
-        },
-        {
-            id: 5,
-            category: "Geografia",
-            type: "multiple",
-            question: "Quale di questi paesi non si trova in Europa?",
-            answer: "Marocco",
-            options: ["Marocco", "Svizzera", "Portogallo", "Ungheria"]
-        },
-        {
-            id: 6,
-            category: "Geografia",
-            type: "boolean",
-            question: "Il Nilo è il fiume più lungo del mondo.",
-            answer: "true"
-        },
-        
-        // Scienza
-        {
-            id: 7,
-            category: "Scienza",
-            type: "text",
-            question: "Qual è l'elemento più abbondante nell'universo?",
-            answer: "Idrogeno"
-        },
-        {
-            id: 8,
-            category: "Scienza",
-            type: "multiple",
-            question: "Qual è l'unità di misura della forza?",
-            answer: "Newton",
-            options: ["Newton", "Joule", "Watt", "Pascal"]
-        },
-        {
-            id: 9,
-            category: "Scienza",
-            type: "boolean",
-            question: "La velocità della luce è maggiore della velocità del suono.",
-            answer: "true"
-        },
-        
-        // Sport
-        {
-            id: 10,
-            category: "Sport",
-            type: "text",
-            question: "In quale sport si gioca a Wimbledon?",
-            answer: "Tennis"
-        },
-        {
-            id: 11,
-            category: "Sport",
-            type: "multiple",
-            question: "Quanti giocatori compongono una squadra di pallavolo in campo?",
-            answer: "6",
-            options: ["5", "6", "7", "8"]
-        },
-        {
-            id: 12,
-            category: "Sport",
-            type: "boolean",
-            question: "Il Brasile ha vinto 5 volte la Coppa del Mondo di calcio.",
-            answer: "true"
-        },
-        
-        // Arte
-        {
-            id: 13,
-            category: "Arte",
-            type: "text",
-            question: "Chi ha dipinto la Gioconda?",
-            answer: "Leonardo da Vinci"
-        },
-        {
-            id: 14,
-            category: "Arte",
-            type: "multiple",
-            question: "Quale di questi artisti è associato al Cubismo?",
-            answer: "Pablo Picasso",
-            options: ["Pablo Picasso", "Caravaggio", "Monet", "Van Gogh"]
-        },
-        {
-            id: 15,
-            category: "Arte",
-            type: "boolean",
-            question: "Michelangelo ha dipinto la Cappella Sistina.",
-            answer: "true"
-        },
-        
-        // Musica
-        {
-            id: 16,
-            category: "Musica",
-            type: "text",
-            question: "Qual è il nome del cantante dei Queen?",
-            answer: "Freddie Mercury"
-        },
-        {
-            id: 17,
-            category: "Musica",
-            type: "multiple",
-            question: "Quale strumento suonava Jimi Hendrix?",
-            answer: "Chitarra",
-            options: ["Chitarra", "Batteria", "Pianoforte", "Sassofono"]
-        },
-        {
-            id: 18,
-            category: "Musica",
-            type: "boolean",
-            question: "Mozart è morto prima di compiere 40 anni.",
-            answer: "true"
-        },
-        
-        // Cinema
-        {
-            id: 19,
-            category: "Cinema",
-            type: "text",
-            question: "Chi ha diretto il film 'Pulp Fiction'?",
-            answer: "Quentin Tarantino"
-        },
-        {
-            id: 20,
-            category: "Cinema",
-            type: "multiple",
-            question: "Quale attore ha interpretato Iron Man nel Marvel Cinematic Universe?",
-            answer: "Robert Downey Jr.",
-            options: ["Robert Downey Jr.", "Chris Evans", "Chris Hemsworth", "Mark Ruffalo"]
-        },
-        {
-            id: 21,
-            category: "Cinema",
-            type: "boolean",
-            question: "'Titanic' è stato diretto da James Cameron.",
-            answer: "true"
-        },
-        
-        // Letteratura
-        {
-            id: 22,
-            category: "Letteratura",
-            type: "text",
-            question: "Chi ha scritto 'I Promessi Sposi'?",
-            answer: "Alessandro Manzoni"
-        },
-        {
-            id: 23,
-            category: "Letteratura",
-            type: "multiple",
-            question: "Quale di questi personaggi è stato creato da J.K. Rowling?",
-            answer: "Harry Potter",
-            options: ["Harry Potter", "Sherlock Holmes", "Don Chisciotte", "Hercule Poirot"]
-        },
-        {
-            id: 24,
-            category: "Letteratura",
-            type: "boolean",
-            question: "Dante Alighieri scrisse la Divina Commedia in latino.",
-            answer: "false"
-        }
-    ];
-}
+              {
+                "id": 1,
+                "category": "Scienza",
+                "type": "text",
+                "question": "Qual è l'elemento più abbondante nell'universo?",
+                "answer": "Idrogeno"
+            },
+            {
+                "id": 2,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "L'acqua è composta da idrogeno e ossigeno?",
+                "answer": "Vero"
+            },
+            {
+                "id": 3,
+                "category": "Scienza",
+                "type": "text",
+                "question": "Qual è il pianeta più grande del Sistema Solare?",
+                "answer": "Giove"
+            },
+            {
+                "id": 4,
+                "category": "Scienza",
+                "type": "text",
+                "question": "Chi ha formulato la teoria della relatività?",
+                "answer": "Albert Einstein"
+            },
+            {
+                "id": 5,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "Il DNA si trova nel nucleo delle cellule?",
+                "answer": "Vero"
+            },
+            {
+                "id": 6,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Qual è l'organo più grande del corpo umano?",
+                "options": [
+                    "Cuore",
+                    "Fegato",
+                    "Pelle",
+                    "Cervello"
+                ],
+                "answer": "Pelle"
+            },
+            {
+                "id": 7,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "A quanti gradi Celsius l'acqua bolle a livello del mare?",
+                "options": [
+                    "90°C",
+                    "100°C",
+                    "110°C",
+                    "120°C"
+                ],
+                "answer": "100°C"
+            },
+            {
+                "id": 8,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Quale gas usiamo per respirare?",
+                "options": [
+                    "Azoto",
+                    "Idrogeno",
+                    "Ossigeno",
+                    "Anidride carbonica"
+                ],
+                "answer": "Ossigeno"
+            },
+            {
+                "id": 9,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "La fotosintesi clorofilliana avviene nelle piante?",
+                "answer": "Vero"
+            },
+            {
+                "id": 10,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Qual è l'unità di misura della corrente elettrica?",
+                "options": [
+                    "Volt",
+                    "Watt",
+                    "Ampere",
+                    "Ohm"
+                ],
+                "answer": "Ampere"
+            },
+            {
+                "id": 11,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "I diamanti sono fatti di quale elemento?",
+                "options": [
+                    "Carbonio",
+                    "Silicio",
+                    "Oro",
+                    "Ferro"
+                ],
+                "answer": "Carbonio"
+            },
+            {
+                "id": 12,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "Il sole è una stella?",
+                "answer": "Vero"
+            },
+            {
+                "id": 13,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Qual è il pianeta più vicino al sole?",
+                "options": [
+                    "Venere",
+                    "Marte",
+                    "Terra",
+                    "Mercurio"
+                ],
+                "answer": "Mercurio"
+            },
+            {
+                "id": 14,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "La forza di gravità sulla Luna è più forte che sulla Terra?",
+                "answer": "Falso"
+            },
+            {
+                "id": 15,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "L'ozono è composto da quanti atomi di ossigeno?",
+                "options": [
+                    "Due",
+                    "Tre",
+                    "Quattro",
+                    "Cinque"
+                ],
+                "answer": "Tre"
+            },
+            {
+                "id": 16,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Chi ha scoperto la teoria dell'evoluzione?",
+                "options": [
+                    "Albert Einstein",
+                    "Charles Darwin",
+                    "Isaac Newton",
+                    "Gregor Mendel"
+                ],
+                "answer": "Charles Darwin"
+            },
+            {
+                "id": 17,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Qual è la velocità della luce nel vuoto?",
+                "options": [
+                    "150.000 km/s",
+                    "200.000 km/s",
+                    "250.000 km/s",
+                    "300.000 km/s"
+                ],
+                "answer": "300.000 km/s"
+            },
+            {
+                "id": 18,
+                "category": "Scienza",
+                "type": "boolean",
+                "question": "I pinguini possono volare?",
+                "answer": "Falso"
+            },
+            {
+                "id": 19,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "Quale strumento si usa per misurare i terremoti?",
+                "options": [
+                    "Barometro",
+                    "Sismografo",
+                    "Termometro",
+                    "Igrometro"
+                ],
+                "answer": "Sismografo"
+            },
+            {
+                "id": 20,
+                "category": "Scienza",
+                "type": "multiple",
+                "question": "La Terra impiega quanti giorni per fare un giro intorno al Sole?",
+                "options": [
+                    "180 giorni",
+                    "265 giorni",
+                    "365 giorni",
+                    "400 giorni"
+                ],
+                "answer": "365 giorni"
+            },
+            {
+              "id": 21,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi ha vinto il Pallone d'Oro nel 2021?",
+              "options": [
+                  "Lionel Messi",
+                  "Cristiano Ronaldo",
+                  "Robert Lewandowski",
+                  "Karim Benzema"
+              ],
+              "answer": "Lionel Messi"
+          },
+          {
+              "id": 22,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale squadra ha vinto la Champions League nel 2020?",
+              "options": [
+                  "Real Madrid",
+                  "Bayern Monaco",
+                  "Manchester City",
+                  "Paris Saint-Germain"
+              ],
+              "answer": "Bayern Monaco"
+          },
+          {
+              "id": 23,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi è il tennista con più titoli del Grande Slam nella storia?",
+              "options": [
+                  "Rafael Nadal",
+                  "Roger Federer",
+                  "Novak Djokovic",
+                  "Pete Sampras"
+              ],
+              "answer": "Novak Djokovic"
+          },
+          {
+              "id": 24,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "In quale sport si usa un 'putter'?",
+              "options": [
+                  "Golf",
+                  "Tennis",
+                  "Baseball",
+                  "Hockey"
+              ],
+              "answer": "Golf"
+          },
+          {
+              "id": 25,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quanti minuti dura una partita di basket NBA?",
+              "options": [
+                  "40",
+                  "48",
+                  "50",
+                  "60"
+              ],
+              "answer": "48"
+          },
+          {
+              "id": 26,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale nazione ha vinto più Coppe del Mondo di calcio?",
+              "options": [
+                  "Brasile",
+                  "Germania",
+                  "Italia",
+                  "Argentina"
+              ],
+              "answer": "Brasile"
+          },
+          {
+              "id": 27,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi detiene il record di punti segnati in una singola partita NBA?",
+              "options": [
+                  "Michael Jordan",
+                  "LeBron James",
+                  "Kobe Bryant",
+                  "Wilt Chamberlain"
+              ],
+              "answer": "Wilt Chamberlain"
+          },
+          {
+              "id": 28,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale squadra ha vinto più Super Bowl nella storia?",
+              "options": [
+                  "Dallas Cowboys",
+                  "Pittsburgh Steelers",
+                  "New England Patriots",
+                  "San Francisco 49ers"
+              ],
+              "answer": "New England Patriots"
+          },
+          {
+              "id": 29,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale pilota ha vinto più titoli di Formula 1?",
+              "options": [
+                  "Ayrton Senna",
+                  "Lewis Hamilton",
+                  "Michael Schumacher",
+                  "Sebastian Vettel"
+              ],
+              "answer": "Michael Schumacher e Lewis Hamilton"
+          },
+          {
+              "id": 30,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "In quale anno si sono svolte le prime Olimpiadi moderne?",
+              "options": [
+                  "1892",
+                  "1896",
+                  "1900",
+                  "1924"
+              ],
+              "answer": "1896"
+          },
+          {
+              "id": 31,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi ha vinto il Tour de France nel 2021?",
+              "options": [
+                  "Primož Roglič",
+                  "Tadej Pogačar",
+                  "Egan Bernal",
+                  "Jonas Vingegaard"
+              ],
+              "answer": "Tadej Pogačar"
+          },
+          {
+              "id": 32,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale squadra ha vinto il maggior numero di campionati italiani di calcio (Serie A)?",
+              "options": [
+                  "Inter",
+                  "Juventus",
+                  "Milan",
+                  "Roma"
+              ],
+              "answer": "Juventus"
+          },
+          {
+              "id": 33,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi ha vinto il Mondiale di calcio 2018?",
+              "options": [
+                  "Germania",
+                  "Brasile",
+                  "Francia",
+                  "Argentina"
+              ],
+              "answer": "Francia"
+          },
+          {
+              "id": 34,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Qual è la distanza ufficiale di una maratona?",
+              "options": [
+                  "38,195 km",
+                  "40,195 km",
+                  "42,195 km",
+                  "44,195 km"
+              ],
+              "answer": "42,195 km"
+          },
+          {
+              "id": 35,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale squadra ha vinto il Mondiale di rugby nel 2019?",
+              "options": [
+                  "Nuova Zelanda",
+                  "Inghilterra",
+                  "Sudafrica",
+                  "Australia"
+              ],
+              "answer": "Sudafrica"
+          },
+          {
+              "id": 36,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale sport è noto per il 'Grand Slam'?",
+              "options": [
+                  "Golf",
+                  "Tennis",
+                  "Baseball",
+                  "Pallavolo"
+              ],
+              "answer": "Tennis"
+          },
+          {
+              "id": 37,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quanti giocatori ci sono in una squadra di pallavolo?",
+              "options": [
+                  "5",
+                  "6",
+                  "7",
+                  "8"
+              ],
+              "answer": "6"
+          },
+          {
+              "id": 38,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Chi ha segnato il gol decisivo nella finale di Champions League 2014 tra Real Madrid e Atlético Madrid?",
+              "options": [
+                  "Cristiano Ronaldo",
+                  "Gareth Bale",
+                  "Sergio Ramos",
+                  "Ángel Di María"
+              ],
+              "answer": "Gareth Bale"
+          },
+          {
+              "id": 39,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "In quale sport si usa una mazza e una pallina su un campo erboso?",
+              "options": [
+                  "Baseball",
+                  "Golf",
+                  "Cricket",
+                  "Hockey su prato"
+              ],
+              "answer": "Hockey su prato"
+          },
+          {
+              "id": 40,
+              "category": "Sport",
+              "type": "multiple",
+              "question": "Quale nazione ha ospitato le Olimpiadi del 2008?",
+              "options": [
+                  "Grecia",
+                  "Cina",
+                  "Regno Unito",
+                  "Brasile"
+              ],
+              "answer": "Cina"
+          },
+          {
+            "id": 41,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "L'Impero Romano d'Occidente cadde nel 476 d.C.?",
+            "answer": "Vero"
+          },
+          {
+            "id": 42,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Chi fu il primo imperatore di Roma?",
+            "options": ["Augusto", "Nerone", "Cesare", "Traiano"],
+            "answer": "Augusto"
+          },
+          {
+            "id": 43,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "La Rivoluzione Francese iniziò nel 1789?",
+            "answer": "Vero"
+          },
+          {
+            "id": 44,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Quale esploratore scoprì l'America nel 1492?",
+            "options": ["Cristoforo Colombo", "Vasco da Gama", "Amerigo Vespucci", "Ferdinando Magellano"],
+            "answer": "Cristoforo Colombo"
+          },
+          {
+            "id": 45,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "La Prima Guerra Mondiale iniziò nel 1914?",
+            "answer": "Vero"
+          },
+          {
+            "id": 46,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Chi era il presidente degli Stati Uniti durante la Guerra Civile Americana?",
+            "options": ["Abraham Lincoln", "George Washington", "Theodore Roosevelt", "Thomas Jefferson"],
+            "answer": "Abraham Lincoln"
+          },
+          {
+            "id": 47,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "La Grande Muraglia è stata costruita dalla Cina?",
+            "answer": "Vero"
+          },
+          {
+            "id": 48,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Chi era il re di Francia durante la Rivoluzione Francese?",
+            "options": ["Luigi XVI", "Carlo Magno", "Luigi XIV", "Filippo II"],
+            "answer": "Luigi XVI"
+          },
+          {
+            "id": 49,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "Il Titanic affondò nel 1912?",
+            "answer": "Vero"
+          },
+          {
+            "id": 50,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Quale evento segnò l'inizio della Seconda Guerra Mondiale?",
+            "options": ["L'invasione della Polonia", "L'attacco a Pearl Harbor", "Il Trattato di Versailles", "La marcia su Roma"],
+            "answer": "L'invasione della Polonia"
+          },
+          {
+            "id": 51,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "Niccolò Machiavelli scrisse 'Il Principe'?",
+            "answer": "Vero"
+          },
+          {
+            "id": 52,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "L'antica città di Troia esisteva davvero?",
+            "answer": "Vero"
+          },
+          {
+            "id": 53,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Chi guidò la Rivoluzione russa del 1917?",
+            "options": ["Lenin", "Stalin", "Trotsky", "Gorbaciov"],
+            "answer": "Lenin"
+          },
+          {
+            "id": 54,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "Cleopatra VII fu l'ultimo faraone d'Egitto?",
+            "answer": "Vero"
+          },
+          {
+            "id": 55,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Quale paese ha lanciato il primo satellite nello spazio?",
+            "options": ["Unione Sovietica", "Stati Uniti", "Cina", "Germania"],
+            "answer": "Unione Sovietica"
+          },
+          {
+            "id": 56,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "Benito Mussolini era il dittatore italiano durante la Seconda Guerra Mondiale?",
+            "answer": "Vero"
+          },
+          {
+            "id": 57,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "Napoleone Bonaparte è morto nel 1821?",
+            "answer": "Vero"
+          },
+          {
+            "id": 58,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "L'Impero Romano ha avuto due capitali dopo il 330 d.C.?",
+            "answer": "Vero"
+          },
+          {
+            "id": 59,
+            "category": "Storia",
+            "type": "boolean",
+            "question": "La Magna Carta è stata firmata nel 1215?",
+            "answer": "Vero"
+          },
+          {
+            "id": 60,
+            "category": "Storia",
+            "type": "multiple",
+            "question": "Chi ha scoperto la penicillina?",
+            "options": ["Alexander Fleming", "Louis Pasteur", "Robert Koch", "Edward Jenner"],
+            "answer": "Alexander Fleming"
+          },
+          {
+            "id": 61,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è la capitale del Canada?",
+            "options": ["Toronto", "Ottawa", "Vancouver", "Montreal"],
+            "answer": "Ottawa"
+          },
+          {
+            "id": 62,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il fiume più lungo del mondo è l'Amazzonia?",
+            "answer": "Falso"
+          },
+          {
+            "id": 63,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Quale continente è il più popoloso?",
+            "options": ["Africa", "Asia", "Europa", "America"],
+            "answer": "Asia"
+          },
+          {
+            "id": 64,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è il deserto più grande del mondo?",
+            "options": ["Gobi", "Kalahari", "Sahara", "Atacama"],
+            "answer": "Sahara"
+          },
+          {
+            "id": 65,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è il monte più alto d'Europa?",
+            "options": ["Monte Bianco", "Monte Elbrus", "Monte Rosa", "Monti Urali"],
+            "answer": "Monte Elbrus"
+          },
+          {
+            "id": 66,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "L'Australia è un continente?",
+            "answer": "Vero"
+          },
+          {
+            "id": 67,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è la capitale del Giappone?",
+            "options": ["Osaka", "Kyoto", "Tokyo", "Nagoya"],
+            "answer": "Tokyo"
+          },
+          {
+            "id": 68,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il Mar Morto è in realtà un mare?",
+            "answer": "Falso"
+          },
+          {
+            "id": 69,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "In quale paese si trova Machu Picchu?",
+            "options": ["Messico", "Perù", "Colombia", "Cile"],
+            "answer": "Perù"
+          },
+          {
+            "id": 70,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è il paese più grande del mondo?",
+            "options": ["USA", "Cina", "Russia", "Canada"],
+            "answer": "Russia"
+          },
+          {
+            "id": 71,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il Polo Sud si trova in Antartide?",
+            "answer": "Vero"
+          },
+          {
+            "id": 72,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Quale città è conosciuta come 'la città eterna'?",
+            "options": ["Atene", "Roma", "Parigi", "Istanbul"],
+            "answer": "Roma"
+          },
+          {
+            "id": 73,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "In quale paese si trova il Grand Canyon?",
+            "options": ["USA", "Messico", "Canada", "Argentina"],
+            "answer": "USA"
+          },
+          {
+            "id": 74,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il fiume Po è il più lungo d'Italia?",
+            "answer": "Vero"
+          },
+          {
+            "id": 75,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Quale oceano bagna la costa orientale degli Stati Uniti?",
+            "options": ["Pacifico", "Indiano", "Atlantico", "Artico"],
+            "answer": "Atlantico"
+          },
+          {
+            "id": 76,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è la montagna più alta d'Africa?",
+            "options": ["Monte Kenya", "Kilimangiaro", "Ruwenzori", "Drakensberg"],
+            "answer": "Kilimangiaro"
+          },
+          {
+            "id": 77,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il deserto del Gobi si trova in Asia?",
+            "answer": "Vero"
+          },
+          {
+            "id": 78,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è il paese più piccolo del mondo?",
+            "options": ["San Marino", "Liechtenstein", "Monaco", "Vaticano"],
+            "answer": "Vaticano"
+          },
+          {
+            "id": 79,
+            "category": "Geografia",
+            "type": "boolean",
+            "question": "Il Rio delle Amazzoni attraversa il Brasile?",
+            "answer": "Vero"
+          },
+          {
+            "id": 80,
+            "category": "Geografia",
+            "type": "multiple",
+            "question": "Qual è la capitale della Corea del Sud?",
+            "options": ["Seul", "Busan", "Incheon", "Daegu"],
+            "answer": "Seul"
+          },
+              {
+                "id": 81,
+                "category": "Arte",
+                "type": "text",
+                "question": "Chi ha dipinto la Gioconda?",
+                "answer": "Leonardo da Vinci"
+              },
+              {
+                "id": 82,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "Quale movimento artistico è associato a Vincent van Gogh?",
+                "options": [
+                  "Impressionismo",
+                  "Espressionismo",
+                  "Post-impressionismo",
+                  "Cubismo"
+                ],
+                "answer": "Post-impressionismo"
+              },
+              {
+                "id": 83,
+                "category": "Arte",
+                "type": "text",
+                "question": "Quale tecnica di pittura utilizza piccoli puntini di colore per formare un'immagine?",
+                "answer": "Pointillismo"
+              },
+              {
+                "id": 84,
+                "category": "Arte",
+                "type": "boolean",
+                "question": "Il realismo è un movimento artistico nato nel XX secolo?",
+                "answer": "Falso"
+              },
+              {
+                "id": 85,
+                "category": "Arte",
+                "type": "text",
+                "question": "Chi ha dipinto 'La Notte Stellata'?",
+                "answer": "Vincent van Gogh"
+              },
+              {
+                "id": 86,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "Quale artista è celebre per il dipinto 'Il bacio'?",
+                "options": [
+                  "Gustav Klimt",
+                  "Edvard Munch",
+                  "Henri Matisse",
+                  "Pablo Picasso"
+                ],
+                "answer": "Gustav Klimt"
+              },
+              {
+                "id": 87,
+                "category": "Arte",
+                "type": "text",
+                "question": "Chi ha realizzato il celebre dipinto 'Guernica'?",
+                "answer": "Pablo Picasso"
+              },
+              {
+                "id": 88,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "Quale stile artistico, caratterizzato da forme geometriche e colori primari, è esemplificato dalle opere di Piet Mondrian?",
+                "options": [
+                  "Cubismo",
+                  "Futurismo",
+                  "Neoplasticismo",
+                  "Realismo"
+                ],
+                "answer": "Neoplasticismo"
+              },
+              {
+                "id": 89,
+                "category": "Arte",
+                "type": "boolean",
+                "question": "L'arte rinascimentale ha avuto origine in Italia?",
+                "answer": "Vero"
+              },
+              {
+                "id": 90,
+                "category": "Arte",
+                "type": "text",
+                "question": "Qual è il nome del famoso scultore che ha realizzato il David?",
+                "answer": "Michelangelo"
+              },
+              {
+                "id": 91,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "A quale corrente artistica è associato Salvador Dalí?",
+                "options": [
+                  "Surrealismo",
+                  "Impressionismo",
+                  "Rinascimento",
+                  "Barocco"
+                ],
+                "answer": "Surrealismo"
+              },
+              {
+                "id": 92,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "Chi ha dipinto 'L'urlo'?",
+                "options": [
+                  "Edvard Munch",
+                  "Gustav Klimt",
+                  "Francis Bacon",
+                  "René Magritte"
+                ],
+                "answer": "Edvard Munch"
+              },
+              {
+                "id": 93,
+                "category": "Arte",
+                "type": "text",
+                "question": "Quale tecnica di incisione prevede l'uso di una lastra di rame e l'azione di un acido?",
+                "answer": "Acquaforte"
+              },
+              {
+                "id": 94,
+                "category": "Arte",
+                "type": "boolean",
+                "question": "Il cubismo ha rivoluzionato la prospettiva tradizionale in pittura?",
+                "answer": "Vero"
+              },
+              {
+                "id": 95,
+                "category": "Arte",
+                "type": "text",
+                "question": "Quale scultore francese è celebre per la statua 'Il Pensatore'?",
+                "answer": "Auguste Rodin"
+              },
+              {
+                "id": 96,
+                "category": "Arte",
+                "type": "boolean",
+                "question": "Il Rinascimento fu un periodo di grande innovazione artistica in Europa?",
+                "answer": "Vero"
+              },
+              {
+                "id": 97,
+                "category": "Arte",
+                "type": "multiple",
+                "question": "Quale movimento artistico è noto per l'uso di oggetti di consumo e immagini della cultura pop?",
+                "options": [
+                  "Dadaismo",
+                  "Pop Art",
+                  "Futurismo",
+                  "Espressionismo"
+                ],
+                "answer": "Pop Art"
+              },
+              {
+                "id": 98,
+                "category": "Arte",
+                "type": "boolean",
+                "question": "L'arte moderna comprende opere create tra il 1860 e il 1970?",
+                "answer": "Vero"
+              },
+              {
+                "id": 99,
+                "category": "Arte",
+                "type": "text",
+                "question": "Chi è stato il principale esponente del movimento artistico della Pop Art?",
+                "answer": "Andy Warhol"
+              },
+              {
+                "id": 100,
+                "category": "Arte",
+                "type": "text",
+                "question": "Chi ha dipinto 'La Notte Stellata'?",
+                "answer": "Vincent van Gogh"
+              }, {
+                "id": 101,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Chi è l'autore della canzone 'Bohemian Rhapsody'?",
+                "options": [
+                  "The Beatles",
+                  "Queen",
+                  "The Rolling Stones",
+                  "Led Zeppelin"
+                ],
+                "answer": "Queen"
+              },
+              {
+                "id": 102,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi è il 'Re del Pop'?",
+                "answer": "Michael Jackson"
+              },
+              {
+                "id": 103,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Quale di questi strumenti è a corda?",
+                "options": [
+                  "Pianoforte",
+                  "Violino",
+                  "Flauto",
+                  "Sassofono"
+                ],
+                "answer": "Violino"
+              },
+              {
+                "id": 104,
+                "category": "Musica",
+                "type": "boolean",
+                "question": "Ludwig van Beethoven era cieco?",
+                "answer": "Falso"
+              },
+              {
+                "id": 105,
+                "category": "Musica",
+                "type": "text",
+                "question": "Quale band ha scritto l'album 'The Dark Side of the Moon'?",
+                "answer": "Pink Floyd"
+              },
+              {
+                "id": 106,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Chi ha composto 'Le quattro stagioni'?",
+                "options": [
+                  "Bach",
+                  "Mozart",
+                  "Vivaldi",
+                  "Beethoven"
+                ],
+                "answer": "Vivaldi"
+              },
+              {
+                "id": 107,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi è il cantante dei Rolling Stones?",
+                "answer": "Mick Jagger"
+              },
+              {
+                "id": 108,
+                "category": "Musica",
+                "type": "boolean",
+                "question": "La chitarra è uno strumento a fiato?",
+                "answer": "Falso"
+              },
+              {
+                "id": 109,
+                "category": "Musica",
+                "type": "text",
+                "question": "Qual è il nome del primo album dei Beatles?",
+                "answer": "Please Please Me"
+              },
+              {
+                "id": 110,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Chi ha scritto l'opera 'La Traviata'?",
+                "options": [
+                  "Puccini",
+                  "Verdi",
+                  "Rossini",
+                  "Donizetti"
+                ],
+                "answer": "Verdi"
+              },
+              {
+                "id": 111,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi è il fondatore dei Nirvana?",
+                "answer": "Kurt Cobain"
+              },
+              {
+                "id": 112,
+                "category": "Musica",
+                "type": "boolean",
+                "question": "Elvis Presley è nato in Inghilterra?",
+                "answer": "Falso"
+              },
+              {
+                "id": 113,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Quale di questi è un genere musicale?",
+                "options": [
+                  "Cubismo",
+                  "Rinascimento",
+                  "Jazz",
+                  "Barocco"
+                ],
+                "answer": "Jazz"
+              },
+              {
+                "id": 114,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi ha scritto la canzone 'Imagine'?",
+                "answer": "John Lennon"
+              },
+              {
+                "id": 115,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Quale cantante è noto per l'album 'Like a Virgin'?",
+                "options": [
+                  "Madonna",
+                  "Britney Spears",
+                  "Lady Gaga",
+                  "Mariah Carey"
+                ],
+                "answer": "Madonna"
+              },
+              {
+                "id": 116,
+                "category": "Musica",
+                "type": "boolean",
+                "question": "Il pianoforte ha 88 tasti?",
+                "answer": "Vero"
+              },
+              {
+                "id": 117,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi ha scritto l'inno nazionale italiano?",
+                "answer": "Goffredo Mameli"
+              },
+              {
+                "id": 118,
+                "category": "Musica",
+                "type": "multiple",
+                "question": "Quale band è famosa per la canzone 'Stairway to Heaven'?",
+                "options": [
+                  "Queen",
+                  "Pink Floyd",
+                  "Led Zeppelin",
+                  "The Doors"
+                ],
+                "answer": "Led Zeppelin"
+              },
+              {
+                "id": 119,
+                "category": "Musica",
+                "type": "text",
+                "question": "Chi ha scritto la colonna sonora di 'Il Padrino'?",
+                "answer": "Nino Rota"
+              },
+              {
+                "id": 120,
+                "category": "Musica",
+                "type": "boolean",
+                "question": "Il clarinetto è uno strumento a fiato?",
+                "answer": "Vero"
+              },{
+                "id": 121,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "Chi ha diretto il film 'Inception'?",
+                "options": [
+                  "Christopher Nolan",
+                  "Steven Spielberg",
+                  "Martin Scorsese",
+                  "Ridley Scott"
+                ],
+                "answer": "Christopher Nolan"
+              },
+              {
+                "id": 122,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'Titanic' è uscito nel 1997?",
+                "answer": "Vero"
+              },
+              {
+                "id": 123,
+                "category": "Cinema",
+                "type": "text",
+                "question": "In quale film Tom Hanks interpreta il personaggio di Forrest Gump?",
+                "answer": "Forrest Gump"
+              },
+              {
+                "id": 124,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "Chi ha vinto l'Oscar come miglior attore nel 2020?",
+                "options": [
+                  "Leonardo DiCaprio",
+                  "Joaquin Phoenix",
+                  "Brad Pitt",
+                  "Tom Hanks"
+                ],
+                "answer": "Joaquin Phoenix"
+              },
+              {
+                "id": 125,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'The Matrix' è stato diretto da Joel ed Ethan Coen?",
+                "answer": "Falso"
+              },
+              {
+                "id": 126,
+                "category": "Cinema",
+                "type": "text",
+                "question": "Chi ha interpretato il ruolo di Jack Dawson in 'Titanic'?",
+                "answer": "Leonardo DiCaprio"
+              },
+              {
+                "id": 127,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "Quale film ha vinto l'Oscar come miglior film nel 2019?",
+                "options": [
+                  "Green Book",
+                  "Roma",
+                  "The Favourite",
+                  "Bohemian Rhapsody"
+                ],
+                "answer": "Green Book"
+              },
+              {
+                "id": 128,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'Gladiator' ha vinto 5 premi Oscar?",
+                "answer": "Vero"
+              },
+              {
+                "id": 129,
+                "category": "Cinema",
+                "type": "text",
+                "question": "Chi ha scritto e diretto il film 'Pulp Fiction'?",
+                "answer": "Quentin Tarantino"
+              },
+              {
+                "id": 130,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "In quale anno è uscito il film 'Avatar' di James Cameron?",
+                "options": [
+                  "2005",
+                  "2008",
+                  "2010",
+                  "2009"
+                ],
+                "answer": "2009"
+              },
+              {
+                "id": 131,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Nel film 'Il Signore degli Anelli', Gandalf è interpretato da Ian McKellen?",
+                "answer": "Vero"
+              },
+              {
+                "id": 132,
+                "category": "Cinema",
+                "type": "text",
+                "question": "Qual è il nome del personaggio principale nel film 'The Godfather'?",
+                "answer": "Vito Corleone"
+              },
+              {
+                "id": 133,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "Chi ha interpretato il ruolo di Joker nel film 'The Dark Knight'?",
+                "options": [
+                  "Jared Leto",
+                  "Heath Ledger",
+                  "Jack Nicholson",
+                  "Tom Hardy"
+                ],
+                "answer": "Heath Ledger"
+              },
+              {
+                "id": 134,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'La La Land' ha vinto sei premi Oscar?",
+                "answer": "Vero"
+              },
+              {
+                "id": 135,
+                "category": "Cinema",
+                "type": "text",
+                "question": "Chi ha diretto il film 'Schindler's List'?",
+                "answer": "Steven Spielberg"
+              },
+              {
+                "id": 136,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "Chi ha vinto il premio Oscar come miglior attrice nel 2019?",
+                "options": [
+                  "Nicole Kidman",
+                  "Charlize Theron",
+                  "Renée Zellweger",
+                  "Scarlett Johansson"
+                ],
+                "answer": "Renée Zellweger"
+              },
+              {
+                "id": 137,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'Jurassic Park' è basato su un libro di Michael Crichton?",
+                "answer": "Vero"
+              },
+              {
+                "id": 138,
+                "category": "Cinema",
+                "type": "text",
+                "question": "Qual è il nome del regista del film 'Inglourious Basterds'?",
+                "answer": "Quentin Tarantino"
+              },
+              {
+                "id": 139,
+                "category": "Cinema",
+                "type": "multiple",
+                "question": "In quale film recita il personaggio di Darth Vader?",
+                "options": [
+                  "Star Wars: A New Hope",
+                  "The Empire Strikes Back",
+                  "Return of the Jedi",
+                  "The Phantom Menace"
+                ],
+                "answer": "Star Wars: A New Hope"
+              },
+              {
+                "id": 140,
+                "category": "Cinema",
+                "type": "boolean",
+                "question": "Il film 'Forrest Gump' è basato su un libro di Winston Groom?",
+                "answer": "Vero"
+              },
+              {
+                "id": 141,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Il Grande Gatsby'?",
+                "options": [
+                  "Ernest Hemingway",
+                  "F. Scott Fitzgerald",
+                  "William Faulkner",
+                  "John Steinbeck"
+                ],
+                "answer": "F. Scott Fitzgerald"
+              },
+              {
+                "id": 142,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Don Chisciotte' è stato scritto da Miguel de Cervantes?",
+                "answer": "Vero"
+              },
+              {
+                "id": 143,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi è l'autore di 'I Promessi Sposi'?",
+                "answer": "Alessandro Manzoni"
+              },
+              {
+                "id": 144,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto '1984'?",
+                "options": [
+                  "Aldous Huxley",
+                  "George Orwell",
+                  "Ray Bradbury",
+                  "J.R.R. Tolkien"
+                ],
+                "answer": "George Orwell"
+              },
+              {
+                "id": 145,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Orgoglio e Pregiudizio' è stato scritto da Charlotte Brontë?",
+                "answer": "Falso"
+              },
+              {
+                "id": 146,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi ha scritto 'Il Processo'?",
+                "answer": "Franz Kafka"
+              },
+              {
+                "id": 147,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Moby Dick'?",
+                "options": [
+                  "Herman Melville",
+                  "Mark Twain",
+                  "H.G. Wells",
+                  "Jack London"
+                ],
+                "answer": "Herman Melville"
+              },
+              {
+                "id": 148,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Il giovane Holden' è stato scritto da J.D. Salinger?",
+                "answer": "Vero"
+              },
+              {
+                "id": 149,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi ha scritto 'La Metamorfosi'?",
+                "answer": "Franz Kafka"
+              },
+              {
+                "id": 150,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Le affinità elettive'?",
+                "options": [
+                  "Hermann Hesse",
+                  "Johann Wolfgang von Goethe",
+                  "Friedrich Nietzsche",
+                  "Thomas Mann"
+                ],
+                "answer": "Johann Wolfgang von Goethe"
+              },
+              {
+                "id": 151,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Il Signore degli Anelli' è stato scritto da C.S. Lewis?",
+                "answer": "Falso"
+              },
+              {
+                "id": 152,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi ha scritto 'Frankenstein'?",
+                "answer": "Mary Shelley"
+              },
+              {
+                "id": 153,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Anna Karenina'?",
+                "options": [
+                  "Fëdor Dostoevskij",
+                  "Lev Tolstoj",
+                  "Anton Čechov",
+                  "Nikolaj Gogol"
+                ],
+                "answer": "Lev Tolstoj"
+              },
+              {
+                "id": 154,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Guerra e Pace' è stato scritto da Lev Tolstoj?",
+                "answer": "Vero"
+              },
+              {
+                "id": 155,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi ha scritto 'Il Capitale'?",
+                "answer": "Karl Marx"
+              },
+              {
+                "id": 156,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Cime tempestose'?",
+                "options": [
+                  "Jane Austen",
+                  "Emily Brontë",
+                  "Charlotte Brontë",
+                  "Mary Shelley"
+                ],
+                "answer": "Emily Brontë"
+              },
+              {
+                "id": 157,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Il Conte di Montecristo' è stato scritto da Alexandre Dumas?",
+                "answer": "Vero"
+              },
+              {
+                "id": 158,
+                "category": "Letteratura",
+                "type": "text",
+                "question": "Chi ha scritto 'Il Piccolo Principe'?",
+                "answer": "Antoine de Saint-Exupéry"
+              },
+              {
+                "id": 159,
+                "category": "Letteratura",
+                "type": "multiple",
+                "question": "Chi ha scritto 'Il Maestro e Margherita'?",
+                "options": [
+                  "Boris Pasternak",
+                  "Mikhail Bulgakov",
+                  "Aleksandr Solzhenicyn",
+                  "Ivan Turgenev"
+                ],
+                "answer": "Mikhail Bulgakov"
+              },
+              {
+                "id": 160,
+                "category": "Letteratura",
+                "type": "boolean",
+                "question": "'Il Gattopardo' è stato scritto da Giuseppe Tomasi di Lampedusa?",
+                "answer": "Vero"
+              }
+            ]
+          
+};
 
 // Funzione per eseguire un debug del modale
 function debugModal() {
@@ -2542,30 +3840,130 @@ function showShop() {
         },
         {
             id: 'shield',
-            name: 'Scudo',
-            description: 'Protegge da una risposta sbagliata',
+            name: 'Ruba Crediti',
+            description: 'Ruba 30 crediti da un altro giocatore a tua scelta',
             price: 60,
             action: function() {
-                const player = players[currentPlayerIndex];
-                if (!player.powerups) player.powerups = {};
-                if (!player.powerups.shields) player.powerups.shields = 0;
+                const currentPlayer = players[currentPlayerIndex];
                 
-                player.powerups.shields++;
-                addToGameLog(`${player.name} ha acquistato uno Scudo`);
-                showAnimatedNotification('Scudo attivato! Ti proteggerà da una risposta sbagliata', 'success');
+                // Crea una modale per scegliere il giocatore da cui rubare
+                const modal = document.createElement('div');
+                modal.className = 'modal active';
+                modal.id = 'stealModal';
                 
-                // Salva lo stato del gioco
-                saveGameData();
+                let playersHTML = '';
+                players.forEach((player, index) => {
+                    // Non mostrare il giocatore corrente
+                    if (index !== currentPlayerIndex) {
+                        playersHTML += `
+                            <div class="player-steal-option" data-player-index="${index}">
+                                <span class="player-avatar" style="background-color: ${player.color}">
+                                    ${player.avatar}
+                                </span>
+                                <span class="player-name">${player.name}</span>
+                                <span class="player-credits">${player.credits || 0} <i class="fas fa-gem" style="color: #3b82f6;"></i></span>
+                            </div>
+                        `;
+                    }
+                });
                 
-                // Aggiorna l'UI per mostrare lo scudo
-                renderPlayerInfo();
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>Ruba Crediti</h2>
+                        <p>Scegli il giocatore da cui rubare 30 crediti:</p>
+                        <div class="player-steal-options">
+                            ${playersHTML}
+                        </div>
+                        <button id="cancelStealBtn" class="btn btn-secondary">Annulla</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Aggiungi stile inline per le opzioni di furto
+                const style = document.createElement('style');
+                style.textContent = `
+                    .player-steal-option {
+                        display: flex;
+                        align-items: center;
+                        padding: 15px;
+                        margin: 10px 0;
+                        background: rgba(30, 41, 59, 0.6);
+                        border-radius: var(--border-radius);
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    }
+                    .player-steal-option:hover {
+                        transform: translateY(-2px);
+                        background: rgba(30, 41, 59, 0.8);
+                    }
+                    .player-avatar {
+                        width: 30px;
+                        height: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        margin-right: 10px;
+                    }
+                    .player-name {
+                        flex: 1;
+                    }
+                    .player-credits {
+                        font-weight: bold;
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // Aggiungi event listener per il pulsante di annullamento
+                document.getElementById('cancelStealBtn').addEventListener('click', () => {
+                    modal.remove();
+                    // Restituisci i crediti spesi
+                    currentPlayer.credits += 60;
+                    renderPlayerInfo();
+                });
+                
+                // Aggiungi event listener per le opzioni di furto
+                const stealOptions = modal.querySelectorAll('.player-steal-option');
+                stealOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const targetIndex = parseInt(this.dataset.playerIndex);
+                        const targetPlayer = players[targetIndex];
+                        
+                        // Verifica che il giocatore target abbia abbastanza crediti
+                        if (targetPlayer.credits && targetPlayer.credits >= 30) {
+                            // Sottrai i crediti al giocatore target
+                            targetPlayer.credits -= 30;
+                            // Aggiungi i crediti al giocatore corrente (oltre a quelli spesi)
+                            currentPlayer.credits += 30;
+                            
+                            addToGameLog(`${currentPlayer.name} ha rubato 30 crediti a ${targetPlayer.name}!`);
+                            showAnimatedNotification(`Hai rubato 30 crediti a ${targetPlayer.name}!`, 'success');
+                            
+                            // Aggiorna l'UI
+                            renderPlayerInfo();
+                            
+                            // Salva lo stato del gioco
+                            saveGameData();
+                        } else {
+                            // Il giocatore non ha abbastanza crediti
+                            showAnimatedNotification(`${targetPlayer.name} non ha abbastanza crediti da rubare!`, 'error');
+                            // Restituisci i crediti spesi
+                            currentPlayer.credits += 60;
+                            renderPlayerInfo();
+                        }
+                        
+                        // Chiudi la modale
+                        modal.remove();
+                    });
+                });
             }
         },
         {
             id: 'category-choice',
             name: 'Scelta Categoria',
             description: 'Scegli la categoria della prossima domanda. Se rispondi correttamente otterrai anche una stella!',
-            price: 100,
+            price: 130,
             action: function() {
                 const player = players[currentPlayerIndex];
                 if (!player.powerups) player.powerups = {};
