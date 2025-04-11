@@ -1199,6 +1199,12 @@ function showQuestion() {
     const player = players[currentPlayerIndex];
     console.log('Giocatore corrente:', player);
     
+    // Verifica se è già in corso una selezione di categoria
+    if (document.getElementById('categoryModal')) {
+        console.log('Selezione categoria già in corso, non mostrare nuovamente il prompt');
+        return;
+    }
+    
     // Verifica se il giocatore ha il powerup per scegliere la categoria
     if (player.powerups && player.powerups.categoryChoice && player.powerups.categoryChoice > 0) {
         // Chiedi se vuole usare il powerup
@@ -1238,8 +1244,7 @@ function showCategorySelector() {
         return;
     }
     
-    // Non impostare ancora il flag usedCategoryChoice
-    // Verrà impostato in loadRandomQuestion quando viene effettivamente scelta una categoria
+    console.log('Mostrando selettore categorie, il giocatore otterrà una stella se risponde correttamente');
     
     // Chiudi qualsiasi modale aperto, incluso i timer
     if (timerTimeout) {
@@ -1271,6 +1276,7 @@ function showCategorySelector() {
     modal.innerHTML = `
         <div class="modal-content">
             <h3>Scegli una categoria</h3>
+            <p style="color: gold;"><i class="fas fa-star"></i> Risposta corretta = 1 stella!</p>
             <div class="category-buttons">
                 ${categoriesHTML}
             </div>
@@ -1669,6 +1675,13 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
     try {
         console.log('Loading questions for category:', category, 'isChosenCategory:', isChosenCategory);
         
+        // Se il giocatore ha usato la scelta categoria, registralo immediatamente
+        // per evitare che venga perso in caso di errori durante il caricamento
+        if (isChosenCategory) {
+            console.log('Impostazione flag usedCategoryChoice a true');
+            players[currentPlayerIndex].usedCategoryChoice = true;
+        }
+        
         // Show loading message
         const loadingMessage = document.createElement('div');
         loadingMessage.className = 'loading-message';
@@ -1728,12 +1741,7 @@ async function loadRandomQuestion(category, isChosenCategory = false) {
 
         const randomIndex = Math.floor(Math.random() * questions.length);
         const selectedQuestion = questions[randomIndex];
-        console.log('Selected question:', selectedQuestion);
-        
-        // Se il giocatore ha usato la scelta categoria, registralo
-        if (isChosenCategory) {
-            players[currentPlayerIndex].usedCategoryChoice = true;
-        }
+        console.log('Selected question:', selectedQuestion, 'Passing isChosenCategory:', isChosenCategory);
         
         displayQuestion(selectedQuestion, isChosenCategory);
     } catch (error) {
@@ -3344,7 +3352,7 @@ function displayQuestion(question, isChosenCategory = false) {
     const modals = document.querySelectorAll('.modal.active');
     modals.forEach(m => m.classList.remove('active'));
     
-    console.log('Showing question:', question);
+    console.log('Showing question:', question, 'isChosenCategory:', isChosenCategory);
     
     // Crea una nuova modale per la domanda
     let questionModal = document.getElementById('questionModal');
@@ -3438,7 +3446,7 @@ function displayQuestion(question, isChosenCategory = false) {
                         }
                     });
                     
-                    showQuestionResult(isCorrect, question.answer);
+                    showQuestionResult(isCorrect, question.answer, isChosenCategory);
                 }, 500);
             });
         });
@@ -3466,7 +3474,7 @@ function displayQuestion(question, isChosenCategory = false) {
                         }
                     });
                     
-                    showQuestionResult(isCorrect, question.answer);
+                    showQuestionResult(isCorrect, question.answer, isChosenCategory);
                 }, 500);
             });
         });
@@ -3490,7 +3498,7 @@ function displayQuestion(question, isChosenCategory = false) {
             const userAnswer = inputField.value.trim();
             if (userAnswer) {
                 const isCorrect = checkTextAnswer(userAnswer, question.answer);
-                showQuestionResult(isCorrect, question.answer);
+                showQuestionResult(isCorrect, question.answer, isChosenCategory);
             }
         });
     }
@@ -3625,14 +3633,18 @@ function timeOver(correctAnswer) {
  * Mostra il risultato della risposta a una domanda
  * @param {boolean} isCorrect - Se la risposta è corretta
  * @param {string} correctAnswer - La risposta corretta alla domanda
+ * @param {boolean} isChosenCategory - Se la domanda è di una categoria scelta dal giocatore
  */
-function showQuestionResult(isCorrect, correctAnswer) {
+function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) {
     // Ottieni la modale attiva
     const questionModal = document.getElementById('questionModal');
     if (!questionModal) {
         console.error('Modale della domanda non trovata');
         return;
     }
+
+    console.log('showQuestionResult - isCorrect:', isCorrect, 'isChosenCategory:', isChosenCategory);
+    console.log('Player usedCategoryChoice flag:', players[currentPlayerIndex].usedCategoryChoice);
 
     // Ferma il timer
     clearQuestionTimer();
@@ -3691,7 +3703,7 @@ function showQuestionResult(isCorrect, correctAnswer) {
     const hasStarEarningAbility = player.powerups && player.powerups.earnsStarsFromAnswers;
     
     // Aggiorna le stelle solo se ha l'abilità o se è stata usata la scelta categoria
-    const categoryChoiceUsed = player.usedCategoryChoice === true;
+    const categoryChoiceUsed = player.usedCategoryChoice === true || isChosenCategory === true;
     
     // Aggiorna le info del player in base alla risposta
     if (isCorrect) {
@@ -3706,6 +3718,7 @@ function showQuestionResult(isCorrect, correctAnswer) {
         // Fornisci la stella SOLO se ha l'abilità di guadagnare stelle oppure ha usato la scelta categoria
         if (hasStarEarningAbility || categoryChoiceUsed) {
             player.stars++;
+            showAnimatedNotification(`Hai guadagnato una stella! ⭐`, 'success');
             saveGameData();
             renderPlayerInfo();
             addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
