@@ -239,28 +239,9 @@ function initGameBoard() {
         for (let col = 0; col < BOARD_SIZE; col++) {
             const space = document.createElement('div');
             const position = { row, col };
-            let spaceType = 'empty';
             
-            // Determina il tipo di spazio in base al tipo di mappa
-            if (mapType === 'special') {
-                // Mappa speciale con più stelle e caselle speciali
-                if (isPositionInList(position, starPositions)) {
-                    spaceType = 'star';
-                } else if (isPositionInList(position, specialPositions)) {
-                    spaceType = 'special';
-                } else if (isEdgePosition(row, col, BOARD_SIZE) || isCrossPattern(row, col, BOARD_SIZE)) {
-                    spaceType = 'quiz';
-                }
-            } else {
-                // Mappa standard o altre mappe con pattern regolare
-                if (isPositionInList(position, starPositions)) {
-                    spaceType = 'star';
-                } else if (isPositionInList(position, specialPositions)) {
-                    spaceType = 'special';
-                } else if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
-                    spaceType = 'quiz';
-                }
-            }
+            // Usa la nuova funzione per determinare il tipo di spazio
+            const spaceType = determineSpaceType(position);
             
             // Imposta l'elemento spazio
             space.className = `space ${spaceType}`;
@@ -4851,4 +4832,61 @@ function showTripleStarResult(isCorrect, correctAnswer) {
     
     // Aggiungi il risultato alla modale
     modalContent.appendChild(resultDiv);
+}
+
+/**
+ * Determinare il tipo di spazio in base al tipo di mappa
+ * @param {Object} position - La posizione {row, col}
+ * @returns {string} - Il tipo di spazio ('star', 'special', 'quiz', 'empty')
+ */
+function determineSpaceType(position) {
+    // Prima verificare se è una posizione di stella o speciale
+    if (isPositionInList(position, starPositions)) {
+        return 'star';
+    } else if (isPositionInList(position, specialPositions)) {
+        return 'special';
+    }
+    
+    const { row, col } = position;
+    
+    // Determina il tipo di spazio in base al tipo di mappa
+    if (mapType === 'special') {
+        // Mappa speciale con pattern a croce personalizzato
+        if (isEdgePosition(row, col, BOARD_SIZE) || isCrossPattern(row, col, BOARD_SIZE)) {
+            return 'quiz';
+        }
+    } else if (mapType === 'large') {
+        // Mappa grande (9x9) - aggiungiamo più caselle quiz per evitare zone isolate
+        if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
+            return 'quiz';
+        }
+        
+        // Aggiungiamo percorsi diagonali per la mappa grande
+        const quarter = Math.floor(BOARD_SIZE/4);
+        const threeQuarters = Math.floor(3*BOARD_SIZE/4);
+        
+        // Aggiungiamo percorsi diagonali e punti intermedi
+        if ((row === quarter && col === quarter) || 
+            (row === quarter && col === threeQuarters) ||
+            (row === threeQuarters && col === quarter) ||
+            (row === threeQuarters && col === threeQuarters) ||
+            (row === 2 && col === 2) ||
+            (row === 2 && col === BOARD_SIZE-3) ||
+            (row === BOARD_SIZE-3 && col === 2) ||
+            (row === BOARD_SIZE-3 && col === BOARD_SIZE-3) ||
+            (row === 2 && col === Math.floor(BOARD_SIZE/2)) ||
+            (row === BOARD_SIZE-3 && col === Math.floor(BOARD_SIZE/2)) ||
+            (row === Math.floor(BOARD_SIZE/2) && col === 2) ||
+            (row === Math.floor(BOARD_SIZE/2) && col === BOARD_SIZE-3)) {
+            return 'quiz';
+        }
+    } else {
+        // Mappe standard e piccola
+        if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
+            return 'quiz';
+        }
+    }
+    
+    // Se non è stato determinato un tipo, è una casella vuota
+    return 'empty';
 }
