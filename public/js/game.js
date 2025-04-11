@@ -3744,6 +3744,8 @@ let timerInterval = null;
  * @param {Function} callback - Funzione da chiamare allo scadere del timer
  */
 function startQuestionTimer(seconds, callback) {
+    console.log('Avvio timer con durata:', seconds, 'secondi');
+    
     // Trova l'elemento timer
     const timerBar = document.querySelector('.timer-bar');
     if (!timerBar) {
@@ -3751,22 +3753,80 @@ function startQuestionTimer(seconds, callback) {
         return;
     }
     
+    console.log('Timer bar trovata, dimensioni:', timerBar.offsetWidth, 'x', timerBar.offsetHeight);
+    console.log('Timer bar parent:', timerBar.parentElement);
+    
+    // Aggiungi anche un timer testuale di fallback
+    let timerTextElement = document.querySelector('.timer-text');
+    if (!timerTextElement) {
+        timerTextElement = document.createElement('div');
+        timerTextElement.className = 'timer-text';
+        timerTextElement.style.textAlign = 'center';
+        timerTextElement.style.marginTop = '5px';
+        timerTextElement.style.fontSize = '0.9rem';
+        timerTextElement.style.color = '#fff';
+        if (timerBar.parentElement) {
+            timerBar.parentElement.after(timerTextElement);
+        }
+    }
+    
     // Reset dello stile per assicurarsi che la transizione funzioni
     timerBar.style.transition = 'none';
     timerBar.style.width = '100%';
     
-    // Forza un reflow per assicurarsi che il browser riconosca il cambio dello stile
-    void timerBar.offsetWidth;
-    
-    // Imposta la transizione per una diminuzione fluida
-    timerBar.style.transition = `width ${seconds}s linear`;
-    timerBar.style.width = '0%';
-    
     // Pulisci eventuali timer precedenti
     clearQuestionTimer();
     
+    // Implementazione alternativa con animazione JS
+    const startTime = Date.now();
+    const totalTime = seconds * 1000;
+    
+    // Funzione di animazione che aggiorna la larghezza della barra
+    function updateTimerBar() {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, totalTime - elapsedTime);
+        const remainingPercent = Math.max(0, 100 - (elapsedTime / totalTime * 100));
+        
+        // Aggiorna la larghezza in base al tempo trascorso
+        timerBar.style.width = remainingPercent + '%';
+        
+        // Aggiorna anche il testo (come fallback)
+        const remainingSeconds = Math.ceil(remainingTime / 1000);
+        timerTextElement.textContent = `Tempo rimasto: ${remainingSeconds} secondi`;
+        
+        // Cambia colore in base al tempo rimasto
+        if (remainingSeconds <= 5) {
+            timerTextElement.style.color = '#f44336'; // rosso
+            timerTextElement.style.fontWeight = 'bold';
+        } else if (remainingSeconds <= 10) {
+            timerTextElement.style.color = '#ff9800'; // arancione
+        } else {
+            timerTextElement.style.color = '#fff'; // bianco
+            timerTextElement.style.fontWeight = 'normal';
+        }
+        
+        // Continua l'animazione finché non è finito il tempo
+        if (remainingPercent > 0 && !timerStopped) {
+            timerAnimationFrame = requestAnimationFrame(updateTimerBar);
+        }
+    }
+    
+    // Flag per tenere traccia se il timer è stato fermato
+    let timerStopped = false;
+    
+    // Inizia l'animazione
+    let timerAnimationFrame = requestAnimationFrame(updateTimerBar);
+    
     // Imposta il timeout per la fine del timer
     timerTimeout = setTimeout(() => {
+        timerStopped = true;
+        if (timerAnimationFrame) {
+            cancelAnimationFrame(timerAnimationFrame);
+        }
+        // Rimuovi il timer testuale
+        if (timerTextElement && timerTextElement.parentNode) {
+            timerTextElement.parentNode.removeChild(timerTextElement);
+        }
         callback();
     }, seconds * 1000);
 }
@@ -3779,11 +3839,27 @@ function clearQuestionTimer() {
         clearTimeout(timerTimeout);
         timerTimeout = null;
     }
+    
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
     }
+    
+    // Ferma anche eventuali requestAnimationFrame
+    if (timerAnimationFrame) {
+        cancelAnimationFrame(timerAnimationFrame);
+        timerAnimationFrame = null;
+    }
+    
+    // Rimuovi anche il timer testuale di fallback
+    const timerTextElement = document.querySelector('.timer-text');
+    if (timerTextElement && timerTextElement.parentNode) {
+        timerTextElement.parentNode.removeChild(timerTextElement);
+    }
 }
+
+// Variabile globale per il requestAnimationFrame
+let timerAnimationFrame = null;
 
 /**
  * Gestisce lo scadere del tempo per una domanda
