@@ -3799,7 +3799,7 @@ function showShop() {
             id: 'extra-dice',
             name: 'Dado Extra',
             description: 'Lancia il dado un\'altra volta in questo turno',
-            price: 40,
+            price: 20,
             action: function() {
                 addToGameLog(`${players[currentPlayerIndex].name} ha acquistato un Dado Extra`);
                 
@@ -3976,7 +3976,7 @@ function showShop() {
             id: 'category-choice',
             name: 'Scelta Categoria',
             description: 'Scegli la categoria della prossima domanda. Se rispondi correttamente otterrai anche una stella!',
-            price: 130,
+            price: 100,
             action: function() {
                 const player = players[currentPlayerIndex];
                 if (!player.powerups) player.powerups = {};
@@ -3991,6 +3991,33 @@ function showShop() {
                 
                 // Aggiorna l'UI per mostrare il powerup
                 renderPlayerInfo();
+            }
+        },
+        {
+            id: 'triple-star-challenge',
+            name: 'Sfida Tripla Stella',
+            description: 'Affronta una domanda casuale. Se rispondi correttamente otterrai 3 stelle!',
+            price: 200,
+            action: function() {
+                const player = players[currentPlayerIndex];
+                
+                addToGameLog(`${player.name} ha acquistato la Sfida Tripla Stella`);
+                showAnimatedNotification('Affronta la domanda per ottenere 3 stelle!', 'info');
+                
+                // Seleziona una categoria casuale per la domanda
+                const randomCategoryIndex = Math.floor(Math.random() * availableCategories.length);
+                const selectedCategory = availableCategories[randomCategoryIndex];
+                
+                console.log(`Sfida Tripla Stella - Categoria selezionata: ${selectedCategory}`);
+                
+                // Chiudi il modale dello shop
+                const shopModal = document.getElementById('shopModal');
+                if (shopModal) {
+                    shopModal.remove();
+                }
+                
+                // Mostra una domanda casuale con una callback speciale per gestire 3 stelle
+                showTripleStarQuestion(selectedCategory);
             }
         }
     ];
@@ -4338,3 +4365,327 @@ async function loadCategories() {
     }
 }
 // ... existing code ...
+
+/**
+ * Mostra una domanda per la sfida tripla stella
+ * @param {string} category - La categoria della domanda
+ */
+function showTripleStarQuestion(category) {
+    try {
+        console.log('Mostrando domanda per sfida tripla stella, categoria:', category);
+        
+        // Show loading message
+        const loadingMessage = document.createElement('div');
+        loadingMessage.className = 'loading-message';
+        loadingMessage.textContent = 'Caricamento sfida tripla stella...';
+        document.body.appendChild(loadingMessage);
+        
+        // Ottieni una domanda casuale
+        const fetchQuestion = async () => {
+            try {
+                // Aggiungi un timestamp per evitare il caching del browser
+                const timestamp = new Date().getTime();
+                const response = await fetch(`${window.API_URL}/api/questions?category=${encodeURIComponent(category)}&_=${timestamp}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const questions = await response.json();
+                
+                // Rimuovi il messaggio di caricamento
+                if (loadingMessage.parentNode) {
+                    document.body.removeChild(loadingMessage);
+                }
+                
+                if (!questions || !Array.isArray(questions) || questions.length === 0) {
+                    // Se non ci sono domande, usa una domanda generica
+                    const defaultQuestion = {
+                        question: "Qual è la capitale d'Italia?",
+                        answer: "Roma",
+                        category: category,
+                        type: "text"
+                    };
+                    displayTripleStarQuestion(defaultQuestion);
+                } else {
+                    const randomIndex = Math.floor(Math.random() * questions.length);
+                    displayTripleStarQuestion(questions[randomIndex]);
+                }
+            } catch (error) {
+                console.error('Errore caricamento domanda tripla stella:', error);
+                
+                // Rimuovi il messaggio di caricamento
+                if (loadingMessage.parentNode) {
+                    document.body.removeChild(loadingMessage);
+                }
+                
+                // Domanda di fallback
+                const defaultQuestion = {
+                    question: "Qual è la capitale d'Italia?",
+                    answer: "Roma",
+                    category: category,
+                    type: "text"
+                };
+                displayTripleStarQuestion(defaultQuestion);
+            }
+        };
+        
+        fetchQuestion();
+    } catch (error) {
+        console.error('Errore nella sfida tripla stella:', error);
+        showAnimatedNotification('Si è verificato un errore con la sfida', 'error');
+    }
+}
+
+/**
+ * Mostra una domanda per la sfida tripla stella
+ * @param {Object} question - La domanda da visualizzare
+ */
+function displayTripleStarQuestion(question) {
+    // Chiudi qualsiasi altra modale aperta
+    const modals = document.querySelectorAll('.modal.active');
+    modals.forEach(m => m.classList.remove('active'));
+    
+    console.log('Mostrando domanda sfida tripla stella:', question);
+    
+    // Crea una nuova modale per la domanda
+    let questionModal = document.createElement('div');
+    questionModal.className = 'modal active';
+    questionModal.id = 'tripleStarModal';
+    
+    let questionHTML = `
+        <div class="modal-content">
+            <span class="category-badge">${question.category}</span>
+            <h2>Domanda Tripla Stella</h2>
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                <i class="fas fa-star" style="color: gold; font-size: 24px; margin: 0 3px;"></i>
+                <i class="fas fa-star" style="color: gold; font-size: 24px; margin: 0 3px;"></i>
+                <i class="fas fa-star" style="color: gold; font-size: 24px; margin: 0 3px;"></i>
+            </div>
+            <div class="question-text">${question.question}</div>
+            <div class="timer-container">
+                <div class="timer-bar"></div>
+            </div>
+    `;
+
+    if (question.type === 'multiple') {
+        questionHTML += `<div class="question-options">`;
+        question.options.forEach((option, index) => {
+            const letter = String.fromCharCode(65 + index); // A, B, C, D
+            questionHTML += `
+                <div class="option" data-value="${option}">
+                    <span class="option-letter">${letter}</span>
+                    <span class="option-text">${option}</span>
+                </div>
+            `;
+        });
+        questionHTML += `</div>`;
+    } else if (question.type === 'boolean') {
+        questionHTML += `
+            <div class="question-options">
+                <button class="option-button" data-value="true">
+                    <i class="fas fa-check"></i> Vero
+                </button>
+                <button class="option-button" data-value="false">
+                    <i class="fas fa-times"></i> Falso
+                </button>
+            </div>
+        `;
+    } else {
+        // Tipo text o default
+        questionHTML += `
+            <div class="form-control">
+                <input type="text" id="answerInput" placeholder="Scrivi la tua risposta..." autocomplete="off">
+                <button id="submitAnswer" class="primary-button">Invia</button>
+            </div>
+        `;
+    }
+
+    questionHTML += `</div>`;
+    questionModal.innerHTML = questionHTML;
+    
+    document.body.appendChild(questionModal);
+    
+    // Attiva la modale
+    setTimeout(() => {
+        questionModal.classList.add('active');
+    }, 100);
+
+    // Imposta il timer
+    const timerDuration = 30; // Secondi
+    startQuestionTimer(timerDuration, () => {
+        showTripleStarResult(false, question.answer);
+    });
+
+    // Gestisci gli eventi per i diversi tipi di domande
+    if (question.type === 'multiple') {
+        const options = questionModal.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                const selectedValue = this.dataset.value;
+                
+                // Evidenzia l'opzione selezionata
+                options.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Controlla risposta dopo un breve ritardo
+                setTimeout(() => {
+                    const isCorrect = selectedValue === question.answer;
+                    
+                    // Evidenzia risposta corretta/sbagliata
+                    options.forEach(opt => {
+                        if (opt.dataset.value === question.answer) {
+                            opt.classList.add('correct');
+                        } else if (opt === this && !isCorrect) {
+                            opt.classList.add('incorrect');
+                        }
+                    });
+                    
+                    showTripleStarResult(isCorrect, question.answer);
+                }, 500);
+            });
+        });
+    } else if (question.type === 'boolean') {
+        const buttons = questionModal.querySelectorAll('.option-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const selectedValue = this.dataset.value;
+                
+                // Evidenzia l'opzione selezionata
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Controlla risposta dopo un breve ritardo
+                setTimeout(() => {
+                    const correctValue = question.answer === 'Vero' ? 'true' : 'false';
+                    const isCorrect = selectedValue === correctValue;
+                    
+                    // Evidenzia risposta corretta/sbagliata
+                    buttons.forEach(btn => {
+                        if (btn.dataset.value === correctValue) {
+                            btn.classList.add('correct');
+                        } else if (btn === this && !isCorrect) {
+                            btn.classList.add('incorrect');
+                        }
+                    });
+                    
+                    showTripleStarResult(isCorrect, question.answer);
+                }, 500);
+            });
+        });
+    } else {
+        const submitButton = questionModal.querySelector('#submitAnswer');
+        const inputField = questionModal.querySelector('#answerInput');
+        
+        // Attiva l'invio anche premendo Enter
+        inputField.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitButton.click();
+            }
+        });
+        
+        // Focus sul campo input
+        setTimeout(() => {
+            inputField.focus();
+        }, 300);
+        
+        submitButton.addEventListener('click', function() {
+            const userAnswer = inputField.value.trim();
+            if (userAnswer) {
+                const isCorrect = checkTextAnswer(userAnswer, question.answer);
+                showTripleStarResult(isCorrect, question.answer);
+            }
+        });
+    }
+}
+
+/**
+ * Mostra il risultato della sfida tripla stella
+ * @param {boolean} isCorrect - Se la risposta è corretta
+ * @param {string} correctAnswer - La risposta corretta alla domanda
+ */
+function showTripleStarResult(isCorrect, correctAnswer) {
+    // Ferma il timer
+    clearQuestionTimer();
+    
+    // Ottieni la modale attiva
+    const modal = document.getElementById('tripleStarModal');
+    if (!modal) {
+        console.error('Modale tripla stella non trovata');
+        return;
+    }
+    
+    // Ottieni il contenuto della modale
+    const modalContent = modal.querySelector('.modal-content');
+    if (!modalContent) {
+        console.error('Contenuto della modale non trovato');
+        return;
+    }
+    
+    // Crea l'elemento per il risultato
+    const resultDiv = document.createElement('div');
+    resultDiv.className = `question-result ${isCorrect ? 'correct-answer' : 'wrong-answer'}`;
+    
+    // Ottieni il player attuale
+    const player = players[currentPlayerIndex];
+    
+    // Imposta il contenuto del risultato
+    if (isCorrect) {
+        // Aggiungi 3 stelle al giocatore
+        player.stars += 3;
+        
+        resultDiv.innerHTML = `
+            <div class="result-message success">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 24px; margin-bottom: 10px;"></i>
+                <h3>Risposta Corretta!</h3>
+                <p>Hai guadagnato 3 stelle! ⭐⭐⭐</p>
+                <p>La risposta era: "${correctAnswer}"</p>
+            </div>
+        `;
+        
+        // Effetti visivi e sonori
+        playSound('correct');
+        
+        // Aggiungi al log di gioco
+        addToGameLog(`${player.name} ha risposto correttamente alla Sfida Tripla Stella e ha guadagnato 3 stelle! ⭐⭐⭐`);
+        
+        // Mostra l'effetto delle stelle
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                showStarCollectionEffect(player);
+            }, i * 300);
+        }
+    } else {
+        resultDiv.innerHTML = `
+            <div class="result-message error">
+                <i class="fas fa-times-circle" style="color: #f44336; font-size: 24px; margin-bottom: 10px;"></i>
+                <h3>Risposta Sbagliata</h3>
+                <p>Non hai guadagnato nessuna stella.</p>
+                <p>La risposta corretta era: "${correctAnswer}"</p>
+            </div>
+        `;
+        playSound('wrong');
+        addToGameLog(`${player.name} ha risposto in modo errato alla Sfida Tripla Stella.`);
+    }
+    
+    // Aggiungi il bottone per continuare
+    const continueButton = document.createElement('button');
+    continueButton.className = 'primary-button';
+    continueButton.textContent = 'Continua';
+    continueButton.style.marginTop = '20px';
+    continueButton.addEventListener('click', () => {
+        modal.remove();
+        
+        // Aggiorna l'UI e salva i dati
+        renderPlayerInfo();
+        saveGameData();
+        
+        // Controlla condizione di vittoria
+        checkWinCondition();
+    });
+    
+    resultDiv.appendChild(continueButton);
+    
+    // Aggiungi il risultato alla modale
+    modalContent.appendChild(resultDiv);
+}
