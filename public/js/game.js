@@ -337,70 +337,63 @@ function activateSpaceOnClick(position) {
  * Genera caratteristiche della mappa come stelle e spazi speciali
  */
 function generateBoardFeatures() {
-    // Reset delle posizioni
-    if (!Array.isArray(starPositions)) {
-        starPositions = [];
-    } else {
-        starPositions.length = 0;
+    // Reset e inizializzazione sicura delle posizioni
+    starPositions = Array.isArray(starPositions) ? [] : [];
+    specialPositions = Array.isArray(specialPositions) ? [] : [];
+    
+    // Coordinate utilizzate di frequente
+    const centerRow = Math.floor(BOARD_SIZE/2);
+    const centerCol = Math.floor(BOARD_SIZE/2);
+    const centerPosition = { row: centerRow, col: centerCol };
+    
+    // Configurazione in base al tipo di mappa
+    switch (mapType) {
+        case 'small': // Mappa piccola (5x5)
+            starPositions.push(centerPosition);
+            addRandomPositions(specialPositions, 2, [centerPosition]);
+            break;
+            
+        case 'large': // Mappa grande (9x9) - più stelle e più posizioni speciali
+            const offset = Math.floor(BOARD_SIZE/4);
+            // Posiziona 4 stelle in modo simmetrico
+            [
+                { row: centerRow - offset, col: centerCol - offset },
+                { row: centerRow - offset, col: centerCol + offset },
+                { row: centerRow + offset, col: centerCol - offset },
+                { row: centerRow + offset, col: centerCol + offset }
+            ].forEach(pos => starPositions.push(pos));
+            
+            // Posizioni speciali
+            addRandomPositions(specialPositions, 5, starPositions);
+            break;
+            
+        case 'special': // Mappa speciale (7x7) con pattern unico
+            const thirdPoint = Math.floor(BOARD_SIZE/3);
+            const twoThirdsPoint = Math.floor(2*BOARD_SIZE/3);
+            
+            // Stelle in pattern triangolare
+            [
+                { row: thirdPoint, col: twoThirdsPoint },
+                { row: twoThirdsPoint, col: thirdPoint },
+                { row: twoThirdsPoint, col: twoThirdsPoint }
+            ].forEach(pos => starPositions.push(pos));
+            
+            // Posizioni speciali in pattern alternato
+            [
+                { row: 1, col: 1 },
+                { row: 1, col: BOARD_SIZE-2 },
+                { row: BOARD_SIZE-2, col: 1 },
+                { row: BOARD_SIZE-2, col: BOARD_SIZE-2 }
+            ].forEach(pos => specialPositions.push(pos));
+            break;
+            
+        default: // Mappa standard (7x7)
+            starPositions.push(centerPosition);
+            addRandomPositions(specialPositions, 4, [centerPosition]);
     }
     
-    if (!Array.isArray(specialPositions)) {
-        specialPositions = [];
-    } else {
-        specialPositions.length = 0;
-    }
-    
-    // La generazione delle posizioni dipende dal tipo di mappa
-    if (mapType === 'small') {
-        // Mappa piccola (5x5) - generazione semplificata con meno stelle
-        starPositions.push({ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) });
-        
-        // 1-2 posizioni speciali
-        addRandomPositions(specialPositions, 2, [{ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) }]);
-    }
-    else if (mapType === 'large') {
-        // Mappa grande (9x9) - più stelle e più posizioni speciali
-        const centerRow = Math.floor(BOARD_SIZE/2);
-        const centerCol = Math.floor(BOARD_SIZE/2);
-        
-        // Posiziona 4 stelle in modo simmetrico
-        const offset = Math.floor(BOARD_SIZE/4);
-        starPositions.push({ row: centerRow - offset, col: centerCol - offset });
-        starPositions.push({ row: centerRow - offset, col: centerCol + offset });
-        starPositions.push({ row: centerRow + offset, col: centerCol - offset });
-        starPositions.push({ row: centerRow + offset, col: centerCol + offset });
-        
-        // 4-6 posizioni speciali
-        addRandomPositions(specialPositions, 5, starPositions);
-    } 
-    else if (mapType === 'special') {
-        // Mappa speciale (7x7) con pattern unico
-        const thirdPoint = Math.floor(BOARD_SIZE/3);
-        const twoThirdsPoint = Math.floor(2*BOARD_SIZE/3);
-        
-        // Posiziona stelle in pattern triangolare
-        starPositions.push({ row: thirdPoint, col: twoThirdsPoint });
-        starPositions.push({ row: twoThirdsPoint, col: thirdPoint });
-        starPositions.push({ row: twoThirdsPoint, col: twoThirdsPoint });
-        
-        // Posizioni speciali in pattern alternato
-        specialPositions.push({ row: 1, col: 1 });
-        specialPositions.push({ row: 1, col: BOARD_SIZE-2 });
-        specialPositions.push({ row: BOARD_SIZE-2, col: 1 });
-        specialPositions.push({ row: BOARD_SIZE-2, col: BOARD_SIZE-2 });
-    }
-    else {
-        // Mappa standard (7x7)
-        // Stella al centro
-        starPositions.push({ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) });
-        
-        // 3-5 posizioni speciali random
-        addRandomPositions(specialPositions, 4, [{ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) }]);
-    }
-    
-    console.log('Board features generated for map type:', mapType);
-    console.log('Star positions:', starPositions);
-    console.log('Special positions:', specialPositions);
+    console.log(`Board features generated for map type: ${mapType}`);
+    console.log(`Created ${starPositions.length} star positions and ${specialPositions.length} special positions`);
 }
 
 /**
@@ -4840,53 +4833,52 @@ function showTripleStarResult(isCorrect, correctAnswer) {
  * @returns {string} - Il tipo di spazio ('star', 'special', 'quiz', 'empty')
  */
 function determineSpaceType(position) {
-    // Prima verificare se è una posizione di stella o speciale
+    const { row, col } = position;
+    
+    // Controlliamo prima le posizioni speciali (più veloci da verificare)
     if (isPositionInList(position, starPositions)) {
         return 'star';
-    } else if (isPositionInList(position, specialPositions)) {
+    } 
+    if (isPositionInList(position, specialPositions)) {
         return 'special';
     }
     
-    const { row, col } = position;
-    
-    // Determina il tipo di spazio in base al tipo di mappa
-    if (mapType === 'special') {
-        // Mappa speciale con pattern a croce personalizzato
-        if (isEdgePosition(row, col, BOARD_SIZE) || isCrossPattern(row, col, BOARD_SIZE)) {
-            return 'quiz';
-        }
-    } else if (mapType === 'large') {
-        // Mappa grande (9x9) - aggiungiamo più caselle quiz per evitare zone isolate
-        if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
-            return 'quiz';
-        }
-        
-        // Aggiungiamo percorsi diagonali per la mappa grande
-        const quarter = Math.floor(BOARD_SIZE/4);
-        const threeQuarters = Math.floor(3*BOARD_SIZE/4);
-        
-        // Aggiungiamo percorsi diagonali e punti intermedi
-        if ((row === quarter && col === quarter) || 
-            (row === quarter && col === threeQuarters) ||
-            (row === threeQuarters && col === quarter) ||
-            (row === threeQuarters && col === threeQuarters) ||
-            (row === 2 && col === 2) ||
-            (row === 2 && col === BOARD_SIZE-3) ||
-            (row === BOARD_SIZE-3 && col === 2) ||
-            (row === BOARD_SIZE-3 && col === BOARD_SIZE-3) ||
-            (row === 2 && col === Math.floor(BOARD_SIZE/2)) ||
-            (row === BOARD_SIZE-3 && col === Math.floor(BOARD_SIZE/2)) ||
-            (row === Math.floor(BOARD_SIZE/2) && col === 2) ||
-            (row === Math.floor(BOARD_SIZE/2) && col === BOARD_SIZE-3)) {
-            return 'quiz';
-        }
-    } else {
-        // Mappe standard e piccola
-        if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
-            return 'quiz';
-        }
+    // Controlliamo i bordi e la croce centrale (comuni a tutte le mappe)
+    if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
+        return 'quiz';
     }
     
-    // Se non è stato determinato un tipo, è una casella vuota
+    // Controlli specifici per tipo di mappa
+    switch (mapType) {
+        case 'special':
+            if (isCrossPattern(row, col, BOARD_SIZE)) {
+                return 'quiz';
+            }
+            break;
+        case 'large':
+            // Calcoli effettuati una sola volta
+            const quarter = Math.floor(BOARD_SIZE/4);
+            const threeQuarters = Math.floor(3*BOARD_SIZE/4);
+            const middle = Math.floor(BOARD_SIZE/2);
+            
+            // Posizioni diagonali e intermedie
+            if ((row === quarter && col === quarter) || 
+                (row === quarter && col === threeQuarters) ||
+                (row === threeQuarters && col === quarter) ||
+                (row === threeQuarters && col === threeQuarters) ||
+                (row === 2 && col === 2) ||
+                (row === 2 && col === BOARD_SIZE-3) ||
+                (row === BOARD_SIZE-3 && col === 2) ||
+                (row === BOARD_SIZE-3 && col === BOARD_SIZE-3) ||
+                (row === 2 && col === middle) ||
+                (row === BOARD_SIZE-3 && col === middle) ||
+                (row === middle && col === 2) ||
+                (row === middle && col === BOARD_SIZE-3)) {
+                return 'quiz';
+            }
+            break;
+    }
+    
+    // Default: casella vuota
     return 'empty';
 }
