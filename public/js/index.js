@@ -131,9 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Verifica che almeno una categoria sia selezionata
         if (selectedCategories.length === 0) {
-            showAlert('Per favore, seleziona almeno una categoria.');
+            showAnimatedNotification('Per favore, seleziona almeno una categoria.', 'error');
             return;
         }
+        
+        // Aggiorna le variabili globali
+        availableCategories = selectedCategories;
         
         // Salva i dati di gioco
         const gameData = {
@@ -580,4 +583,26 @@ function savePlayers() {
     // Salva in localStorage
     localStorage.setItem('quizPartyGameData', JSON.stringify(gameData));
     console.log('Game data saved:', gameData);
+}
+
+/**
+ * Genera giocatori predefiniti con nomi, avatar e colori diversi
+ * @param {number} count - Numero di giocatori da generare
+ * @returns {Array} - Array di oggetti giocatore
+ */
+function generateDefaultPlayers(count) {
+    const defaultPlayers = [];
+    
+    for (let i = 0; i < count; i++) {
+        defaultPlayers.push({
+            name: `Giocatore ${i + 1}`,
+            avatar: avatarOptions[i % avatarOptions.length],
+            color: colorOptions[i % colorOptions.length],
+            stars: 0,
+            stats: { correct: 0, incorrect: 0, moves: 0 },
+            credits: initialCredits || 50
+        });
+    }
+    
+    return defaultPlayers;
 }
