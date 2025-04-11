@@ -1319,4 +1319,98 @@ input:checked + .toggle-slider:before {
 
 #timerStatus {
     font-weight: bold;
+}
+
+/* Stili per la selezione delle mappe */
+.map-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.map-option {
+    width: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.map-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.map-option.selected {
+    border-color: var(--accent);
+    background: rgba(139, 92, 246, 0.15);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.map-preview {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.map-name {
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* Miniature delle mappe */
+.standard-map {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E293B"/><rect x="10" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="53.5" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="82.5" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="39" width="11" height="11" rx="2" fill="%23EC4899"/><rect x="53.5" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="53.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="53.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="53.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="53.5" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><circle cx="50" cy="50" r="3" fill="gold"/></svg>');
+    background-size: cover;
+}
+
+.small-map {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E293B"/><rect x="10" y="10" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="30" y="10" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="50" y="10" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="70" y="10" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="10" y="30" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="30" y="30" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="50" y="30" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="70" y="30" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="10" y="50" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="30" y="50" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="50" y="50" width="15" height="15" rx="2" fill="%23EC4899"/><rect x="70" y="50" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="10" y="70" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="30" y="70" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="50" y="70" width="15" height="15" rx="2" fill="%233B82F6"/><rect x="70" y="70" width="15" height="15" rx="2" fill="%233B82F6"/><circle cx="50" cy="50" r="4" fill="gold"/></svg>');
+    background-size: cover;
+}
+
+.large-map {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E293B"/><rect x="5" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="16" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="38" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="60" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="82" y="5" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="16" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="16" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="16" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="16" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="16" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="38" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="60" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="82" y="27" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="38" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="38" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="38" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="38" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="16" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="38" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="49" width="8" height="8" rx="2" fill="%23EC4899"/><rect x="60" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="82" y="49" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="60" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="60" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="60" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="60" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="16" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="38" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="60" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="82" y="71" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="5" y="82" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="27" y="82" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="49" y="82" width="8" height="8" rx="2" fill="%233B82F6"/><rect x="71" y="82" width="8" height="8" rx="2" fill="%233B82F6"/><circle cx="49" cy="49" r="3" fill="gold"/></svg>');
+    background-size: cover;
+}
+
+.special-map {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E293B"/><rect x="10" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="53.5" y="10" width="11" height="11" rx="2" fill="%23EC4899"/><rect x="68" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="82.5" y="10" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="53.5" y="24.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="24.5" width="11" height="11" rx="2" fill="%23EC4899"/><rect x="10" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="39" width="11" height="11" rx="2" fill="%23EC4899"/><rect x="53.5" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="39" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="53.5" width="11" height="11" rx="2" fill="%23EC4899"/><rect x="39" y="53.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="53.5" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="10" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="24.5" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="39" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="53.5" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><rect x="68" y="68" width="11" height="11" rx="2" fill="%233B82F6"/><circle cx="24.5" cy="53.5" r="3" fill="gold"/><circle cx="53.5" cy="24.5" r="3" fill="gold"/><circle cx="68" cy="53.5" r="3" fill="gold"/></svg>');
+    background-size: cover;
+}
+
+@media screen and (max-width: 768px) {
+    .map-selection {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .map-option {
+        width: 100%;
+        max-width: 250px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .map-preview {
+        margin: 0 10px 0 0;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .map-name {
+        text-align: left;
+        flex: 1;
+    }
 } 

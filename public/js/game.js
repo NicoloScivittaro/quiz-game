@@ -16,7 +16,7 @@ if (typeof window.API_URL === 'undefined') {
 const API_URL = window.location.origin;
 
 // Costanti di gioco
-const BOARD_SIZE = 7; // Dimensione della griglia 7x7
+let BOARD_SIZE = 7; // Dimensione della griglia predefinita 7x7 (sarà aggiornata in base alla selezione)
 const DICE_MIN = 1;
 const DICE_MAX = 6;
 
@@ -33,6 +33,7 @@ let gameStarted = false;
 let currentQuestion = null; // Per tenere traccia della domanda corrente
 let gameLog = []; // Array per memorizzare le attività di gioco
 let timerEnabled = true;
+let mapType = 'standard'; // Tipo di mappa predefinito
 
 // Posizioni speciali sulla board
 let starPositions = [];
@@ -165,6 +166,13 @@ function loadGameData() {
         starGoal = gameData.starCount || 3;
         timerEnabled = gameData.timerEnabled !== undefined ? gameData.timerEnabled : true;
         
+        // Carica la dimensione della mappa
+        if (gameData.boardMap) {
+            BOARD_SIZE = gameData.boardMap.size || 7;
+            mapType = gameData.boardMap.type || 'standard';
+            console.log(`Mappa caricata: ${mapType} (${BOARD_SIZE}x${BOARD_SIZE})`);
+        }
+        
         // Inizializza i dati mancanti per ogni giocatore
         players.forEach(player => {
             // Inizializza stelle se non presenti
@@ -205,10 +213,26 @@ function initGameBoard() {
     gameBoardElement.innerHTML = '';
     gameBoard = [];
     
-    // Genera le caratteristiche casuali della board
+    // Imposta lo stile CSS della scacchiera in base alle dimensioni
+    gameBoardElement.style.gridTemplateColumns = `repeat(${BOARD_SIZE}, 1fr)`;
+    gameBoardElement.style.gridTemplateRows = `repeat(${BOARD_SIZE}, 1fr)`;
+    
+    // Aggiungi classe CSS per il tipo di mappa
+    gameBoardElement.className = 'game-board';
+    if (mapType === 'small') {
+        gameBoardElement.classList.add('small-map');
+    } else if (mapType === 'large') {
+        gameBoardElement.classList.add('large-map');
+    } else if (mapType === 'special') {
+        gameBoardElement.classList.add('special-map');
+    } else {
+        gameBoardElement.classList.add('standard-map');
+    }
+    
+    // Genera le caratteristiche casuali della board in base al tipo di mappa
     generateBoardFeatures();
     
-    // Crea la scacchiera 7x7
+    // Crea la scacchiera in base alla dimensione
     for (let row = 0; row < BOARD_SIZE; row++) {
         gameBoard[row] = [];
         
@@ -217,13 +241,25 @@ function initGameBoard() {
             const position = { row, col };
             let spaceType = 'empty';
             
-            // Determina il tipo di spazio
-            if (isPositionInList(position, starPositions)) {
-                spaceType = 'star';
-            } else if (isPositionInList(position, specialPositions)) {
-                spaceType = 'special';
-            } else if (isEdgePosition(row, col) || isMiddleCross(row, col)) {
-                spaceType = 'quiz';
+            // Determina il tipo di spazio in base al tipo di mappa
+            if (mapType === 'special') {
+                // Mappa speciale con più stelle e caselle speciali
+                if (isPositionInList(position, starPositions)) {
+                    spaceType = 'star';
+                } else if (isPositionInList(position, specialPositions)) {
+                    spaceType = 'special';
+                } else if (isEdgePosition(row, col, BOARD_SIZE) || isCrossPattern(row, col, BOARD_SIZE)) {
+                    spaceType = 'quiz';
+                }
+            } else {
+                // Mappa standard o altre mappe con pattern regolare
+                if (isPositionInList(position, starPositions)) {
+                    spaceType = 'star';
+                } else if (isPositionInList(position, specialPositions)) {
+                    spaceType = 'special';
+                } else if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
+                    spaceType = 'quiz';
+                }
             }
             
             // Imposta l'elemento spazio
@@ -241,6 +277,9 @@ function initGameBoard() {
                 space.innerHTML = '<i class="fas fa-magic"></i>';
             }
             
+            // Attiva lo spazio con click event (solo per testing)
+            activateSpaceOnClick(position);
+            
             // Salva riferimento nella matrice
             gameBoard[row][col] = {
                 element: space,
@@ -253,8 +292,8 @@ function initGameBoard() {
         }
     }
     
-    console.log('Game board initialized');
-    addToGameLog('Tabellone di gioco inizializzato');
+    console.log('Game board initialized with size', BOARD_SIZE);
+    addToGameLog(`Tabellone di gioco ${BOARD_SIZE}x${BOARD_SIZE} inizializzato`);
 }
 
 /**
@@ -314,47 +353,116 @@ function activateSpaceOnClick(position) {
 }
 
 /**
- * Genera caratteristiche della board (stelle e spazi speciali)
+ * Genera caratteristiche della mappa come stelle e spazi speciali
  */
 function generateBoardFeatures() {
+    // Reset delle posizioni
     starPositions = [];
     specialPositions = [];
     
-    // Genera posizioni delle stelle (6-8 stelle)
-    const starCount = Math.floor(Math.random() * 3) + 6;
-    for (let i = 0; i < starCount; i++) {
-        const position = generateRandomBoardPosition(starPositions);
-        if (position && (isEdgePosition(position.row, position.col) || isMiddleCross(position.row, position.col))) {
-            starPositions.push(position);
-        }
+    // La generazione delle posizioni dipende dal tipo di mappa
+    if (mapType === 'small') {
+        // Mappa piccola (5x5) - generazione semplificata con meno stelle
+        starPositions.push({ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) });
+        
+        // 1-2 posizioni speciali
+        addRandomPositions(specialPositions, 2, [{ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) }]);
+    }
+    else if (mapType === 'large') {
+        // Mappa grande (9x9) - più stelle e più posizioni speciali
+        const centerRow = Math.floor(BOARD_SIZE/2);
+        const centerCol = Math.floor(BOARD_SIZE/2);
+        
+        // Posiziona 4 stelle in modo simmetrico
+        const offset = Math.floor(BOARD_SIZE/4);
+        starPositions.push({ row: centerRow - offset, col: centerCol - offset });
+        starPositions.push({ row: centerRow - offset, col: centerCol + offset });
+        starPositions.push({ row: centerRow + offset, col: centerCol - offset });
+        starPositions.push({ row: centerRow + offset, col: centerCol + offset });
+        
+        // 4-6 posizioni speciali
+        addRandomPositions(specialPositions, 5, starPositions);
+    } 
+    else if (mapType === 'special') {
+        // Mappa speciale (7x7) con pattern unico
+        const thirdPoint = Math.floor(BOARD_SIZE/3);
+        const twoThirdsPoint = Math.floor(2*BOARD_SIZE/3);
+        
+        // Posiziona stelle in pattern triangolare
+        starPositions.push({ row: thirdPoint, col: twoThirdsPoint });
+        starPositions.push({ row: twoThirdsPoint, col: thirdPoint });
+        starPositions.push({ row: twoThirdsPoint, col: twoThirdsPoint });
+        
+        // Posizioni speciali in pattern alternato
+        specialPositions.push({ row: 1, col: 1 });
+        specialPositions.push({ row: 1, col: BOARD_SIZE-2 });
+        specialPositions.push({ row: BOARD_SIZE-2, col: 1 });
+        specialPositions.push({ row: BOARD_SIZE-2, col: BOARD_SIZE-2 });
+    }
+    else {
+        // Mappa standard (7x7)
+        // Stella al centro
+        starPositions.push({ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) });
+        
+        // 3-5 posizioni speciali random
+        addRandomPositions(specialPositions, 4, [{ row: Math.floor(BOARD_SIZE/2), col: Math.floor(BOARD_SIZE/2) }]);
     }
     
-    // Genera posizioni speciali (4-6 posizioni)
-    const specialCount = Math.floor(Math.random() * 3) + 4;
-    for (let i = 0; i < specialCount; i++) {
-        const position = generateRandomBoardPosition([...starPositions, ...specialPositions]);
-        if (position && (isEdgePosition(position.row, position.col) || isMiddleCross(position.row, position.col))) {
-            specialPositions.push(position);
-        }
-    }
-    
+    console.log('Board features generated for map type:', mapType);
     console.log('Star positions:', starPositions);
     console.log('Special positions:', specialPositions);
 }
 
 /**
- * Verifica se una posizione è sul bordo della board
+ * Aggiunge un numero specificato di posizioni casuali a una lista, evitando le posizioni in excludeList
+ * @param {Array} targetList - La lista a cui aggiungere le posizioni
+ * @param {number} count - Il numero di posizioni da aggiungere
+ * @param {Array} excludeList - Le posizioni da escludere
  */
-function isEdgePosition(row, col) {
-    return row === 0 || row === BOARD_SIZE - 1 || col === 0 || col === BOARD_SIZE - 1;
+function addRandomPositions(targetList, count, excludeList) {
+    for (let i = 0; i < count; i++) {
+        const position = generateRandomBoardPosition([...excludeList, ...targetList]);
+        targetList.push(position);
+    }
+}
+
+/**
+ * Verifica se una posizione è sul bordo della scacchiera
+ * @param {number} row - La riga
+ * @param {number} col - La colonna
+ * @param {number} size - La dimensione della scacchiera
+ * @returns {boolean} - True se la posizione è sul bordo
+ */
+function isEdgePosition(row, col, size = BOARD_SIZE) {
+    return row === 0 || col === 0 || row === size - 1 || col === size - 1;
 }
 
 /**
  * Verifica se una posizione fa parte della croce centrale
+ * @param {number} row - La riga
+ * @param {number} col - La colonna
+ * @param {number} size - La dimensione della scacchiera
+ * @returns {boolean} - True se la posizione è nella croce centrale
  */
-function isMiddleCross(row, col) {
-    const middle = Math.floor(BOARD_SIZE / 2);
+function isMiddleCross(row, col, size = BOARD_SIZE) {
+    const middle = Math.floor(size / 2);
     return row === middle || col === middle;
+}
+
+/**
+ * Verifica se una posizione fa parte di un pattern a croce (per la mappa speciale)
+ * @param {number} row - La riga
+ * @param {number} col - La colonna
+ * @param {number} size - La dimensione della scacchiera
+ * @returns {boolean} - True se la posizione è nel pattern
+ */
+function isCrossPattern(row, col, size = BOARD_SIZE) {
+    // Punti per dividere la griglia in terzi
+    const thirdPoint = Math.floor(size/3);
+    const twoThirdsPoint = Math.floor(2*size/3);
+    
+    // Crea un pattern a croce modificato
+    return row === thirdPoint || row === twoThirdsPoint || col === thirdPoint || col === twoThirdsPoint;
 }
 
 /**

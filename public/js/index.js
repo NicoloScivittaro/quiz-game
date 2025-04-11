@@ -82,24 +82,84 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carica le categorie disponibili
     initCategories();
     
+    // Opzioni delle mappe
+    const mapOptions = document.querySelectorAll('.map-option');
+    let selectedMap = {
+        type: 'standard',
+        size: 7
+    };
+    
+    // Event listener per la selezione delle mappe
+    mapOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Rimuovi la selezione precedente
+            mapOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Aggiungi la selezione all'opzione cliccata
+            this.classList.add('selected');
+            
+            // Salva i dati della mappa
+            selectedMap = {
+                type: this.dataset.map,
+                size: parseInt(this.dataset.size)
+            };
+            
+            console.log('Mappa selezionata:', selectedMap);
+        });
+    });
+    
     // Pulsante continua
     const continueBtn = document.getElementById('continueBtn');
     continueBtn.addEventListener('click', function() {
+        // Ottieni il numero di giocatori
+        const playerCount = parseInt(document.getElementById('playerCount').value);
+        
+        // Ottieni il numero di stelle necessarie per vincere
+        const starCount = parseInt(document.getElementById('starCount').value);
+        
+        // Ottieni i crediti iniziali
+        const initialCredits = parseInt(document.getElementById('initialCredits').value);
+        
+        // Ottieni lo stato del timer (abilitato/disabilitato)
+        const timerEnabled = document.getElementById('timerEnabled').checked;
+        
+        // Ottieni le categorie selezionate
+        const selectedCategories = [];
+        document.querySelectorAll('#categoryCheckboxes input[type="checkbox"]:checked').forEach(checkbox => {
+            selectedCategories.push(checkbox.value);
+        });
+        
         // Verifica che almeno una categoria sia selezionata
-        const selectedCategories = getSelectedCategories();
         if (selectedCategories.length === 0) {
-            showAnimatedNotification('Seleziona almeno una categoria per giocare!', 'error');
+            showAlert('Per favore, seleziona almeno una categoria.');
             return;
         }
         
-        // Salva le categorie selezionate
-        availableCategories = selectedCategories;
+        // Salva i dati di gioco
+        const gameData = {
+            players: generateDefaultPlayers(playerCount),
+            categories: selectedCategories,
+            starCount: starCount,
+            initialCredits: initialCredits,
+            timerEnabled: timerEnabled,
+            boardMap: selectedMap
+        };
         
-        // Ripple effect visibile
-        const x = event.clientX - continueBtn.getBoundingClientRect().left;
-        const y = event.clientY - continueBtn.getBoundingClientRect().top;
+        // Salva i dati localmente
+        localStorage.setItem('quizPartyGameData', JSON.stringify(gameData));
+        localStorage.setItem('quizPartyGameProgress', null); // Reset del progresso
         
-        showPlayerSetup();
+        console.log('Dati di gioco salvati:', gameData);
+        
+        // Nascondi la schermata delle impostazioni
+        document.getElementById('game-settings').style.display = 'none';
+        
+        // Mostra la schermata di personalizzazione dei giocatori
+        const playerSetupScreen = document.getElementById('player-setup');
+        playerSetupScreen.style.display = 'block';
+        
+        // Genera i form per ciascun giocatore
+        generatePlayerForms(playerCount);
     });
     
     // Pulsante indietro
@@ -318,7 +378,7 @@ function hidePlayerSetup() {
 }
 
 // Genera i form per l'impostazione dei giocatori
-function generatePlayerForms() {
+function generatePlayerForms(playerCount) {
     const playerForms = document.getElementById('player-forms');
     playerForms.innerHTML = '';
     players = [];
