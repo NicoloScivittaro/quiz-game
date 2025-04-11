@@ -1498,7 +1498,2291 @@ const questionsData = {
             "type": "boolean",
             "question": "'Il Gattopardo' è stato scritto da Giuseppe Tomasi di Lampedusa?",
             "answer": "Vero"
-          }
+          },
+          {
+            "id": 161,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "Marte è conosciuto come il Pianeta Rosso?",
+            "answer": "Vero"
+        },
+        {
+            "id": 162,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è la formula chimica dell'acqua?",
+            "answer": "H2O"
+        },
+        {
+            "id": 163,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale parte del corpo umano produce l'insulina?",
+            "options": [
+                "Fegato",
+                "Cuore",
+                "Pancreas",
+                "Reni"
+            ],
+            "answer": "Pancreas"
+        },
+        {
+            "id": 164,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Chi è noto per aver inventato il microscopio?",
+            "answer": "Zacharias Janssen"
+        },
+        {
+            "id": 165,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "La teoria dell'evoluzione di Charles Darwin riguarda l'adattamento delle specie?",
+            "answer": "Vero"
+        },
+        {
+            "id": 166,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Qual è l'organo responsabile per il pompaggio del sangue nel corpo umano?",
+            "options": [
+                "Fegato",
+                "Cuore",
+                "Polmone",
+                "Rene"
+            ],
+            "answer": "Cuore"
+        },
+        {
+            "id": 167,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è la scala che misura la durezza dei minerali?",
+            "answer": "Scala Mohs"
+        },
+        {
+            "id": 168,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale pianeta del Sistema Solare ha un sistema di anelli visibili?",
+            "options": [
+                "Giove",
+                "Saturno",
+                "Urano",
+                "Nettuno"
+            ],
+            "answer": "Saturno"
+        },
+        {
+            "id": 169,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è il gas serra più abbondante nell'atmosfera terrestre prodotto dalle attività umane?",
+            "answer": "Anidride carbonica"
+        },
+        {
+            "id": 170,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "Venere è il pianeta più caldo del Sistema Solare?",
+            "answer": "Vero"
+        },
+        {
+            "id": 171,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Quale scienziato ha proposto la legge della gravitazione universale?",
+            "answer": "Isaac Newton"
+        },
+        {
+            "id": 172,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale organo dell'uomo filtra il sangue rimuovendo le tossine?",
+            "options": [
+                "Cuore",
+                "Fegato",
+                "Rene",
+                "Polmone"
+            ],
+            "answer": "Rene"
+        },
+        {
+            "id": 173,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "Le eclissi solari si verificano ogni giorno?",
+            "answer": "Falso"
+        },
+        {
+            "id": 174,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è il nome dello strato dell'atmosfera in cui si trova la maggior parte dell'ozono?",
+            "answer": "Stratosfera"
+        },
+        {
+            "id": 175,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale processo metabolico produce energia nelle cellule in assenza di ossigeno?",
+            "options": [
+                "Fotosintesi",
+                "Glicolisi",
+                "Respirazione aerobica",
+                "Ossidazione"
+            ],
+            "answer": "Glicolisi"
+        },
+        {
+            "id": 176,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è la particella subatomica priva di carica elettrica presente nel nucleo dell'atomo?",
+            "answer": "Neutrone"
+        },
+        {
+            "id": 177,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale dei seguenti è un esempio di erbivoro?",
+            "options": [
+                "Leone",
+                "Tigre",
+                "Mucca",
+                "Orso"
+            ],
+            "answer": "Mucca"
+        },
+        {
+            "id": 178,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "Il ferro è un metallo che si ossida formando la ruggine?",
+            "answer": "Vero"
+        },
+        {
+            "id": 179,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è il principale componente dell'atmosfera terrestre?",
+            "answer": "Azoto"
+        },
+        {
+            "id": 180,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale tipo di energia è sfruttata nelle centrali idroelettriche?",
+            "options": [
+                "Energia solare",
+                "Energia cinetica dell'acqua",
+                "Energia nucleare",
+                "Energia chimica"
+            ],
+            "answer": "Energia cinetica dell'acqua"
+        },
+        {
+            "id": 181,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "La luce viaggia più velocemente dell'audio?",
+            "answer": "Vero"
+        },
+        {
+            "id": 182,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Che termine indica la trasformazione delle rocce a seguito di variazioni di temperatura e pressione?",
+            "answer": "Metamorfismo"
+        },
+        {
+            "id": 183,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale dei seguenti elementi chimici è un metallo alcalino?",
+            "options": [
+                "Sodio",
+                "Calcio",
+                "Ferro",
+                "Argento"
+            ],
+            "answer": "Sodio"
+        },
+        {
+            "id": 184,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "La fotosintesi produce ossigeno come sottoprodotto?",
+            "answer": "Vero"
+        },
+        {
+            "id": 185,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è il nome del dispositivo inventato per misurare la pressione atmosferica?",
+            "answer": "Barometro"
+        },
+        {
+            "id": 186,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale delle seguenti scoperte è attribuita a Marie Curie?",
+            "options": [
+                "Scoperta del DNA",
+                "Teoria dell'evoluzione",
+                "Scoperta della radioattività",
+                "Leggi della termodinamica"
+            ],
+            "answer": "Scoperta della radioattività"
+        },
+        {
+            "id": 187,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "Le piante producono clorofilla per assorbire la luce solare?",
+            "answer": "Vero"
+        },
+        {
+            "id": 188,
+            "category": "Scienza",
+            "type": "text",
+            "question": "Qual è la principale differenza tra un virus e un batterio?",
+            "answer": "I virus necessitano di una cellula ospite per replicarsi, mentre i batteri possono riprodursi autonomamente."
+        },
+        {
+            "id": 189,
+            "category": "Scienza",
+            "type": "multiple",
+            "question": "Quale dei seguenti processi è usato per separare le sostanze in una miscela?",
+            "options": [
+                "Cristallizzazione",
+                "Distillazione",
+                "Elettrolisi",
+                "Polimerizzazione"
+            ],
+            "answer": "Distillazione"
+        },
+        {
+            "id": 190,
+            "category": "Scienza",
+            "type": "boolean",
+            "question": "L'energia solare deriva da reazioni nucleari all'interno del Sole?",
+            "answer": "Vero"
+        },
+        {
+          "id": 191,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale club ha vinto la Champions League per 3 volte consecutive?",
+          "options": [
+              "Real Madrid",
+              "Bayern Monaco",
+              "AC Milan",
+              "Barcelona"
+          ],
+          "answer": "Real Madrid"
+      },
+      {
+          "id": 192,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi ha vinto il premio di MVP nelle finali NBA del 2020?",
+          "options": [
+              "LeBron James",
+              "Giannis Antetokounmpo",
+              "Stephen Curry",
+              "Kevin Durant"
+          ],
+          "answer": "LeBron James"
+      },
+      {
+          "id": 193,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale paese ha ospitato i Campionati del Mondo FIFA nel 2018?",
+          "options": [
+              "Brasile",
+              "Russia",
+              "Germania",
+              "Francia"
+          ],
+          "answer": "Russia"
+      },
+      {
+          "id": 194,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "In quale anno si sono svolte le prime Olimpiadi moderne?",
+          "options": [
+              "1892",
+              "1896",
+              "1900",
+              "1912"
+          ],
+          "answer": "1896"
+      },
+      {
+          "id": 195,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi ha vinto il titolo di capocannoniere nella UEFA Champions League 2020/2021?",
+          "options": [
+              "Cristiano Ronaldo",
+              "Robert Lewandowski",
+              "Erling Haaland",
+              "Kylian Mbappé"
+          ],
+          "answer": "Robert Lewandowski"
+      },
+      {
+          "id": 196,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport utilizza il termine 'scrum'?",
+          "options": [
+              "Calcio",
+              "Rugby",
+              "Cricket",
+              "Pallavolo"
+          ],
+          "answer": "Rugby"
+      },
+      {
+          "id": 197,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi è noto come il 'Re del Cricket'?",
+          "options": [
+              "Sachin Tendulkar",
+              "Brian Lara",
+              "Don Bradman",
+              "Kapil Dev"
+          ],
+          "answer": "Sachin Tendulkar"
+      },
+      {
+          "id": 198,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale tennista ha vinto il maggior numero di titoli del Grande Slam?",
+          "options": [
+              "Roger Federer",
+              "Rafael Nadal",
+              "Novak Djokovic",
+              "Pete Sampras"
+          ],
+          "answer": "Novak Djokovic"
+      },
+      {
+          "id": 199,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport tradizionale britannico si gioca con una palla ovale e prevede il 'kick'?",
+          "options": [
+              "Football",
+              "Rugby",
+              "Cricket",
+              "Pallamano"
+          ],
+          "answer": "Rugby"
+      },
+      {
+          "id": 200,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi ha vinto il titolo mondiale di Formula 1 nel 2021?",
+          "options": [
+              "Lewis Hamilton",
+              "Max Verstappen",
+              "Valtteri Bottas",
+              "Charles Leclerc"
+          ],
+          "answer": "Max Verstappen"
+      },
+      {
+          "id": 201,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale squadra di NFL ha vinto il Super Bowl nel 2019?",
+          "options": [
+              "New England Patriots",
+              "Kansas City Chiefs",
+              "San Francisco 49ers",
+              "Tampa Bay Buccaneers"
+          ],
+          "answer": "Tampa Bay Buccaneers"
+      },
+      {
+          "id": 202,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale atleta ha il record per il maggior numero di medaglie olimpiche nella storia?",
+          "options": [
+              "Usain Bolt",
+              "Michael Phelps",
+              "Simone Biles",
+              "Carl Lewis"
+          ],
+          "answer": "Michael Phelps"
+      },
+      {
+          "id": 203,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport è noto per il termine 'love' per indicare uno score di zero?",
+          "options": [
+              "Calcio",
+              "Pallavolo",
+              "Tennis",
+              "Badminton"
+          ],
+          "answer": "Tennis"
+      },
+      {
+          "id": 204,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "In quale sport si utilizza un disco chiamato 'puck'?",
+          "options": [
+              "Hockey su ghiaccio",
+              "Pallamano",
+              "Basket",
+              "Baseball"
+          ],
+          "answer": "Hockey su ghiaccio"
+      },
+      {
+          "id": 205,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale nazione ha vinto il maggior numero di medaglie alle Olimpiadi invernali?",
+          "options": [
+              "Norvegia",
+              "USA",
+              "Russia",
+              "Germania"
+          ],
+          "answer": "Norvegia"
+      },
+      {
+          "id": 206,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi è considerato il più grande giocatore di basket di tutti i tempi?",
+          "options": [
+              "LeBron James",
+              "Michael Jordan",
+              "Kobe Bryant",
+              "Magic Johnson"
+          ],
+          "answer": "Michael Jordan"
+      },
+      {
+          "id": 207,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport consiste in gare di velocità in pista su motociclette?",
+          "options": [
+              "MotoGP",
+              "NASCAR",
+              "Rally",
+              "Formula 1"
+          ],
+          "answer": "MotoGP"
+      },
+      {
+          "id": 208,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale squadra ha vinto il campionato MLB nel 2020?",
+          "options": [
+              "Los Angeles Dodgers",
+              "Chicago Cubs",
+              "New York Yankees",
+              "San Diego Padres"
+          ],
+          "answer": "Los Angeles Dodgers"
+      },
+      {
+          "id": 209,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport, noto anche come tennis tavolo, si gioca con racchette piccole e una pallina leggera?",
+          "options": [
+              "Badminton",
+              "Ping pong",
+              "Squash",
+              "Racquetball"
+          ],
+          "answer": "Ping pong"
+      },
+      {
+          "id": 210,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale squadra di calcio ha vinto la Coppa Libertadores nel 2020?",
+          "options": [
+              "Palmeiras",
+              "Boca Juniors",
+              "River Plate",
+              "Flamengo"
+          ],
+          "answer": "Palmeiras"
+      },
+      {
+          "id": 211,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi è il pilota con il maggior numero di vittorie in Formula 1?",
+          "options": [
+              "Michael Schumacher",
+              "Lewis Hamilton",
+              "Sebastian Vettel",
+              "Ayrton Senna"
+          ],
+          "answer": "Lewis Hamilton"
+      },
+      {
+          "id": 212,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport utilizza l'asta come attrezzo principale?",
+          "options": [
+              "Corsa",
+              "Pallacanestro",
+              "Salto con l'asta",
+              "Nuoto"
+          ],
+          "answer": "Salto con l'asta"
+      },
+      {
+          "id": 213,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi ha stabilito il record mondiale dei 100 metri piani?",
+          "options": [
+              "Usain Bolt",
+              "Tyson Gay",
+              "Yohan Blake",
+              "Justin Gatlin"
+          ],
+          "answer": "Usain Bolt"
+      },
+      {
+          "id": 214,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport combina elementi del calcio e del basket ed è giocato con le mani?",
+          "options": [
+              "Waterpolo",
+              "Rugby",
+              "Pallamano",
+              "Baseball"
+          ],
+          "answer": "Pallamano"
+      },
+      {
+          "id": 215,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale pilota automobilistico è noto per le sue vittorie a Le Mans con Porsche?",
+          "options": [
+              "Jacky Ickx",
+              "Derek Bell",
+              "Tom Kristensen",
+              "Allan McNish"
+          ],
+          "answer": "Tom Kristensen"
+      },
+      {
+          "id": 216,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale evento sportivo si tiene ogni quattro anni e coinvolge atleti da tutto il mondo?",
+          "options": [
+              "Campionati del Mondo",
+              "Olimpiadi",
+              "Eurolega",
+              "Coppa del Mondo FIFA"
+          ],
+          "answer": "Olimpiadi"
+      },
+      {
+          "id": 217,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport da tavolo si gioca con una stecca e palle numerate?",
+          "options": [
+              "Biliardo",
+              "Ping pong",
+              "Darts",
+              "Air hockey"
+          ],
+          "answer": "Biliardo"
+      },
+      {
+          "id": 218,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Chi è il miglior maratoneta di tutti i tempi, vincitore di numerosi tornei internazionali?",
+          "options": [
+              "Eliud Kipchoge",
+              "Haile Gebrselassie",
+              "Mo Farah",
+              "Kenenisa Bekele"
+          ],
+          "answer": "Eliud Kipchoge"
+      },
+      {
+          "id": 219,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale sport richiede l'utilizzo di una racchetta e una palla piuma?",
+          "options": [
+              "Squash",
+              "Badminton",
+              "Tennis",
+              "Ping pong"
+          ],
+          "answer": "Badminton"
+      },
+      {
+          "id": 220,
+          "category": "Sport",
+          "type": "multiple",
+          "question": "Quale regione degli Stati Uniti è storicamente nota per aver prodotto numerosi giocatori NBA?",
+          "options": [
+              "Midwest",
+              "Sud",
+              "Nord Est",
+              "West Coast"
+          ],
+          "answer": "Sud"
+      },{
+        "id": 221,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Guerra dei Trent'anni si concluse nel 1648?",
+        "answer": "Vero"
+    },
+    {
+        "id": 222,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il leader della Rivoluzione d'Ottobre in Russia?",
+        "options": [
+            "Lenin",
+            "Stalin",
+            "Trotsky",
+            "Kerenski"
+        ],
+        "answer": "Lenin"
+    },
+    {
+        "id": 223,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Guerra Fredda vide l'utilizzo diretto di armi nucleari sul campo di battaglia?",
+        "answer": "Falso"
+    },
+    {
+        "id": 224,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "In quale anno cadde il Muro di Berlino?",
+        "options": [
+            "1987",
+            "1989",
+            "1991",
+            "1993"
+        ],
+        "answer": "1989"
+    },
+    {
+        "id": 225,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "L'Impero Britannico è stato uno dei più vasti della storia?",
+        "answer": "Vero"
+    },
+    {
+        "id": 226,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il condottiero cartaginese durante la Seconda Guerra Punica?",
+        "options": [
+            "Annibale",
+            "Asdrubale",
+            "Amilcare Barca",
+            "Hannibal Barca"
+        ],
+        "answer": "Annibale"
+    },
+    {
+        "id": 227,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La dinastia Ming regnò in Cina per più di 200 anni?",
+        "answer": "Vero"
+    },
+    {
+        "id": 228,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Quale battaglia è considerata la svolta della Seconda Guerra Mondiale in Europa?",
+        "options": [
+            "Battle of Britain",
+            "Stalingrado",
+            "Normandia",
+            "Battaglia delle Ardenne"
+        ],
+        "answer": "Stalingrado"
+    },
+    {
+        "id": 229,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Repubblica di Weimar fu il governo tedesco prima dell'ascesa del Nazismo?",
+        "answer": "Vero"
+    },
+    {
+        "id": 230,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il fondatore dell'Impero Persiano Achemenide?",
+        "options": [
+            "Ciro il Grande",
+            "Dario I",
+            "Serse",
+            "Artaserse"
+        ],
+        "answer": "Ciro il Grande"
+    },
+    {
+        "id": 231,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "L'età del bronzo è preceduta dall'età della pietra?",
+        "answer": "Vero"
+    },
+    {
+        "id": 232,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "In quale anno fu firmata la Dichiarazione d'Indipendenza degli Stati Uniti?",
+        "options": [
+            "1776",
+            "1783",
+            "1801",
+            "1812"
+        ],
+        "answer": "1776"
+    },
+    {
+        "id": 233,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "Giovanna d'Arco fu bruciata sul rogo nel 1431?",
+        "answer": "Vero"
+    },
+    {
+        "id": 234,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il sovrano che commissionò la costruzione del Taj Mahal?",
+        "options": [
+            "Akbar",
+            "Shah Jahan",
+            "Aurangzeb",
+            "Jahangir"
+        ],
+        "answer": "Shah Jahan"
+    },
+    {
+        "id": 235,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Rivoluzione Industriale ebbe origine in Inghilterra?",
+        "answer": "Vero"
+    },
+    {
+        "id": 236,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Quale trattato pose fine alla Prima Guerra Mondiale?",
+        "options": [
+            "Trattato di Tordesillas",
+            "Trattato di Versailles",
+            "Trattato di Utrecht",
+            "Trattato di Westfalia"
+        ],
+        "answer": "Trattato di Versailles"
+    },
+    {
+        "id": 237,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Guerra dei Cent'Anni durò esattamente 100 anni?",
+        "answer": "Falso"
+    },
+    {
+        "id": 238,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il principale artefice della Riforma Protestante?",
+        "options": [
+            "Martino Lutero",
+            "Giovanni Calvino",
+            "Enrico VIII",
+            "Ulrico Zwingli"
+        ],
+        "answer": "Martino Lutero"
+    },
+    {
+        "id": 239,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "L'età moderna iniziò ufficialmente nel 1500?",
+        "answer": "Falso"
+    },
+    {
+        "id": 240,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Quale città fu la capitale dell'Impero Bizantino?",
+        "options": [
+            "Roma",
+            "Costantinopoli",
+            "Atene",
+            "Smirne"
+        ],
+        "answer": "Costantinopoli"
+    },
+    {
+        "id": 241,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Rivoluzione Russa del 1917 portò alla formazione dell'URSS?",
+        "answer": "Vero"
+    },
+    {
+        "id": 242,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu l'ultimo zar della Russia?",
+        "options": [
+            "Nicola II",
+            "Alessandro III",
+            "Federico",
+            "Michele I"
+        ],
+        "answer": "Nicola II"
+    },
+    {
+        "id": 243,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La battaglia di Waterloo vide la sconfitta di Napoleone Bonaparte?",
+        "answer": "Vero"
+    },
+    {
+        "id": 244,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "In quale anno fu costruita la Muraglia di Berlino per separare la città?",
+        "options": [
+            "1961",
+            "1955",
+            "1949",
+            "1971"
+        ],
+        "answer": "1961"
+    },
+    {
+        "id": 245,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "Il Rinascimento ebbe origine in Italia?",
+        "answer": "Vero"
+    },
+    {
+        "id": 246,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi è considerato il padre della Storia?",
+        "options": [
+            "Eraclito",
+            "Platone",
+            "Erodoto",
+            "Sofocle"
+        ],
+        "answer": "Erodoto"
+    },
+    {
+        "id": 247,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "L'Impero Ottomano crollò dopo la Prima Guerra Mondiale?",
+        "answer": "Vero"
+    },
+    {
+        "id": 248,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Quale evento è considerato l'inizio delle incursioni vichinghe in Europa?",
+        "options": [
+            "L'assalto a Lindisfarne",
+            "La battaglia di Stamford Bridge",
+            "La scoperta dell'Islanda",
+            "La conquista della Normandia"
+        ],
+        "answer": "L'assalto a Lindisfarne"
+    },
+    {
+        "id": 249,
+        "category": "Storia",
+        "type": "boolean",
+        "question": "La Guerra del Vietnam si concluse nel 1975?",
+        "answer": "Vero"
+    },
+    {
+        "id": 250,
+        "category": "Storia",
+        "type": "multiple",
+        "question": "Chi fu il principale riformatore religioso del XVI secolo in Europa centrale?",
+        "options": [
+            "Martin Lutero",
+            "Giovanni Calvino",
+            "Ulrico Zwingli",
+            "Enrico VIII"
+        ],
+        "answer": "Martin Lutero"
+    },
+    {
+      "id": 251,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la capitale della Svizzera?",
+      "options": ["Zurigo", "Berna", "Ginevra", "Basilea"],
+      "answer": "Berna"
+  },
+  {
+      "id": 252,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume Nilo è più lungo del fiume Mississippi?",
+      "answer": "Vero"
+  },
+  {
+      "id": 253,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Quale dei seguenti paesi non fa parte del Regno Unito?",
+      "options": ["Inghilterra", "Scozia", "Galles", "Islanda"],
+      "answer": "Islanda"
+  },
+  {
+      "id": 254,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "L'Islanda è situata nell'Oceano Atlantico?",
+      "answer": "Vero"
+  },
+  {
+      "id": 255,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è il più grande oceano del mondo?",
+      "options": ["Oceano Atlantico", "Oceano Pacifico", "Oceano Indiano", "Oceano Artico"],
+      "answer": "Oceano Pacifico"
+  },
+  {
+      "id": 256,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume Danubio attraversa più di dieci paesi?",
+      "answer": "Vero"
+  },
+  {
+      "id": 257,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la capitale dell'Australia?",
+      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "answer": "Canberra"
+  },
+  {
+      "id": 258,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il deserto del Sahara copre la maggior parte del Nord Africa?",
+      "answer": "Vero"
+  },
+  {
+      "id": 259,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è il fiume più lungo d'Italia?",
+      "options": ["Po", "Adige", "Tevere", "Arno"],
+      "answer": "Po"
+  },
+  {
+      "id": 260,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Mar Mediterraneo si collega all'Oceano Atlantico?",
+      "answer": "Vero"
+  },
+  {
+      "id": 261,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Quale paese è famoso per i suoi fiordi?",
+      "options": ["Svezia", "Norvegia", "Finlandia", "Islanda"],
+      "answer": "Norvegia"
+  },
+  {
+      "id": 262,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il monte Kilimangiaro si trova in Asia?",
+      "answer": "Falso"
+  },
+  {
+      "id": 263,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la capitale della Nuova Zelanda?",
+      "options": ["Auckland", "Wellington", "Christchurch", "Hamilton"],
+      "answer": "Wellington"
+  },
+  {
+      "id": 264,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume Mekong attraversa il Vietnam?",
+      "answer": "Vero"
+  },
+  {
+      "id": 265,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "In quale continente si trova il deserto del Kalahari?",
+      "options": ["Africa", "Asia", "America", "Australia"],
+      "answer": "Africa"
+  },
+  {
+      "id": 266,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "La città di Dubai si trova negli Emirati Arabi Uniti?",
+      "answer": "Vero"
+  },
+  {
+      "id": 267,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Quale dei seguenti non è uno stato dell'America Latina?",
+      "options": ["Colombia", "Argentina", "Portogallo", "Cile"],
+      "answer": "Portogallo"
+  },
+  {
+      "id": 268,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Monte Everest si trova al confine tra Nepal e Cina?",
+      "answer": "Vero"
+  },
+  {
+      "id": 269,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la capitale della Germania?",
+      "options": ["Berlino", "Monaco", "Francoforte", "Amburgo"],
+      "answer": "Berlino"
+  },
+  {
+      "id": 270,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il fiume Reno scorre esclusivamente in Germania?",
+      "answer": "Falso"
+  },
+  {
+      "id": 271,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Quale mare bagna la costa della Spagna?",
+      "options": ["Mare Adriatico", "Mare Ionio", "Mare Mediterraneo", "Mare Nero"],
+      "answer": "Mare Mediterraneo"
+  },
+  {
+      "id": 272,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Lo stretto dei Dardanelli separa l'Europa dall'Asia?",
+      "answer": "Vero"
+  },
+  {
+      "id": 273,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la capitale del Brasile?",
+      "options": ["Rio de Janeiro", "Brasilia", "Sao Paulo", "Belo Horizonte"],
+      "answer": "Brasilia"
+  },
+  {
+      "id": 274,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "Il Parco Nazionale di Yellowstone si trova negli Stati Uniti?",
+      "answer": "Vero"
+  },
+  {
+      "id": 275,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è il punto più basso della Terra?",
+      "options": ["Fossa delle Marianne", "Lago Eyre", "Depressione di Qattara", "Fossa dell'Atacama"],
+      "answer": "Fossa delle Marianne"
+  },
+  {
+      "id": 276,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "L'Isola di Madagascar si trova nell'Oceano Indiano?",
+      "answer": "Vero"
+  },
+  {
+      "id": 277,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Quale dei seguenti è uno stato insulare?",
+      "options": ["Portogallo", "Giappone", "Svizzera", "Bulgaria"],
+      "answer": "Giappone"
+  },
+  {
+      "id": 278,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "La Scandinavia comprende Danimarca, Svezia e Norvegia?",
+      "answer": "Vero"
+  },
+  {
+      "id": 279,
+      "category": "Geografia",
+      "type": "multiple",
+      "question": "Qual è la principale catena montuosa in Sud America?",
+      "options": ["Appennini", "Ande", "Alpi", "Monti Urali"],
+      "answer": "Ande"
+  },
+  {
+      "id": 280,
+      "category": "Geografia",
+      "type": "boolean",
+      "question": "L'Africa è il secondo continente per estensione geografica al mondo?",
+      "answer": "Vero"
+  },  {
+    "id": 281,
+    "category": "Arte",
+    "type": "text",
+    "question": "Quale pittore barocco è noto per opere come 'La Vocazione di San Matteo'?",
+    "answer": "Caravaggio"
+},
+{
+    "id": 282,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "A quale movimento artistico apparteneva Claude Monet?",
+    "options": [
+        "Impressionismo",
+        "Espressionismo",
+        "Cubismo",
+        "Surrealismo"
+    ],
+    "answer": "Impressionismo"
+},
+{
+    "id": 283,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "Il metodo dell'encausto utilizza cera e pigmenti per realizzare opere d'arte?",
+    "answer": "Vero"
+},
+{
+    "id": 284,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha scolpito il celebre 'Discobolo' nell'antica Grecia?",
+    "answer": "Mirone"
+},
+{
+    "id": 285,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "A quale corrente artistica è associato Pablo Picasso?",
+    "options": [
+        "Cubismo",
+        "Futurismo",
+        "Impressionismo",
+        "Rinascimento"
+    ],
+    "answer": "Cubismo"
+},
+{
+    "id": 286,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "Il surrealismo cerca di rappresentare il subconscio attraverso immagini oniriche?",
+    "answer": "Vero"
+},
+{
+    "id": 287,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi è l'architetto famoso per la realizzazione della Sagrada Familia a Barcellona?",
+    "answer": "Antoni Gaudí"
+},
+{
+    "id": 288,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale tecnica pittorica consiste nell'applicazione di colori su una base di calce fresca?",
+    "options": [
+        "Affresco",
+        "Tempera",
+        "Olio",
+        "Acquerello"
+    ],
+    "answer": "Affresco"
+},
+{
+    "id": 289,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "Il neopop è una corrente artistica nata negli anni '80?",
+    "answer": "Vero"
+},
+{
+    "id": 290,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi è stato uno dei principali promotori del movimento Dada?",
+    "answer": "Tristan Tzara"
+},
+{
+    "id": 291,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale forma d'arte prevede l'assemblaggio di materiali e oggetti per creare installazioni visive?",
+    "options": [
+        "Performance art",
+        "Installazione",
+        "Scultura",
+        "Pittura"
+    ],
+    "answer": "Installazione"
+},
+{
+    "id": 292,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "La tecnica del collage prevede l'assemblaggio di frammenti di carta, tessuti e altri materiali?",
+    "answer": "Vero"
+},
+{
+    "id": 293,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha dipinto 'La persistenza della memoria'?",
+    "answer": "Salvador Dalí"
+},
+{
+    "id": 294,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale movimento artistico si caratterizza per l'uso di colori vivaci e linee marcate, come nelle opere di Roy Lichtenstein?",
+    "options": [
+        "Pop Art",
+        "Cubismo",
+        "Futurismo",
+        "Espressionismo"
+    ],
+    "answer": "Pop Art"
+},
+{
+    "id": 295,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "Il minimalismo si basa sull'eliminazione degli elementi decorativi superflui?",
+    "answer": "Vero"
+},
+{
+    "id": 296,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha dipinto 'Impression, soleil levant'?",
+    "answer": "Claude Monet"
+},
+{
+    "id": 297,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale corrente artistica si concentra sull'esplorazione di forme astratte senza rappresentare oggetti reali?",
+    "options": [
+        "Astrattismo",
+        "Realismo",
+        "Barocco",
+        "Rinascimento"
+    ],
+    "answer": "Astrattismo"
+},
+{
+    "id": 298,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "La tecnica del frottage fu resa celebre da Max Ernst?",
+    "answer": "Vero"
+},
+{
+    "id": 299,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha creato la serie di opere 'Campbell's Soup Cans'?",
+    "answer": "Andy Warhol"
+},
+{
+    "id": 300,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale movimento artistico, nato in seguito alla Prima Guerra Mondiale, rompeva con le convenzioni tradizionali?",
+    "options": [
+        "Futurismo",
+        "Surrealismo",
+        "Dadaismo",
+        "Espressionismo"
+    ],
+    "answer": "Dadaismo"
+},
+{
+    "id": 301,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha scolpito la 'Venere di Milo'?",
+    "answer": "Anonimo"
+},
+{
+    "id": 302,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale corrente artistica è rappresentata dalle opere di Jackson Pollock?",
+    "options": [
+        "Espressionismo Astratto",
+        "Cubismo",
+        "Futurismo",
+        "Impressionismo"
+    ],
+    "answer": "Espressionismo Astratto"
+},
+{
+    "id": 303,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "Il concetto di 'ready-made' è stato introdotto da Marcel Duchamp?",
+    "answer": "Vero"
+},
+{
+    "id": 304,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi è l'autore del celebre affresco 'La creazione di Adamo' nella Cappella Sistina?",
+    "answer": "Michelangelo"
+},
+{
+    "id": 305,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale movimento artistico giapponese, caratterizzato da immagini piatte e colori vivaci, è noto come 'Superflat'?",
+    "options": [
+        "Superflat",
+        "Pop Art",
+        "Minimalismo",
+        "Espressionismo"
+    ],
+    "answer": "Superflat"
+},
+{
+    "id": 306,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "I graffiti sono stati originariamente associati alla cultura hip hop?",
+    "answer": "Vero"
+},
+{
+    "id": 307,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi ha realizzato l'installazione 'The Weather Project' esposta al Tate Modern di Londra?",
+    "answer": "Olafur Eliasson"
+},
+{
+    "id": 308,
+    "category": "Arte",
+    "type": "multiple",
+    "question": "Quale stile architettonico, noto per le sue forme fluide e scultoree, è rappresentato dall'Opera House di Sydney?",
+    "options": [
+        "Espressionismo",
+        "Decostruzionismo",
+        "Brutalismo",
+        "Neoclassicismo"
+    ],
+    "answer": "Espressionismo"
+},
+{
+    "id": 309,
+    "category": "Arte",
+    "type": "boolean",
+    "question": "La tecnica del chiaroscuro è stata ampiamente utilizzata durante il Rinascimento?",
+    "answer": "Vero"
+},
+{
+    "id": 310,
+    "category": "Arte",
+    "type": "text",
+    "question": "Chi è considerato uno dei pionieri della pittura a olio su tela, spesso accreditato per aver perfezionato la tecnica?",
+    "answer": "Antonello da Messina"
+},
+{
+  "id": 311,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale gruppo italiano ha vinto l'Eurovision Song Contest nel 2021?",
+  "options": [
+      "Il Volo",
+      "Måneskin",
+      "Emma Marrone",
+      "Francesco Gabbani"
+  ],
+  "answer": "Måneskin"
+},
+{
+  "id": 312,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi è il frontman dei Måneskin?",
+  "answer": "Damiano David"
+},
+{
+  "id": 313,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Chi ha vinto il Festival di Sanremo nel 2020 con il brano 'Fai rumore'?",
+  "options": [
+      "Diodato",
+      "Francesco Gabbani",
+      "Ultimo",
+      "Achille Lauro"
+  ],
+  "answer": "Diodato"
+},
+{
+  "id": 314,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il gruppo Måneskin ha ottenuto un successo internazionale dopo la vittoria all'Eurovision?",
+  "answer": "Vero"
+},
+{
+  "id": 315,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi ha condotto il Festival di Sanremo 2021?",
+  "answer": "Amadeus"
+},
+{
+  "id": 316,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale tra questi cantanti italiani è noto per aver inaugurato la scena rap/trap?",
+  "options": [
+      "Sfera Ebbasta",
+      "Tiziano Ferro",
+      "Laura Pausini",
+      "Eros Ramazzotti"
+  ],
+  "answer": "Sfera Ebbasta"
+},
+{
+  "id": 317,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il rapper Sfera Ebbasta è riconosciuto come uno dei principali esponenti della trap italiana?",
+  "answer": "Vero"
+},
+{
+  "id": 318,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi è stato uno dei protagonisti nel video musicale del brano 'Mille' insieme a Fedez?",
+  "answer": "Achille Lauro"
+},
+{
+  "id": 319,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale cantautore italiano ha pubblicato l'album 'Solo' nel 2021?",
+  "options": [
+      "Ultimo",
+      "Fedez",
+      "Mahmood",
+      "Cesare Cremonini"
+  ],
+  "answer": "Ultimo"
+},
+{
+  "id": 320,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il rapper Sfera Ebbasta ha collaborato con artisti pop nel corso del 2020?",
+  "answer": "Vero"
+},
+{
+  "id": 321,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi ha vinto il Festival di Sanremo 2021?",
+  "answer": "Måneskin"
+},
+{
+  "id": 322,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale tra questi artisti è considerato una leggenda della musica leggera italiana?",
+  "options": [
+      "Lucio Battisti",
+      "Vasco Rossi",
+      "Ligabue",
+      "Andrea Bocelli"
+  ],
+  "answer": "Lucio Battisti"
+},
+{
+  "id": 323,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Andrea Bocelli ha collaborato con Céline Dion in un duetto?",
+  "answer": "Vero"
+},
+{
+  "id": 324,
+  "category": "Musica",
+  "type": "text",
+  "question": "Quale canzone divenne un inno della Resistenza italiana?",
+  "answer": "Bella Ciao"
+},
+{
+  "id": 325,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale di questi artisti è noto per il genere del cantautorato italiano?",
+  "options": [
+      "Måneskin",
+      "Lucio Dalla",
+      "Fedez",
+      "Sfera Ebbasta"
+  ],
+  "answer": "Lucio Dalla"
+},
+{
+  "id": 326,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il Festival di Sanremo si tiene annualmente in Italia?",
+  "answer": "Vero"
+},
+{
+  "id": 327,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi ha vinto il premio 'Mia Martini' a Sanremo nel 2020?",
+  "answer": "Colapesce e Dimartino"
+},
+{
+  "id": 328,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale band italiana è famosa per il brano 'Una vita in vacanza'?",
+  "options": [
+      "Lo Stato Sociale",
+      "Thegiornalisti",
+      "I Cani",
+      "I Pooh"
+  ],
+  "answer": "Lo Stato Sociale"
+},
+{
+  "id": 329,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il cantante Tiziano Ferro ha pubblicato album anche in lingua spagnola?",
+  "answer": "Vero"
+},
+{
+  "id": 330,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi ha interpretato il brano 'La solitudine'?",
+  "answer": "Laura Pausini"
+},
+{
+  "id": 331,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale tra questi artisti è noto per il suo stile innovativo nel panorama trap italiano?",
+  "options": [
+      "Sfera Ebbasta",
+      "Lazza",
+      "Capo Plaza",
+      "Tedua"
+  ],
+  "answer": "Sfera Ebbasta"
+},
+{
+  "id": 332,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il cantante J-Ax è stato membro del gruppo Articolo 31?",
+  "answer": "Vero"
+},
+{
+  "id": 333,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi è il frontman dei The Kolors?",
+  "answer": "Stash"
+},
+{
+  "id": 334,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale tra questi artisti è noto per il brano 'Siamo soli' ed è una figura iconica del rock italiano?",
+  "options": [
+      "Vasco Rossi",
+      "Ligabue",
+      "Eros Ramazzotti",
+      "Jovanotti"
+  ],
+  "answer": "Vasco Rossi"
+},
+{
+  "id": 335,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il cantautore Cesare Cremonini ha iniziato la sua carriera come membro dei Lunapop?",
+  "answer": "Vero"
+},
+{
+  "id": 336,
+  "category": "Musica",
+  "type": "text",
+  "question": "In che edizione si è svolto il Festival di Sanremo 2021?",
+  "answer": "71ª edizione"
+},
+{
+  "id": 337,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale tra questi artisti italiani ha collaborato con Fedez nel brano 'Rispondi'?",
+  "options": [
+      "Annalisa",
+      "Elodie",
+      "Ariete",
+      "Måneskin"
+  ],
+  "answer": "Elodie"
+},
+{
+  "id": 338,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il cantautore Francesco Gabbani ha vinto il Festival di Sanremo nel 2017?",
+  "answer": "Vero"
+},
+{
+  "id": 339,
+  "category": "Musica",
+  "type": "text",
+  "question": "Chi ha eseguito il brano 'Cara Italia'?",
+  "answer": "Ghali"
+},
+{
+  "id": 340,
+  "category": "Musica",
+  "type": "multiple",
+  "question": "Quale artista italiano ha collaborato con Mahmood nel brano 'Asia Occidentale'?",
+  "options": [
+      "Marracash",
+      "Fedez",
+      "Sfera Ebbasta",
+      "Ultimo"
+  ],
+  "answer": "Marracash"
+},{
+  "id": 341,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Chi ha diretto il film 'Blade Runner' (1982)?",
+  "options": [
+      "Ridley Scott",
+      "James Cameron",
+      "Stanley Kubrick",
+      "Peter Jackson"
+  ],
+  "answer": "Ridley Scott"
+},
+{
+  "id": 342,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Qual è il titolo del film vincitore del miglior film Oscar nel 2020?",
+  "answer": "Parasite"
+},
+{
+  "id": 343,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Interstellar' è stato diretto da Christopher Nolan?",
+  "answer": "Vero"
+},
+{
+  "id": 344,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale film ha vinto il premio Oscar come miglior film nel 1994?",
+  "options": [
+      "Forrest Gump",
+      "Pulp Fiction",
+      "The Shawshank Redemption",
+      "Quiz Show"
+  ],
+  "answer": "Forrest Gump"
+},
+{
+  "id": 345,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha interpretato il ruolo di Iron Man nel Marvel Cinematic Universe?",
+  "answer": "Robert Downey Jr."
+},
+{
+  "id": 346,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'The Godfather Part II' è considerato un sequel?",
+  "answer": "Vero"
+},
+{
+  "id": 347,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "In quale film appare il personaggio di Jack Sparrow?",
+  "options": [
+      "Pirates of the Caribbean: The Curse of the Black Pearl",
+      "Master and Commander",
+      "Cutthroat Island",
+      "The Goonies"
+  ],
+  "answer": "Pirates of the Caribbean: The Curse of the Black Pearl"
+},
+{
+  "id": 348,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale attore ha interpretato Travis Bickle in 'Taxi Driver'?",
+  "options": [
+      "Robert De Niro",
+      "Al Pacino",
+      "Dustin Hoffman",
+      "Marlon Brando"
+  ],
+  "answer": "Robert De Niro"
+},
+{
+  "id": 349,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Qual è il titolo originale del film 'C'era una volta nel West'?",
+  "answer": "Once Upon a Time in the West"
+},
+{
+  "id": 350,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Schindler's List' è stato girato in bianco e nero?",
+  "answer": "Vero"
+},
+{
+  "id": 351,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Chi ha diretto il film 'The Shining'?",
+  "options": [
+      "Stanley Kubrick",
+      "Wes Craven",
+      "Alfred Hitchcock",
+      "John Carpenter"
+  ],
+  "answer": "Stanley Kubrick"
+},
+{
+  "id": 352,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha interpretato il ruolo di Neo in 'The Matrix'?",
+  "answer": "Keanu Reeves"
+},
+{
+  "id": 353,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale regista italiano ha diretto 'La vita è bella'?",
+  "options": [
+      "Roberto Benigni",
+      "Federico Fellini",
+      "Luchino Visconti",
+      "Vittorio De Sica"
+  ],
+  "answer": "Roberto Benigni"
+},
+{
+  "id": 354,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Once Upon a Time in Hollywood' è stato diretto da Quentin Tarantino?",
+  "answer": "Vero"
+},
+{
+  "id": 355,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha interpretato il ruolo di Joker nel film 'Joker' (2019)?",
+  "answer": "Joaquin Phoenix"
+},
+{
+  "id": 356,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "In quale film recita il personaggio di 'Tyler Durden'?",
+  "options": [
+      "Fight Club",
+      "American Beauty",
+      "Se7en",
+      "The Big Lebowski"
+  ],
+  "answer": "Fight Club"
+},
+{
+  "id": 357,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Mad Max: Fury Road' è ambientato in un futuro post-apocalittico?",
+  "answer": "Vero"
+},
+{
+  "id": 358,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha diretto 'The Revenant' (2015)?",
+  "answer": "Alejandro González Iñárritu"
+},
+{
+  "id": 359,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale film d'animazione Disney è uscito nel 2013?",
+  "options": [
+      "Frozen",
+      "Tangled",
+      "Brave",
+      "Moana"
+  ],
+  "answer": "Frozen"
+},
+{
+  "id": 360,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Gravity' è ambientato nello spazio?",
+  "answer": "Vero"
+},
+{
+  "id": 361,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Qual è il titolo del film in cui Ethan Hunt è interpretato da Tom Cruise?",
+  "options": [
+      "Mission: Impossible",
+      "Top Gun",
+      "Edge of Tomorrow",
+      "Oblivion"
+  ],
+  "answer": "Mission: Impossible"
+},
+{
+  "id": 362,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha interpretato il ruolo di Hans Landa in 'Bastardi senza gloria'?",
+  "answer": "Christoph Waltz"
+},
+{
+  "id": 363,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'La La Land' è un musical?",
+  "answer": "Vero"
+},
+{
+  "id": 364,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale regista ha diretto il film 'Arrival'?",
+  "options": [
+      "Denis Villeneuve",
+      "Ridley Scott",
+      "James Cameron",
+      "Steven Spielberg"
+  ],
+  "answer": "Denis Villeneuve"
+},
+{
+  "id": 365,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Qual è il titolo del film biografico su Stephen Hawking diretto da Ron Howard?",
+  "answer": "The Theory of Everything"
+},
+{
+  "id": 366,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Blade Runner 2049' è il sequel di 'Blade Runner'?",
+  "answer": "Vero"
+},
+{
+  "id": 367,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale film di fantascienza ha come tema il viaggio nel tempo ed è interpretato da Michael J. Fox?",
+  "options": [
+      "Back to the Future",
+      "Terminator",
+      "The Time Machine",
+      "Looper"
+  ],
+  "answer": "Back to the Future"
+},
+{
+  "id": 368,
+  "category": "Cinema",
+  "type": "text",
+  "question": "Chi ha diretto il film 'The Social Network'?",
+  "answer": "David Fincher"
+},
+{
+  "id": 369,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Avatar' utilizza tecnologie avanzate per la creazione di ambienti 3D?",
+  "answer": "Vero"
+},
+{
+  "id": 370,
+  "category": "Cinema",
+  "type": "multiple",
+  "question": "Quale film è considerato il primo della serie di James Bond?",
+  "options": [
+      "Dr. No",
+      "From Russia with Love",
+      "Goldfinger",
+      "Thunderball"
+  ],
+  "answer": "Dr. No"
+},{
+  "id": 371,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il nome della rosa'?",
+  "options": [
+    "Umberto Eco",
+    "Italo Calvino",
+    "Andrea Camilleri",
+    "Giorgio Bassani"
+  ],
+  "answer": "Umberto Eco"
+},
+{
+  "id": 372,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'La Divina Commedia' è stata scritta da Dante Alighieri?",
+  "answer": "Vero"
+},
+{
+  "id": 373,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Il Decameron'?",
+  "answer": "Giovanni Boccaccio"
+},
+{
+  "id": 374,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi è l'autore di 'Il Gattopardo'?",
+  "options": [
+    "Giuseppe Tomasi di Lampedusa",
+    "Alberto Moravia",
+    "Elsa Morante",
+    "Carlo Levi"
+  ],
+  "answer": "Giuseppe Tomasi di Lampedusa"
+},
+{
+  "id": 375,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il fu Mattia Pascal' è stato scritto da Luigi Pirandello?",
+  "answer": "Vero"
+},
+{
+  "id": 376,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Se questo è un uomo'?",
+  "answer": "Primo Levi"
+},
+{
+  "id": 377,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il barone rampante'?",
+  "options": [
+    "Italo Calvino",
+    "Cesare Pavese",
+    "Gabriele D'Annunzio",
+    "Alberto Moravia"
+  ],
+  "answer": "Italo Calvino"
+},
+{
+  "id": 378,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'La coscienza di Zeno' è un'opera di Italo Svevo?",
+  "answer": "Vero"
+},
+{
+  "id": 379,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Le avventure di Pinocchio'?",
+  "answer": "Carlo Collodi"
+},
+{
+  "id": 380,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il piacere'?",
+  "options": [
+    "Gabriele D'Annunzio",
+    "Luigi Pirandello",
+    "Italo Svevo",
+    "Giovanni Verga"
+  ],
+  "answer": "Gabriele D'Annunzio"
+},
+{
+  "id": 381,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'I Malavoglia' è stato scritto da Giovanni Verga?",
+  "answer": "Vero"
+},
+{
+  "id": 382,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'La tregua'?",
+  "answer": "Primo Levi"
+},
+{
+  "id": 383,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il sentiero dei nidi di ragno'?",
+  "options": [
+    "Italo Calvino",
+    "Cesare Pavese",
+    "Elio Vittorini",
+    "Primo Levi"
+  ],
+  "answer": "Italo Calvino"
+},
+{
+  "id": 384,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'La luna e i falò' è un'opera di Cesare Pavese?",
+  "answer": "Vero"
+},
+{
+  "id": 385,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'La coscienza di Zeno'?",
+  "answer": "Italo Svevo"
+},
+{
+  "id": 386,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Uno, nessuno e centomila'?",
+  "options": [
+    "Luigi Pirandello",
+    "Gabriele D'Annunzio",
+    "Italo Svevo",
+    "Giovanni Verga"
+  ],
+  "answer": "Luigi Pirandello"
+},
+{
+  "id": 387,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il deserto dei Tartari' è stato scritto da Dino Buzzati?",
+  "answer": "Vero"
+},
+{
+  "id": 388,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Il giorno della civetta'?",
+  "answer": "Leonardo Sciascia"
+},
+{
+  "id": 389,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il visconte dimezzato'?",
+  "options": [
+    "Italo Calvino",
+    "Primo Levi",
+    "Cesare Pavese",
+    "Giorgio Bassani"
+  ],
+  "answer": "Italo Calvino"
+},
+{
+  "id": 390,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il giardino dei Finzi-Contini' è un'opera di Giorgio Bassani?",
+  "answer": "Vero"
+},
+{
+  "id": 391,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Il partigiano Johnny'?",
+  "answer": "Beppe Fenoglio"
+},
+{
+  "id": 392,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'La Storia'?",
+  "options": [
+    "Elsa Morante",
+    "Natalia Ginzburg",
+    "Dacia Maraini",
+    "Alberto Moravia"
+  ],
+  "answer": "Elsa Morante"
+},{
+  "id": 393,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il pendolo di Foucault'?",
+  "options": [
+    "Umberto Eco",
+    "Italo Calvino",
+    "Pier Paolo Pasolini",
+    "Primo Levi"
+  ],
+  "answer": "Umberto Eco"
+},
+{
+  "id": 394,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'I Malavoglia' è stato scritto da Giovanni Verga?",
+  "answer": "Vero"
+},
+{
+  "id": 395,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi è l'autore della poesia 'A Silvia'?",
+  "answer": "Giacomo Leopardi"
+},
+{
+  "id": 396,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il nome della rosa'?",
+  "options": [
+    "Umberto Eco",
+    "Andrea Camilleri",
+    "Alessandro Baricco",
+    "Giorgio Faletti"
+  ],
+  "answer": "Umberto Eco"
+},
+{
+  "id": 397,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'La coscienza di Zeno' è stata scritta da Italo Svevo?",
+  "answer": "Vero"
+},
+{
+  "id": 398,
+  "category": "Letteratura",
+  "type": "text",
+  "question": "Chi ha scritto 'Il fu Mattia Pascal'?",
+  "answer": "Luigi Pirandello"
+},
+{
+  "id": 399,
+  "category": "Letteratura",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Se questo è un uomo'?",
+  "options": [
+    "Primo Levi",
+    "Elie Wiesel",
+    "Anne Frank",
+    "Viktor Frankl"
+  ],
+  "answer": "Primo Levi"
+},
+{
+  "id": 400,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il barone rampante' è stato scritto da Italo Calvino?",
+  "answer": "Vero"
+}
         ]
       }
       ;
