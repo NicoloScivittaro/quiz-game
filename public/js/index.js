@@ -571,13 +571,30 @@ function savePlayers() {
         players[i].credits = initialCredits; // Assegna i crediti iniziali
     }
     
+    // Ottieni la mappa selezionata
+    const mapOptions = document.querySelectorAll('.map-option');
+    let selectedMap = {
+        type: 'standard',
+        size: 7
+    };
+    
+    mapOptions.forEach(option => {
+        if (option.classList.contains('selected')) {
+            selectedMap = {
+                type: option.dataset.map,
+                size: parseInt(option.dataset.size)
+            };
+        }
+    });
+    
     // Prepara i dati di gioco
     const gameData = {
         players: players,
         starCount: starCount,
         categories: availableCategories,
         timerEnabled: timerEnabled,
-        initialCredits: initialCredits
+        initialCredits: initialCredits,
+        boardMap: selectedMap
     };
     
     // Salva in localStorage

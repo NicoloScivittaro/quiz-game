@@ -836,4 +836,90 @@
     0% { opacity: 0.6; }
     50% { opacity: 1; }
     100% { opacity: 0.6; }
+}
+
+/* Game board */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Default to 7x7 (will be updated by JS) */
+    grid-template-rows: repeat(7, 1fr);
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    max-width: 700px;
+    max-height: 700px;
+    margin: 0 auto;
+    position: relative;
+    background: rgba(15, 23, 42, 0.5);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-inner);
+}
+
+/* Variazioni delle dimensioni del tabellone in base alla dimensione della mappa */
+.game-board.small-map {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.game-board.large-map {
+    max-width: 900px;
+    max-height: 900px;
+}
+
+/* Adattamenti responsive */
+@media screen and (max-width: 1200px) {
+    .game-board {
+        max-width: 600px;
+        max-height: 600px;
+    }
+    
+    .game-board.small-map {
+        max-width: 450px;
+        max-height: 450px;
+    }
+    
+    .game-board.large-map {
+        max-width: 750px;
+        max-height: 750px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .game-board {
+        max-width: 500px;
+        max-height: 500px;
+        gap: 3px;
+        padding: 5px;
+    }
+    
+    .game-board.small-map {
+        max-width: 350px;
+        max-height: 350px;
+    }
+    
+    .game-board.large-map {
+        max-width: 600px;
+        max-height: 600px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .game-board {
+        max-width: 320px;
+        max-height: 320px;
+        gap: 2px;
+        padding: 3px;
+    }
+    
+    .game-board.small-map {
+        max-width: 280px;
+        max-height: 280px;
+    }
+    
+    .game-board.large-map {
+        max-width: 320px;
+        max-height: 320px;
+        gap: 1px;
+    }
 } 

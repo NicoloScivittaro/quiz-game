@@ -357,8 +357,17 @@ function activateSpaceOnClick(position) {
  */
 function generateBoardFeatures() {
     // Reset delle posizioni
-    starPositions = [];
-    specialPositions = [];
+    if (!Array.isArray(starPositions)) {
+        starPositions = [];
+    } else {
+        starPositions.length = 0;
+    }
+    
+    if (!Array.isArray(specialPositions)) {
+        specialPositions = [];
+    } else {
+        specialPositions.length = 0;
+    }
     
     // La generazione delle posizioni dipende dal tipo di mappa
     if (mapType === 'small') {
@@ -420,8 +429,23 @@ function generateBoardFeatures() {
  * @param {Array} excludeList - Le posizioni da escludere
  */
 function addRandomPositions(targetList, count, excludeList) {
+    let attempts = 0;
+    const maxAttempts = count * 10; // Limite di sicurezza per evitare cicli infiniti
+    
     for (let i = 0; i < count; i++) {
-        const position = generateRandomBoardPosition([...excludeList, ...targetList]);
+        let position = generateRandomBoardPosition([...excludeList, ...targetList]);
+        
+        // Se non troviamo una posizione valida dopo molti tentativi, interrompiamo
+        if (!position) {
+            attempts++;
+            if (attempts > maxAttempts) {
+                console.warn(`Non è stato possibile generare tutte le ${count} posizioni richieste`);
+                break;
+            }
+            i--; // Riprova per questa posizione
+            continue;
+        }
+        
         targetList.push(position);
     }
 }
@@ -466,30 +490,38 @@ function isCrossPattern(row, col, size = BOARD_SIZE) {
 }
 
 /**
- * Genera una posizione casuale sulla board che non è nell'elenco escluso
+ * Genera una posizione casuale sulla scacchiera
+ * @param {Array} excludeList - Lista di posizioni da escludere
+ * @returns {Object|null} - Un oggetto posizione {row, col} o null se non è stato possibile trovare una posizione
  */
 function generateRandomBoardPosition(excludeList = []) {
-    const validPositions = [];
+    // Limita i tentativi per evitare loop infiniti
+    const maxAttempts = BOARD_SIZE * BOARD_SIZE;
+    let attempts = 0;
     
-    // Raccogli tutte le posizioni valide
-    for (let row = 0; row < BOARD_SIZE; row++) {
-        for (let col = 0; col < BOARD_SIZE; col++) {
-            if (isEdgePosition(row, col) || isMiddleCross(row, col)) {
-                const position = { row, col };
-                
-                // Escludi le posizioni già nell'elenco
-                if (!isPositionInList(position, excludeList)) {
-                    validPositions.push(position);
-                }
-            }
+    while (attempts < maxAttempts) {
+        attempts++;
+        
+        const row = Math.floor(Math.random() * BOARD_SIZE);
+        const col = Math.floor(Math.random() * BOARD_SIZE);
+        const position = { row, col };
+        
+        // Controlla se la posizione è già in uso
+        if (isPositionInList(position, excludeList)) {
+            continue;
+        }
+        
+        // Controlla se la posizione può contenere un elemento speciale
+        // Vogliamo che stelle e elementi speciali siano solo su caselle quiz o vuote
+        if (isEdgePosition(row, col, BOARD_SIZE) || 
+            isMiddleCross(row, col, BOARD_SIZE) || 
+            (mapType === 'special' && isCrossPattern(row, col, BOARD_SIZE))) {
+            return position;
         }
     }
     
-    if (validPositions.length === 0) return null;
-    
-    // Scegli una posizione casuale
-    const randomIndex = Math.floor(Math.random() * validPositions.length);
-    return validPositions[randomIndex];
+    console.warn('Non è stato possibile trovare una posizione valida sulla scacchiera');
+    return null;
 }
 
 /**
@@ -637,13 +669,28 @@ function placePlayersOnBoard() {
     existingPlayers.forEach(p => p.remove());
     
     // Posizione iniziale (centro della board)
-    const centerRow = Math.floor(BOARD_SIZE / 2);
-    const centerCol = Math.floor(BOARD_SIZE / 2);
+    let centerRow = Math.floor(BOARD_SIZE / 2);
+    let centerCol = Math.floor(BOARD_SIZE / 2);
+    
+    // Controlla se la posizione di centro è valida
+    if (centerRow < 0 || centerRow >= BOARD_SIZE || centerCol < 0 || centerCol >= BOARD_SIZE) {
+        console.error(`Posizione centrale non valida: ${centerRow}, ${centerCol}`);
+        // Usa una posizione sicura
+        centerRow = 0;
+        centerCol = 0;
+    }
     
     // Crea e posiziona i giocatori
     players.forEach((player, index) => {
         // Salva la posizione iniziale nel giocatore se non esiste
         if (!player.position) {
+            player.position = { row: centerRow, col: centerCol };
+        }
+        
+        // Verifica che la posizione del giocatore sia valida
+        if (player.position.row < 0 || player.position.row >= BOARD_SIZE ||
+            player.position.col < 0 || player.position.col >= BOARD_SIZE) {
+            console.warn(`Posizione non valida per il giocatore ${player.name}. Reimpostazione al centro.`);
             player.position = { row: centerRow, col: centerCol };
         }
         
@@ -659,15 +706,23 @@ function placePlayersOnBoard() {
         const offsetX = Math.cos(angle) * offset;
         const offsetY = Math.sin(angle) * offset;
         
-        // Posiziona il giocatore sulla scacchiera
-        const space = gameBoard[player.position.row][player.position.col].element;
-        const spaceRect = space.getBoundingClientRect();
-        const boardRect = gameBoardElement.getBoundingClientRect();
-        
-        playerElement.style.left = `${(spaceRect.left - boardRect.left) + (spaceRect.width / 2) - 17.5 + offsetX}px`;
-        playerElement.style.top = `${(spaceRect.top - boardRect.top) + (spaceRect.height / 2) - 17.5 + offsetY}px`;
-        
-        gameBoardElement.appendChild(playerElement);
+        try {
+            // Posiziona il giocatore sulla scacchiera
+            const space = gameBoard[player.position.row][player.position.col].element;
+            if (!space) {
+                throw new Error(`Spazio non trovato per la posizione: ${player.position.row}, ${player.position.col}`);
+            }
+            
+            const spaceRect = space.getBoundingClientRect();
+            const boardRect = gameBoardElement.getBoundingClientRect();
+            
+            playerElement.style.left = `${(spaceRect.left - boardRect.left) + (spaceRect.width / 2) - 17.5 + offsetX}px`;
+            playerElement.style.top = `${(spaceRect.top - boardRect.top) + (spaceRect.height / 2) - 17.5 + offsetY}px`;
+            
+            gameBoardElement.appendChild(playerElement);
+        } catch (error) {
+            console.error(`Errore nel posizionamento del giocatore ${player.name}:`, error);
+        }
     });
 }
 
