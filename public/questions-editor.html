@@ -774,7 +774,7 @@
                 const div = document.createElement('div');
                 div.className = 'category-item';
                 div.innerHTML = `
-                    <span>${category}</span>
+                        <span>${category}</span>
                     <div>
                         <button class="edit-button" onclick="editCategory('${category}')">
                             <i class="fas fa-edit"></i>
@@ -825,11 +825,11 @@
                 div.className = 'question-item';
                 div.innerHTML = `
                     <div class="question-title">${question.question}</div>
-                    <div class="question-meta">
+                        <div class="question-meta">
                         <span><i class="fas fa-tag"></i> ${question.category}</span>
                         <span class="question-type-badge ${question.type}">${question.type}</span>
-                    </div>
-                    <div class="question-actions">
+                        </div>
+                        <div class="question-actions">
                         <button class="edit-button" onclick="editQuestion('${question.id}')">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -909,39 +909,35 @@
             const optionsContainer = document.getElementById('optionsContainer');
             const booleanOptions = document.getElementById('booleanOptions');
             const correctAnswerInput = document.getElementById('correctAnswer');
+            const correctAnswerLabel = document.getElementById('correctAnswerLabel');
             
             console.log('Toggling options for type:', questionType);
             
-            // Rimuovi l'attributo required da tutti i campi opzione
+            // Rimuovi l'attributo required da tutti i campi
             document.querySelectorAll('.option-input').forEach(input => {
                 input.required = false;
             });
+            correctAnswerInput.required = false;
             
             if (questionType === 'multiple') {
                 optionsContainer.style.display = 'block';
                 booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
-                
-                // Rendi required solo i primi due campi opzione quando sono visibili
-                const optionInputs = document.querySelectorAll('.option-input');
-                if (optionInputs.length >= 2) {
-                    optionInputs[0].required = true;
-                    optionInputs[1].required = true;
-                }
+                correctAnswerLabel.textContent = 'Risposta corretta (una delle opzioni):';
+                correctAnswerInput.required = true;
             } else if (questionType === 'boolean') {
                 optionsContainer.style.display = 'none';
                 booleanOptions.style.display = 'block';
                 correctAnswerInput.style.display = 'none';
-                correctAnswerInput.required = false;
                 
                 // Imposta il valore di correctAnswer in base alla selezione
-                document.getElementById('booleanAnswer').addEventListener('change', function() {
-                    correctAnswerInput.value = this.value;
-                });
+                const booleanValue = document.getElementById('booleanAnswer').value;
+                correctAnswerInput.value = booleanValue;
             } else {
                 optionsContainer.style.display = 'none';
                 booleanOptions.style.display = 'none';
                 correctAnswerInput.style.display = 'block';
+                correctAnswerLabel.textContent = 'Risposta corretta:';
                 correctAnswerInput.required = true;
             }
         }
@@ -977,7 +973,7 @@
             
             if (!questionText || !category || !answer) {
                 showError('Tutti i campi sono obbligatori.');
-                return;
+                        return;
             }
             
             try {
@@ -990,7 +986,7 @@
                 };
                 
                 // Se la domanda è a scelta multipla, aggiungi le opzioni
-                if (type === 'multiple') {
+            if (type === 'multiple') {
                     const optionInputs = document.querySelectorAll('.option-input');
                     const options = Array.from(optionInputs).map(input => input.value.trim());
                     
@@ -1003,9 +999,9 @@
                     // Controlla che la risposta sia tra le opzioni
                     if (!options.includes(answer)) {
                         showError('La risposta corretta deve essere una delle opzioni fornite.');
-                        return;
-                    }
-                    
+                return;
+            }
+            
                     newQuestion.options = options;
                 }
                 
@@ -1078,6 +1074,12 @@
             
             // Inizializza i display delle opzioni in base al tipo selezionato
             toggleOptions();
+        });
+
+        // Fix dell'evento change su booleanAnswer
+        document.getElementById('booleanAnswer').addEventListener('change', function() {
+            const correctAnswerInput = document.getElementById('correctAnswer');
+            correctAnswerInput.value = this.value;
         });
     </script>
 </body>

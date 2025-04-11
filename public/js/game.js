@@ -2355,20 +2355,43 @@ function showQuestionResult(isCorrect, correctAnswer) {
     // Aggiungi il risultato alla modale
     modalContent.appendChild(resultDiv);
     
-    // Aggiungi il player attuale ai record
+    // Ottieni il player attuale
     const player = players[currentPlayerIndex];
     
-    // Aggiorna le stelle in base alla risposta
+    // Verifica se il player ha l'abilità di guadagnare stelle con risposte corrette
+    const hasStarEarningAbility = player.powerups && player.powerups.earnsStarsFromAnswers;
+    
+    // Aggiorna le stelle solo se ha l'abilità o se è stata usata la scelta categoria
+    const categoryChoiceUsed = player.usedCategoryChoice === true;
+    
+    // Aggiorna le info del player in base alla risposta
     if (isCorrect) {
-        // Fornisci la stella se la risposta è corretta
-        player.stars++;
-        saveGameData();
-        renderPlayerInfo();
-        addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
-        showStarCollectionEffect(player);
+        // Incrementa il contatore delle risposte corrette
+        if (!player.stats) player.stats = { correct: 0, incorrect: 0 };
+        player.stats.correct++;
+        
+        // Fornisci la stella SOLO se ha l'abilità di guadagnare stelle oppure ha usato la scelta categoria
+        if (hasStarEarningAbility || categoryChoiceUsed) {
+            player.stars++;
+            saveGameData();
+            renderPlayerInfo();
+            addToGameLog(`${player.name} ha risposto correttamente e ha guadagnato una stella! ⭐`);
+            showStarCollectionEffect(player);
+        } else {
+            addToGameLog(`${player.name} ha risposto correttamente.`);
+        }
     } else {
+        // Incrementa il contatore delle risposte sbagliate
+        if (!player.stats) player.stats = { correct: 0, incorrect: 0 };
+        player.stats.incorrect++;
         addToGameLog(`${player.name} ha risposto in modo errato.`);
     }
+    
+    // Resetta il flag della scelta categoria
+    player.usedCategoryChoice = false;
+    
+    // Aggiorna UI player
+    renderPlayerInfo();
     
     // Imposta un timer per chiudere automaticamente la modale dopo un po'
     setTimeout(() => {
