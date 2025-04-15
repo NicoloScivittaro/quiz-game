@@ -354,6 +354,84 @@ function initGameBoard() {
 }
 
 /**
+ * Aggiunge un messaggio al log di gioco
+ * @param {string} message - Il messaggio da aggiungere al log
+ */
+function addToGameLog(message) {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    gameLog.push(`[${timestamp}] ${message}`);
+    
+    // Limita la dimensione del log
+    if (gameLog.length > 50) {
+        gameLog.shift();
+    }
+    
+    // Aggiorna la UI del log
+    updateGameLogUI();
+    
+    // Salva lo stato del gioco nel localStorage
+    saveGameData();
+}
+
+/**
+ * Aggiorna l'interfaccia utente del log di gioco
+ */
+function updateGameLogUI() {
+    const logContainer = document.getElementById('gameLog');
+    if (!logContainer) return;
+    
+    // Svuota il container
+    logContainer.innerHTML = '';
+    
+    // Se il log è vuoto, mostra un messaggio
+    if (gameLog.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'log-entry';
+        emptyMessage.textContent = 'Nessun evento registrato.';
+        logContainer.appendChild(emptyMessage);
+        return;
+    }
+    
+    // Aggiungi ogni messaggio del log
+    gameLog.forEach((message, index) => {
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry';
+        logEntry.textContent = message;
+        logEntry.style.animationDelay = `${index * 0.05}s`;
+        
+        logContainer.appendChild(logEntry);
+    });
+    
+    // Scorri alla fine del log
+    logContainer.scrollTop = logContainer.scrollHeight;
+}
+
+/**
+ * Salva i dati di gioco nel localStorage
+ */
+function saveGameData() {
+    try {
+        // Prepara l'oggetto dati da salvare
+        const gameState = {
+            players,
+            currentPlayerIndex,
+            gameBoard,
+            starPositions,
+            specialPositions,
+            availableCategories,
+            gameLog,
+            timestamp: new Date().getTime()
+        };
+        
+        // Salva nel localStorage
+        localStorage.setItem('quizPartyGameState', JSON.stringify(gameState));
+        console.log('Stato del gioco salvato nel localStorage');
+    } catch (error) {
+        console.error('Errore durante il salvataggio del gioco:', error);
+    }
+}
+
+/**
  * Attiva una casella quando viene cliccata
  * @param {Object} position - La posizione della casella
  */
