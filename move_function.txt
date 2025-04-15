@@ -1,0 +1,15 @@
+function moveInDirection(startPosition, direction, steps) {
+    let { row, col } = startPosition;
+    const middle = Math.floor(BOARD_SIZE / 2);
+    let remainingSteps = steps;
+    let currentPosition = { row, col };
+    let lastValidPosition = { row, col };
+    
+    // Muovi nella direzione selezionata per il numero di passi
+    for (let i = 0; i < steps; i++) {
+        const newRow = row + direction.dr;
+        const newCol = col + direction.dc;
+--
+function moveInDirection(startPosition, direction, steps) {
+    let { row, col } = startPosition;
+    const middle = Math.floor(BOARD_SIZE / 2);
