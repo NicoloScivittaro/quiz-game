@@ -290,6 +290,21 @@
     box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
 }
 
+.timer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 8px 0;
+    padding: 4px;
+    color: white;
+    font-weight: normal;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    display: block;
+    width: 100%;
+    animation: fadeIn 0.3s;
+    transition: all 0.3s;
+}
+
 .question-options {
     display: flex;
     flex-direction: column;

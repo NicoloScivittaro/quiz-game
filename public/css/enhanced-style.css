@@ -984,30 +984,47 @@ h3::after {
 }
 
 /* Modale delle domande */
-.modal-overlay {
+.modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none; /* Default hidden */
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
-.quiz-container {
-    background: var(--glass);
+.modal.active {
+    display: flex !important; /* Force display with !important */
+    opacity: 1;
+}
+
+.modal.fade-out {
+    opacity: 0;
+}
+
+.modal-content {
+    background: rgba(30, 41, 59, 0.9);
     border-radius: var(--border-radius);
-    padding: 2rem;
-    width: 90%;
-    max-width: 700px;
+    padding: 30px;
+    max-width: 90%;
+    width: 500px;
     box-shadow: var(--shadow-lg);
+    animation: fadeIn 0.3s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
+    color: white;
+    transform: translateY(0);
+    transition: transform 0.5s ease-in-out;
+}
+
+.fade-out .modal-content {
+    transform: translateY(20px);
 }
 
 .category-badge {
