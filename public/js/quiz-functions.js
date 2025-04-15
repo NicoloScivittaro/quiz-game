@@ -629,6 +629,50 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
         const totalCredits = baseCredits + bonus;
         player.credits += totalCredits;
         
+        // Controlla se il giocatore ha il powerup per ottenere una stella con risposta corretta
+        if (player.powerups && player.powerups.starOnCorrect) {
+            player.stars++;
+            player.powerups.starOnCorrect = false; // Rimuovi il powerup dopo l'uso
+            
+            // Effetto visivo per la stella
+            showStarCollectionEffect();
+            
+            // Mostra notifica
+            showAnimatedNotification('Hai ottenuto una stella!', 'success');
+            addToGameLog(`${player.name} ha ottenuto una stella per aver risposto correttamente alla domanda`);
+            
+            // Controlla se il giocatore ha vinto
+            if (checkWinCondition()) {
+                return; // Fine del gioco
+            }
+        }
+        
+        // Controlla se il giocatore ha il powerup per ottenere tripla stella con risposta corretta
+        if (player.powerups && player.powerups.tripleStarOnCorrect) {
+            player.stars += 3;
+            player.powerups.tripleStarOnCorrect = false; // Rimuovi il powerup dopo l'uso
+            
+            // Effetto visivo per le tre stelle (in sequenza)
+            setTimeout(() => {
+                showStarCollectionEffect();
+                setTimeout(() => {
+                    showStarCollectionEffect();
+                    setTimeout(() => {
+                        showStarCollectionEffect();
+                    }, 500);
+                }, 500);
+            }, 500);
+            
+            // Mostra notifica
+            showAnimatedNotification('BONUS TRIPLA STELLA! +3 STELLE!', 'success', 3000);
+            addToGameLog(`${player.name} ha ottenuto TRE stelle per aver risposto correttamente alla domanda`);
+            
+            // Controlla se il giocatore ha vinto
+            if (checkWinCondition()) {
+                return; // Fine del gioco
+            }
+        }
+        
         // Bonus speciale: se è una domanda casuale (non di categoria scelta) e la risposta è corretta
         // il giocatore ha una possibilità di ottenere direttamente 3 stelle
         if (!isChosenCategory && Math.random() < 0.15) { // 15% di probabilità
@@ -660,6 +704,12 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
         player.stats.incorrect++;
         addToGameLog(`${player.name} ha risposto in modo errato`);
         playSound('wrong');
+        
+        // Se aveva i powerup per le stelle, li rimuoviamo comunque in caso di risposta errata
+        if (player.powerups) {
+            player.powerups.starOnCorrect = false;
+            player.powerups.tripleStarOnCorrect = false;
+        }
     }
     
     // Resetta il flag di scelta categoria

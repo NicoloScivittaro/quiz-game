@@ -321,6 +321,60 @@ function showShop() {
                     return;
                 }
             }
+        },
+        {
+            id: 'starQuestion',
+            name: 'Stella con Domanda',
+            description: 'Ricevi una stella se rispondi correttamente a una domanda',
+            price: 100,
+            action: function() {
+                // Sottrai i crediti immediatamente
+                player.credits -= this.price;
+                addToGameLog(`${player.name} ha acquistato una Stella con Domanda`);
+                
+                // Chiudi il modale dello shop
+                modal.remove();
+                
+                // Imposta il flag per il bonus stella
+                if (!player.powerups) player.powerups = {};
+                player.powerups.starOnCorrect = true;
+                
+                // Mostra una notifica
+                showAnimatedNotification('Rispondi correttamente alla domanda per ottenere una stella!', 'info', 3000);
+                
+                // Aggiorna UI
+                renderPlayerInfo();
+                
+                // Mostra immediatamente una domanda
+                setTimeout(() => showQuestion(), 1000);
+            }
+        },
+        {
+            id: 'tripleStarQuestion',
+            name: 'Tripla Stella con Domanda',
+            description: 'Ricevi 3 stelle se rispondi correttamente a una domanda',
+            price: 200,
+            action: function() {
+                // Sottrai i crediti immediatamente
+                player.credits -= this.price;
+                addToGameLog(`${player.name} ha acquistato una Tripla Stella con Domanda`);
+                
+                // Chiudi il modale dello shop
+                modal.remove();
+                
+                // Imposta il flag per il bonus tripla stella
+                if (!player.powerups) player.powerups = {};
+                player.powerups.tripleStarOnCorrect = true;
+                
+                // Mostra una notifica
+                showAnimatedNotification('Rispondi correttamente alla domanda per ottenere TRE stelle!', 'info', 3000);
+                
+                // Aggiorna UI
+                renderPlayerInfo();
+                
+                // Mostra immediatamente una domanda
+                setTimeout(() => showQuestion(), 1000);
+            }
         }
     ];
     
