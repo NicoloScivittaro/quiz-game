@@ -778,6 +778,28 @@ function renderPlayerInfo() {
 }
 
 /**
+ * Evidenzia la casella su cui si trova il giocatore attuale
+ */
+function highlightCurrentPlayerSpace() {
+    // Rimuovi eventuali highlight precedenti
+    document.querySelectorAll('.space').forEach(s => s.classList.remove('active'));
+    
+    // Ottieni il giocatore corrente
+    const currentPlayer = players[currentPlayerIndex];
+    if (!currentPlayer || !currentPlayer.position) return;
+    
+    // Ottieni la casella corrente del giocatore
+    const { row, col } = currentPlayer.position;
+    if (!gameBoard[row] || !gameBoard[row][col]) return;
+    
+    const space = gameBoard[row][col].element;
+    if (space) {
+        space.classList.add('active');
+        console.log(`Evidenziata casella [${row},${col}] per il giocatore ${currentPlayer.name}`);
+    }
+}
+
+/**
  * Aggiorna l'indicatore del turno del giocatore
  */
 function updateTurnIndicator() {
