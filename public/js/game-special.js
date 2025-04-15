@@ -257,7 +257,7 @@ function showShop() {
             id: 'categoryChoice',
             name: 'Scelta Categoria',
             description: 'Permette di scegliere la categoria della prossima domanda',
-            price: 30,
+            price: 10,
             action: function() {
                 if (!player.powerups) player.powerups = {};
                 player.powerups.categoryChoice = (player.powerups.categoryChoice || 0) + 1;
@@ -301,7 +301,7 @@ function showShop() {
             id: 'star',
             name: 'Stella',
             description: 'Acquista una stella direttamente (più costosa del normale)',
-            price: 100,
+            price: 120,
             action: function() {
                 player.credits -= this.price;
                 player.stars++;
@@ -325,7 +325,7 @@ function showShop() {
         {
             id: 'starQuestion',
             name: 'Stella con Domanda',
-            description: 'Ricevi una stella se rispondi correttamente a una domanda',
+            description: 'Ricevi una stella se rispondi correttamente a una domanda (puoi scegliere la categoria)',
             price: 100,
             action: function() {
                 // Sottrai i crediti immediatamente
@@ -340,19 +340,19 @@ function showShop() {
                 player.powerups.starOnCorrect = true;
                 
                 // Mostra una notifica
-                showAnimatedNotification('Rispondi correttamente alla domanda per ottenere una stella!', 'info', 3000);
+                showAnimatedNotification('Scegli una categoria e rispondi correttamente per ottenere una stella!', 'info', 3000);
                 
                 // Aggiorna UI
                 renderPlayerInfo();
                 
-                // Mostra immediatamente una domanda
-                setTimeout(() => showQuestion(), 1000);
+                // Mostra il selettore di categoria seguito dalla domanda
+                showStarCategorySelector();
             }
         },
         {
             id: 'tripleStarQuestion',
             name: 'Tripla Stella con Domanda',
-            description: 'Ricevi 3 stelle se rispondi correttamente a una domanda',
+            description: 'Ricevi 3 stelle se rispondi correttamente a una domanda (puoi scegliere la categoria)',
             price: 200,
             action: function() {
                 // Sottrai i crediti immediatamente
@@ -367,13 +367,13 @@ function showShop() {
                 player.powerups.tripleStarOnCorrect = true;
                 
                 // Mostra una notifica
-                showAnimatedNotification('Rispondi correttamente alla domanda per ottenere TRE stelle!', 'info', 3000);
+                showAnimatedNotification('Scegli una categoria e rispondi correttamente per ottenere TRE stelle!', 'info', 3000);
                 
                 // Aggiorna UI
                 renderPlayerInfo();
                 
-                // Mostra immediatamente una domanda
-                setTimeout(() => showQuestion(), 1000);
+                // Mostra il selettore di categoria seguito dalla domanda
+                showTripleStarCategorySelector();
             }
         }
     ];
@@ -575,4 +575,168 @@ function playSound(soundType) {
     audio.play().catch(error => {
         console.warn('Error playing sound:', error);
     });
+}
+
+/**
+ * Mostra il selettore di categoria per la funzionalità "Stella con Domanda"
+ */
+function showStarCategorySelector() {
+    // Crea il modale
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'starCategorySelector';
+    
+    // Crea il contenuto
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const title = document.createElement('h2');
+    title.textContent = 'Scegli una categoria per la tua domanda';
+    title.style.marginBottom = '20px';
+    modalContent.appendChild(title);
+    
+    // Icona stella
+    const starIcon = document.createElement('div');
+    starIcon.innerHTML = '<i class="fas fa-star" style="color: gold; font-size: 2rem; margin-bottom: 20px;"></i>';
+    starIcon.style.textAlign = 'center';
+    modalContent.appendChild(starIcon);
+    
+    const categoriesContainer = document.createElement('div');
+    categoriesContainer.className = 'categories-grid';
+    categoriesContainer.style.display = 'grid';
+    categoriesContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    categoriesContainer.style.gap = '10px';
+    
+    // Aggiungi ogni categoria
+    availableCategories.forEach(category => {
+        const categoryBtn = document.createElement('button');
+        categoryBtn.className = 'category-button';
+        categoryBtn.style.padding = '10px';
+        categoryBtn.style.borderRadius = '5px';
+        categoryBtn.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+        categoryBtn.style.color = 'white';
+        categoryBtn.style.border = 'none';
+        categoryBtn.style.cursor = 'pointer';
+        categoryBtn.style.display = 'flex';
+        categoryBtn.style.flexDirection = 'column';
+        categoryBtn.style.alignItems = 'center';
+        categoryBtn.style.justifyContent = 'center';
+        categoryBtn.style.transition = 'transform 0.2s';
+        
+        // Icon based on category
+        let iconClass = 'fa-question';
+        if (category === 'Storia') iconClass = 'fa-monument';
+        else if (category === 'Geografia') iconClass = 'fa-globe-americas';
+        else if (category === 'Scienza') iconClass = 'fa-flask';
+        else if (category === 'Sport') iconClass = 'fa-futbol';
+        else if (category === 'Arte') iconClass = 'fa-palette';
+        else if (category === 'Musica') iconClass = 'fa-music';
+        else if (category === 'Cinema') iconClass = 'fa-film';
+        else if (category === 'Letteratura') iconClass = 'fa-book';
+        else if (category === 'Cultura Generale') iconClass = 'fa-graduation-cap';
+        
+        categoryBtn.innerHTML = `<i class="fas ${iconClass}" style="font-size: 1.5rem; margin-bottom: 8px;"></i><span>${category}</span>`;
+        
+        // Hover effect
+        categoryBtn.onmouseover = () => { categoryBtn.style.transform = 'scale(1.05)'; };
+        categoryBtn.onmouseout = () => { categoryBtn.style.transform = 'scale(1)'; };
+        
+        // Al click, seleziona la categoria
+        categoryBtn.addEventListener('click', () => {
+            console.log('Categoria selezionata per Stella con Domanda:', category);
+            modal.remove();
+            
+            // Carica una domanda dalla categoria scelta
+            // Passiamo il flag isChosenCategory=true poiché l'utente ha scelto la categoria
+            loadRandomQuestion(category, true);
+        });
+        
+        categoriesContainer.appendChild(categoryBtn);
+    });
+    
+    modalContent.appendChild(categoriesContainer);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+}
+
+/**
+ * Mostra il selettore di categoria per la funzionalità "Tripla Stella con Domanda"
+ */
+function showTripleStarCategorySelector() {
+    // Crea il modale
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'tripleStarCategorySelector';
+    
+    // Crea il contenuto
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const title = document.createElement('h2');
+    title.textContent = 'Scegli una categoria per la tua domanda';
+    title.style.marginBottom = '20px';
+    modalContent.appendChild(title);
+    
+    // Icona stella
+    const starIcon = document.createElement('div');
+    starIcon.innerHTML = '<i class="fas fa-star" style="color: gold; font-size: 2rem; margin-bottom: 20px;"></i>';
+    starIcon.style.textAlign = 'center';
+    modalContent.appendChild(starIcon);
+    
+    const categoriesContainer = document.createElement('div');
+    categoriesContainer.className = 'categories-grid';
+    categoriesContainer.style.display = 'grid';
+    categoriesContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    categoriesContainer.style.gap = '10px';
+    
+    // Aggiungi ogni categoria
+    availableCategories.forEach(category => {
+        const categoryBtn = document.createElement('button');
+        categoryBtn.className = 'category-button';
+        categoryBtn.style.padding = '10px';
+        categoryBtn.style.borderRadius = '5px';
+        categoryBtn.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+        categoryBtn.style.color = 'white';
+        categoryBtn.style.border = 'none';
+        categoryBtn.style.cursor = 'pointer';
+        categoryBtn.style.display = 'flex';
+        categoryBtn.style.flexDirection = 'column';
+        categoryBtn.style.alignItems = 'center';
+        categoryBtn.style.justifyContent = 'center';
+        categoryBtn.style.transition = 'transform 0.2s';
+        
+        // Icon based on category
+        let iconClass = 'fa-question';
+        if (category === 'Storia') iconClass = 'fa-monument';
+        else if (category === 'Geografia') iconClass = 'fa-globe-americas';
+        else if (category === 'Scienza') iconClass = 'fa-flask';
+        else if (category === 'Sport') iconClass = 'fa-futbol';
+        else if (category === 'Arte') iconClass = 'fa-palette';
+        else if (category === 'Musica') iconClass = 'fa-music';
+        else if (category === 'Cinema') iconClass = 'fa-film';
+        else if (category === 'Letteratura') iconClass = 'fa-book';
+        else if (category === 'Cultura Generale') iconClass = 'fa-graduation-cap';
+        
+        categoryBtn.innerHTML = `<i class="fas ${iconClass}" style="font-size: 1.5rem; margin-bottom: 8px;"></i><span>${category}</span>`;
+        
+        // Hover effect
+        categoryBtn.onmouseover = () => { categoryBtn.style.transform = 'scale(1.05)'; };
+        categoryBtn.onmouseout = () => { categoryBtn.style.transform = 'scale(1)'; };
+        
+        // Al click, seleziona la categoria
+        categoryBtn.addEventListener('click', () => {
+            console.log('Categoria selezionata per Tripla Stella con Domanda:', category);
+            modal.remove();
+            
+            // Carica una domanda dalla categoria scelta
+            // Passiamo il flag isChosenCategory=true poiché l'utente ha scelto la categoria
+            loadRandomQuestion(category, true);
+        });
+        
+        categoriesContainer.appendChild(categoryBtn);
+    });
+    
+    modalContent.appendChild(categoriesContainer);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
 } 
