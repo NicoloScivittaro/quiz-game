@@ -918,7 +918,8 @@ function moveInDirection(startPosition, direction, steps) {
         // Verifica se la nuova posizione è valida (all'interno della board e su una casella valida)
         if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE) {
             // Verifica se la nuova posizione è su una casella valida (bordo o croce centrale)
-            if (isEdgePosition(newRow, newCol) || isMiddleCross(newRow, newCol)) {
+            if (isEdgePosition(newRow, newCol) || isMiddleCross(newRow, newCol) || 
+                (mapType === 'special' && isCrossPattern(newRow, newCol, BOARD_SIZE))) {
                 lastValidPosition = { row, col };
                 row = newRow;
                 col = newCol;
@@ -958,12 +959,18 @@ function moveInDirection(startPosition, direction, steps) {
             { dr: -1, dc: 0, name: 'Su' }
         ];
         
+        // Filter valid directions
         const validDirections = possibleDirections.filter(dir => {
-            const nextRow = player.position.row + dir.dr;
-            const nextCol = player.position.col + dir.dc;
-            return nextRow >= 0 && nextRow < BOARD_SIZE && 
-                   nextCol >= 0 && nextCol < BOARD_SIZE &&
-                   (isEdgePosition(nextRow, nextCol) || isMiddleCross(nextRow, nextCol));
+            const newRow = currentPosition.row + dir.dr;
+            const newCol = currentPosition.col + dir.dc;
+            
+            // Check if the new position is within the board boundaries
+            if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
+                return false;
+            }
+            
+            // Check if the new position is valid for the current map type
+            return isValidPosition(newRow, newCol);
         });
         
         if (validDirections.length > 0) {
@@ -1234,18 +1241,22 @@ function activateSpecialEffect() {
         {
             name: 'Teletrasporto',
             action: () => {
-                const randomRow = Math.floor(Math.random() * BOARD_SIZE);
-                const randomCol = Math.floor(Math.random() * BOARD_SIZE);
-                
-                // Trova uno spazio valido
-                const middle = Math.floor(BOARD_SIZE / 2);
+                // Generate random positions until we find a valid one
                 let validPosition = null;
-                
-                if (isEdgePosition(randomRow, randomCol) || isMiddleCross(randomRow, randomCol)) {
-                    validPosition = { row: randomRow, col: randomCol };
-                } else {
-                    // Se non è valido, usa il centro
-                    validPosition = { row: middle, col: middle };
+                let attempts = 0;
+                const maxAttempts = 100;  // Limit to avoid infinite loops
+
+                while (!validPosition && attempts < maxAttempts) {
+                    const randomRow = Math.floor(Math.random() * BOARD_SIZE);
+                    const randomCol = Math.floor(Math.random() * BOARD_SIZE);
+                    
+                    // Check if the position is valid (on edge or middle cross)
+                    if (isEdgePosition(randomRow, randomCol) || isMiddleCross(randomRow, randomCol) || 
+                        (mapType === 'special' && isCrossPattern(randomRow, randomCol, BOARD_SIZE))) {
+                        validPosition = { row: randomRow, col: randomCol };
+                    }
+                    
+                    attempts++;
                 }
                 
                 showAnimatedNotification('Teletrasporto attivato!', 'info');
@@ -5182,4 +5193,41 @@ function determineSpaceType(position) {
     
     // Default: casella vuota
     return 'empty';
+}
+
+// Function to check if a position is valid based on the current map type
+function isValidPosition(row, col) {
+    if (isCrossPattern) {
+        return isEdgePosition(row, col) || isMiddleCross(row, col);
+    } else {
+        return true; // Default map allows all positions
+    }
+}
+
+function moveInDirection(direction) {
+    const { row, col } = playerPosition;
+    let newRow = row;
+    let newCol = col;
+
+    switch (direction) {
+        case 'up':
+            newRow = row - 1;
+            break;
+        case 'down':
+            newRow = row + 1;
+            break;
+        case 'left':
+            newCol = col - 1;
+            break;
+        case 'right':
+            newCol = col + 1;
+            break;
+    }
+
+    // Check if the new position is within the board and is valid for the current map type
+    if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize && isValidPosition(newRow, newCol)) {
+        playerPosition = { row: newRow, col: newCol };
+        updatePlayerPosition();
+        checkQuestion();
+    }
 }
