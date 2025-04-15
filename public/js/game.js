@@ -1059,6 +1059,69 @@ function checkSpace(position) {
 }
 
 /**
+ * Passa al prossimo giocatore
+ */
+function nextPlayer() {
+    if (!gameStarted) return;
+    
+    // Pulisci eventuali timer precedenti
+    clearQuestionTimer();
+    
+    // Rimuovi evidenziazione spazio
+    document.querySelectorAll('.space').forEach(s => s.classList.remove('active'));
+    
+    // Se il giocatore corrente ha ancora passi da fare, non cambiare turno
+    if (players[currentPlayerIndex] && players[currentPlayerIndex].remainingSteps > 0) {
+        console.log("Il giocatore ha ancora " + players[currentPlayerIndex].remainingSteps + " passi da fare");
+        return;
+    }
+    
+    // Resetta i passi rimanenti per il giocatore corrente
+    if (players[currentPlayerIndex]) {
+        players[currentPlayerIndex].remainingSteps = 0;
+    }
+    
+    // Salva l'indice del giocatore precedente
+    const prevPlayerIndex = currentPlayerIndex;
+    
+    // Passa al prossimo giocatore
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    
+    // Verifica se il prossimo giocatore deve saltare il turno
+    if (players[currentPlayerIndex].skipTurn) {
+        players[currentPlayerIndex].skipTurn = false;
+        showAnimatedNotification(`${players[currentPlayerIndex].name} salta il turno!`, 'warning');
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    }
+    
+    // Solo se il turno è effettivamente cambiato, mostra la notifica
+    if (prevPlayerIndex !== currentPlayerIndex) {
+        // Aggiungi al log
+        addToGameLog(`Turno passato da ${players[prevPlayerIndex].name} a ${players[currentPlayerIndex].name}`);
+        
+        // Mostra notifica
+        showAnimatedNotification(`Tocca a ${players[currentPlayerIndex].name}`, 'info');
+        
+        // Evidenzia il giocatore corrente
+        highlightCurrentPlayer();
+        
+        // Aggiorna la UI
+        renderPlayerInfo();
+        updateTurnIndicator();
+    }
+    
+    // Abilita nuovamente il pulsante del dado
+    if (diceButton) {
+        diceButton.disabled = false;
+    }
+    
+    // Abilita nuovamente il pulsante dello shop
+    if (shopButton) {
+        shopButton.disabled = false;
+    }
+}
+
+/**
  * Gestisce il tiro del dado
  */
 function rollDice() {

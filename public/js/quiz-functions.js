@@ -629,6 +629,31 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
         const totalCredits = baseCredits + bonus;
         player.credits += totalCredits;
         
+        // Bonus speciale: se è una domanda casuale (non di categoria scelta) e la risposta è corretta
+        // il giocatore ha una possibilità di ottenere direttamente 3 stelle
+        if (!isChosenCategory && Math.random() < 0.15) { // 15% di probabilità
+            player.stars += 3;
+            addToGameLog(`${player.name} ha ottenuto un BONUS SPECIALE di 3 stelle!`);
+            showAnimatedNotification('BONUS SPECIALE: +3 STELLE!', 'success', 3000);
+            playSound('star');
+            
+            // Effetto visivo per le stelle
+            setTimeout(() => {
+                showStarCollectionEffect();
+                setTimeout(() => {
+                    showStarCollectionEffect();
+                    setTimeout(() => {
+                        showStarCollectionEffect();
+                    }, 500);
+                }, 500);
+            }, 500);
+            
+            // Controlla se il giocatore ha vinto
+            if (checkWinCondition()) {
+                return; // Fine del gioco
+            }
+        }
+        
         addToGameLog(`${player.name} ha risposto correttamente e guadagnato ${totalCredits} crediti`);
         playSound('correct');
     } else {
