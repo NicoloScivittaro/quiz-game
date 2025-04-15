@@ -985,6 +985,80 @@ function updatePlayerPosition(playerIndex) {
 }
 
 /**
+ * Controlla lo spazio su cui è atterrato il giocatore
+ * @param {Object} position - La posizione {row, col} da controllare
+ */
+function checkSpace(position) {
+    const { row, col } = position;
+    const space = gameBoard[row][col];
+    
+    if (!space) return;
+    
+    // Rimuovi eventuali highlight precedenti prima di evidenziare lo spazio attivo
+    const allSpaces = document.querySelectorAll('.space');
+    allSpaces.forEach(s => s.classList.remove('active'));
+    
+    // Evidenzia lo spazio attivo
+    space.element.classList.add('active');
+    
+    // Ottieni il giocatore corrente
+    const player = players[currentPlayerIndex];
+    
+    // Se il giocatore ha ancora passi da fare e non è su una casella quiz, esci
+    if (player.remainingSteps && player.remainingSteps > 0 && space.type !== 'quiz') {
+        console.log(`Giocatore ha ancora ${player.remainingSteps} passi da fare, non attivo la casella ${space.type}`);
+        return;
+    }
+    
+    // Se siamo su una casella quiz, forza l'azzeramento dei passi rimanenti
+    if (space.type === 'quiz') {
+        player.remainingSteps = 0;
+    }
+    
+    // Aggiungi al log
+    addToGameLog(`${player.name} è atterrato su una casella ${space.type}`);
+    
+    // Gestisci in base al tipo di spazio
+    switch(space.type) {
+        case 'quiz':
+            // Mostra una domanda immediatamente
+            console.log('Casella quiz: mostra domanda');
+            showQuestion();
+            break;
+        case 'star':
+            // Mostra il prompt per l'acquisto della stella
+            if (player.credits >= 70) {
+                // Usa un modale personalizzato invece di confirm
+                showStarPurchaseModal(player);
+            } else {
+                showAnimatedNotification('Non hai abbastanza crediti per acquistare questa stella!', 'error');
+                addToGameLog(`${player.name} non ha abbastanza crediti per acquistare una stella`);
+                nextPlayer();
+            }
+            break;
+        case 'special':
+            activateSpecialEffect();
+            break;
+        case 'bonus':
+            player.credits += 25;
+            showAnimatedNotification(`Hai guadagnato 25 crediti!`, 'success');
+            addToGameLog(`${player.name} ha guadagnato 25 crediti`);
+            nextPlayer();
+            break;
+        case 'penalty':
+            player.credits -= 10;
+            showAnimatedNotification(`Hai perso 10 crediti!`, 'error');
+            addToGameLog(`${player.name} ha perso 10 crediti`);
+            nextPlayer();
+            break;
+        default:
+            // Passa al prossimo giocatore
+            addToGameLog(`${player.name} è atterrato su una casella vuota`);
+            nextPlayer();
+    }
+}
+
+/**
  * Gestisce il tiro del dado
  */
 function rollDice() {
