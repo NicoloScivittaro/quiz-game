@@ -963,6 +963,28 @@ function highlightCurrentPlayer() {
 }
 
 /**
+ * Aggiorna la posizione visuale del giocatore sulla board
+ * @param {number} playerIndex - L'indice del giocatore da aggiornare
+ */
+function updatePlayerPosition(playerIndex) {
+    const player = players[playerIndex];
+    const playerToken = document.getElementById(`player-token-${playerIndex}`);
+    
+    if (!playerToken) return;
+    
+    const space = gameBoard[player.position.row][player.position.col].element;
+    const spaceRect = space.getBoundingClientRect();
+    const boardRect = gameBoardElement.getBoundingClientRect();
+    
+    // Offset casuale di pochi pixel per evitare sovrapposizioni perfette
+    const randomOffset = (Math.random() * 10) - 5;
+    
+    // Animazione del movimento
+    playerToken.style.left = `${(spaceRect.left - boardRect.left) + (spaceRect.width / 2) - 17.5 + randomOffset}px`;
+    playerToken.style.top = `${(spaceRect.top - boardRect.top) + (spaceRect.height / 2) - 17.5 + randomOffset}px`;
+}
+
+/**
  * Gestisce il tiro del dado
  */
 function rollDice() {
