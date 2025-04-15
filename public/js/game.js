@@ -215,6 +215,66 @@ function loadGameData() {
 }
 
 /**
+ * Determinare il tipo di spazio in base al tipo di mappa
+ * @param {Object} position - La posizione {row, col}
+ * @returns {string} - Il tipo di spazio ('star', 'special', 'quiz', 'bonus', 'penalty', 'empty')
+ */
+function determineSpaceType(position) {
+    const { row, col } = position;
+    
+    // Controlliamo prima le posizioni speciali (più veloci da verificare)
+    if (isPositionInList(position, starPositions)) {
+        return 'star';
+    } 
+    if (isPositionInList(position, specialPositions)) {
+        return 'special';
+    }
+    if (isPositionInList(position, bonusPenaltyPositions)) {
+        // Alterna bonus e penalità in base alla posizione
+        return ((row + col) % 2 === 0) ? 'bonus' : 'penalty';
+    }
+    
+    // Controlliamo i bordi e la croce centrale (comuni a tutte le mappe)
+    if (isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE)) {
+        return 'quiz';
+    }
+    
+    // Controlli specifici per tipo di mappa
+    switch (mapType) {
+        case 'special':
+            if (isCrossPattern(row, col, BOARD_SIZE)) {
+                return 'quiz';
+            }
+            break;
+        case 'large':
+            // Calcoli effettuati una sola volta
+            const quarter = Math.floor(BOARD_SIZE/4);
+            const threeQuarters = Math.floor(3*BOARD_SIZE/4);
+            const middle = Math.floor(BOARD_SIZE/2);
+            
+            // Posizioni diagonali e intermedie
+            if ((row === quarter && col === quarter) || 
+                (row === quarter && col === threeQuarters) ||
+                (row === threeQuarters && col === quarter) ||
+                (row === threeQuarters && col === threeQuarters) ||
+                (row === 2 && col === 2) ||
+                (row === 2 && col === BOARD_SIZE-3) ||
+                (row === BOARD_SIZE-3 && col === 2) ||
+                (row === BOARD_SIZE-3 && col === BOARD_SIZE-3) ||
+                (row === 2 && col === middle) ||
+                (row === BOARD_SIZE-3 && col === middle) ||
+                (row === middle && col === 2) ||
+                (row === middle && col === BOARD_SIZE-3)) {
+                return 'quiz';
+            }
+            break;
+    }
+    
+    // Default: casella vuota
+    return 'empty';
+}
+
+/**
  * Inizializza la board di gioco
  */
 function initGameBoard() {
