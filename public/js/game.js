@@ -5197,37 +5197,13 @@ function determineSpaceType(position) {
 
 // Function to check if a position is valid based on the current map type
 function isValidPosition(row, col) {
-    if (isCrossPattern) {
-        return isEdgePosition(row, col) || isMiddleCross(row, col);
-    } else {
-        return true; // Default map allows all positions
+    // Check if position is on edge or middle cross (valid for all map types)
+    const isStandardValid = isEdgePosition(row, col, BOARD_SIZE) || isMiddleCross(row, col, BOARD_SIZE);
+    
+    // If it's a special map type, also consider cross pattern positions
+    if (mapType === 'special') {
+        return isStandardValid || isCrossPattern(row, col, BOARD_SIZE);
     }
-}
-
-function moveInDirection(direction) {
-    const { row, col } = playerPosition;
-    let newRow = row;
-    let newCol = col;
-
-    switch (direction) {
-        case 'up':
-            newRow = row - 1;
-            break;
-        case 'down':
-            newRow = row + 1;
-            break;
-        case 'left':
-            newCol = col - 1;
-            break;
-        case 'right':
-            newCol = col + 1;
-            break;
-    }
-
-    // Check if the new position is within the board and is valid for the current map type
-    if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize && isValidPosition(newRow, newCol)) {
-        playerPosition = { row: newRow, col: newCol };
-        updatePlayerPosition();
-        checkQuestion();
-    }
+    
+    return isStandardValid;
 }
