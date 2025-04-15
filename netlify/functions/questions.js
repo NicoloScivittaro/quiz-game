@@ -9,7 +9,8 @@ const questionsData = {
           "Arte",
           "Musica",
           "Cinema",
-          "Letteratura"
+          "Letteratura",
+          "Cultura Generale"
         ],
         "questions": [
           {
@@ -3782,6 +3783,1866 @@ const questionsData = {
   "type": "boolean",
   "question": "'Il barone rampante' è stato scritto da Italo Calvino?",
   "answer": "Vero"
+}, {
+  "id": 401,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il Sole ruota attorno alla Terra.",
+  "answer": "Falso"
+},
+{
+  "id": 402,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Tutti i metalli sono magnetici.",
+  "answer": "Falso"
+},
+{
+  "id": 403,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il DNA umano è identico in ogni individuo.",
+  "answer": "Falso"
+},
+{
+  "id": 404,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il Sahara è il deserto più grande del mondo.",
+  "answer": "Falso"
+},
+{
+  "id": 405,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il vetro è un liquido che scorre lentamente.",
+  "answer": "Falso"
+},
+{
+  "id": 406,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "I camaleonti cambiano colore solo per mimetizzarsi.",
+  "answer": "Falso"
+},
+{
+  "id": 407,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Gli esseri umani hanno solo cinque sensi.",
+  "answer": "Falso"
+},
+{
+  "id": 408,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il sangue nelle vene è blu.",
+  "answer": "Falso"
+},
+{
+  "id": 409,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "I pipistrelli sono ciechi.",
+  "answer": "Falso"
+},
+{
+  "id": 410,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Gli esseri umani utilizzano solo il 10% del loro cervello.",
+  "answer": "Falso"
+},
+{
+  "id": 411,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "I fulmini non colpiscono mai due volte lo stesso punto.",
+  "answer": "Falso"
+},
+{
+  "id": 412,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "I porcupini lanciano i loro aculei.",
+  "answer": "Falso"
+},
+{
+  "id": 413,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "I pesci rossi hanno una memoria di soli tre secondi.",
+  "answer": "Falso"
+},
+{
+  "id": 414,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Le unghie e i capelli continuano a crescere dopo la morte.",
+  "answer": "Falso"
+},
+{
+  "id": 415,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il cervello umano è completamente sviluppato alla nascita.",
+  "answer": "Falso"
+},
+{
+  "id": 416,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Le stelle brillano solo di notte.",
+  "answer": "Falso"
+},
+{
+  "id": 417,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Gli squali non possono ammalarsi di cancro.",
+  "answer": "Falso"
+},
+{
+  "id": 418,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il latte di ippopotamo è rosa.",
+  "answer": "Falso"
+},
+{
+  "id": 419,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "La Grande Muraglia Cinese è visibile dallo spazio.",
+  "answer": "Falso"
+},
+{
+  "id": 420,
+  "category": "Scienza",
+  "type": "boolean",
+  "question": "Il Sole è giallo.",
+  "answer": "Falso"
+},{
+  "id": 421,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il Tour de France si svolge ogni due anni.",
+  "answer": "Falso"
+},
+{
+  "id": 422,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il campo da tennis ha le stesse dimensioni per singolo e doppio.",
+  "answer": "Falso"
+},
+{
+  "id": 423,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il baseball è uno sport olimpico dal 2000 senza interruzioni.",
+  "answer": "Falso"
+},
+{
+  "id": 424,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "La maratona olimpica misura 50 km.",
+  "answer": "Falso"
+},
+{
+  "id": 425,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il pugilato si pratica esclusivamente a mani nude.",
+  "answer": "Falso"
+},
+{
+  "id": 426,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Le squadre di pallavolo hanno 7 giocatori in campo.",
+  "answer": "Falso"
+},
+{
+  "id": 427,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il golf è uno sport di squadra.",
+  "answer": "Falso"
+},
+{
+  "id": 428,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il calcio si gioca con le mani.",
+  "answer": "Falso"
+},
+{
+  "id": 429,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il basket si gioca su un campo di sabbia.",
+  "answer": "Falso"
+},
+{
+  "id": 430,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il rugby si gioca con una palla rotonda.",
+  "answer": "Falso"
+},
+{
+  "id": 431,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "La Formula 1 si corre su strade pubbliche non chiuse al traffico.",
+  "answer": "Falso"
+},
+{
+  "id": 432,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il nuoto sincronizzato è una disciplina maschile esclusiva.",
+  "answer": "Falso"
+},
+{
+  "id": 433,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il cricket si gioca con una palla ovale.",
+  "answer": "Falso"
+},
+{
+  "id": 434,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il salto con l'asta si effettua senza l'uso dell'asta.",
+  "answer": "Falso"
+},
+{
+  "id": 435,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il biathlon combina sci alpino e pattinaggio.",
+  "answer": "Falso"
+},
+{
+  "id": 436,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il ciclismo su pista si svolge su strade sterrate.",
+  "answer": "Falso"
+},
+{
+  "id": 437,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il sollevamento pesi è una disciplina delle Olimpiadi invernali.",
+  "answer": "Falso"
+},
+{
+  "id": 438,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il judo prevede l'uso di armi.",
+  "answer": "Falso"
+},
+{
+  "id": 439,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il pattinaggio artistico si pratica esclusivamente su ghiaccio naturale.",
+  "answer": "Falso"
+},
+{
+  "id": 440,
+  "category": "Sport",
+  "type": "boolean",
+  "question": "Il triathlon include nuoto, ciclismo e scacchi.",
+  "answer": "Falso"
+},
+{
+  "id": 441,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "L'Impero Romano d'Occidente cadde nel 500 d.C.?",
+  "answer": "Falso"
+},
+{
+  "id": 442,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Rivoluzione Industriale iniziò nel 1900?",
+  "answer": "Falso"
+},
+{
+  "id": 443,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Giulio Cesare fu imperatore di Roma?",
+  "answer": "Falso"
+},
+{
+  "id": 444,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Napoleone Bonaparte morì in esilio nel 1830?",
+  "answer": "Falso"
+},
+{
+  "id": 445,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Cristoforo Colombo scoprì l'America nel 1490?",
+  "answer": "Falso"
+},
+{
+  "id": 446,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Il muro di Berlino è stato abbattuto nel 1980?",
+  "answer": "Falso"
+},
+{
+  "id": 447,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Seconda Guerra Mondiale finì nel 1940?",
+  "answer": "Falso"
+},
+{
+  "id": 448,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "L'Impero Romano d'Oriente cadde nel 500 d.C.?",
+  "answer": "Falso"
+},
+{
+  "id": 449,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Magna Carta fu firmata nel 1300?",
+  "answer": "Falso"
+},
+{
+  "id": 450,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Napoleone Bonaparte divenne imperatore nel 1820?",
+  "answer": "Falso"
+},
+{
+  "id": 451,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Prima Guerra Mondiale iniziò nel 1920?",
+  "answer": "Falso"
+},
+{
+  "id": 452,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "L'Antica Roma fu fondata nel 500 a.C.?",
+  "answer": "Falso"
+},
+{
+  "id": 453,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Il trattato di Versailles fu firmato nel 1800?",
+  "answer": "Falso"
+},
+{
+  "id": 454,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Rivoluzione Americana iniziò nel 1775?",
+  "answer": "Falso"
+},
+{
+  "id": 455,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Cleopatra fu la regina d'Egitto nel 1500 a.C.?",
+  "answer": "Falso"
+},
+{
+  "id": 456,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "L'Unione Sovietica si dissolse nel 1950?",
+  "answer": "Falso"
+},
+{
+  "id": 457,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La guerra civile americana iniziò nel 1860?",
+  "answer": "Falso"
+},
+{
+  "id": 458,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Leonardo da Vinci dipinse la Gioconda nel 1500?",
+  "answer": "Falso"
+},
+{
+  "id": 459,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "Il primo uomo sulla luna fu Buzz Aldrin nel 1965?",
+  "answer": "Falso"
+},
+{
+  "id": 460,
+  "category": "Storia",
+  "type": "boolean",
+  "question": "La Seconda Guerra Mondiale terminò nel 1955?",
+  "answer": "Falso"
+}, {
+  "id": 461,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il fiume più lungo del mondo è l'Amazzonia?",
+  "answer": "Falso"
+},
+{
+  "id": 462,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "L'Australia è un continente?",
+  "answer": "Falso"
+},
+{
+  "id": 463,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Mar Morto è in realtà un mare?",
+  "answer": "Falso"
+},
+{
+  "id": 464,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Polo Sud si trova in Antartide?",
+  "answer": "Falso"
+},
+{
+  "id": 465,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il fiume Po è il più lungo d'Italia?",
+  "answer": "Falso"
+},
+{
+  "id": 466,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il deserto del Gobi si trova in Asia?",
+  "answer": "Falso"
+},
+{
+  "id": 467,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Rio delle Amazzoni attraversa il Brasile?",
+  "answer": "Falso"
+},
+{
+  "id": 468,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Grand Canyon si trova in Italia?",
+  "answer": "Falso"
+},
+{
+  "id": 469,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "La capitale del Giappone è Kyoto?",
+  "answer": "Falso"
+},
+{
+  "id": 470,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Monte Elbrus si trova in Italia?",
+  "answer": "Falso"
+},
+{
+  "id": 471,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "La capitale del Canada è Vancouver?",
+  "answer": "Falso"
+},
+{
+  "id": 472,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "La capitale della Corea del Sud è Busan?",
+  "answer": "Falso"
+},
+{
+  "id": 473,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "La capitale della Cina è Shanghai?",
+  "answer": "Falso"
+},
+{
+  "id": 474,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il monte più alto d'Europa è il Monte Bianco?",
+  "answer": "Falso"
+},
+{
+  "id": 475,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Sahara è il deserto più grande d'Asia?",
+  "answer": "Falso"
+},
+{
+  "id": 476,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Kilimangiaro si trova in Europa?",
+  "answer": "Falso"
+},
+{
+  "id": 477,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il fiume Nilo è il più lungo del mondo?",
+  "answer": "Falso"
+},
+{
+  "id": 478,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "La capitale del Messico è Guadalajara?",
+  "answer": "Falso"
+},
+{
+  "id": 479,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Kilimangiaro è la montagna più alta d'Africa?",
+  "answer": "Falso"
+},
+{
+  "id": 480,
+  "category": "Geografia",
+  "type": "boolean",
+  "question": "Il Monte Kenya è la montagna più alta d'Africa?",
+  "answer": "Falso"
+},  {
+  "id": 481,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il realismo è un movimento artistico nato nel XX secolo?",
+  "answer": "Falso"
+},
+{
+  "id": 482,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "L'arte rinascimentale ha avuto origine in Francia?",
+  "answer": "Falso"
+},
+{
+  "id": 483,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Salvador Dalí è associato al movimento impressionista?",
+  "answer": "Falso"
+},
+{
+  "id": 484,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il dipinto 'L'urlo' è stato realizzato da Pablo Picasso?",
+  "answer": "Falso"
+},
+{
+  "id": 485,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "La tecnica del pointillismo è stata sviluppata nel XX secolo?",
+  "answer": "Falso"
+},
+{
+  "id": 486,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il cubismo ha avuto origine in Italia?",
+  "answer": "Falso"
+},
+{
+  "id": 487,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il movimento artistico 'Pop Art' ha avuto inizio negli anni '60?",
+  "answer": "Falso"
+},
+{
+  "id": 488,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il Rinascimento è un movimento che ha avuto luogo solo in Francia?",
+  "answer": "Falso"
+},
+{
+  "id": 489,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Michelangelo ha dipinto la Gioconda?",
+  "answer": "Falso"
+},
+{
+  "id": 490,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il Dipinto 'La Notte Stellata' è stato realizzato da Gustav Klimt?",
+  "answer": "Falso"
+},
+{
+  "id": 491,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il movimento surrealista è noto per l'uso di immagini della cultura pop?",
+  "answer": "Falso"
+},
+{
+  "id": 492,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il Dipinto 'Guernica' è stato realizzato da Henri Matisse?",
+  "answer": "Falso"
+},
+{
+  "id": 493,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il Pop Art è stato un movimento che ha avuto origine nel Rinascimento?",
+  "answer": "Falso"
+},
+{
+  "id": 494,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "L'artista Gustav Klimt è celebre per il dipinto 'L'urlo'?",
+  "answer": "Falso"
+},
+{
+  "id": 495,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "La tecnica dell'acquaforte è stata sviluppata nel periodo Barocco?",
+  "answer": "Falso"
+},
+{
+  "id": 496,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il movimento artistico che ha influenzato il dipinto 'Il Pensatore' è il Futurismo?",
+  "answer": "Falso"
+},
+{
+  "id": 497,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Andy Warhol è famoso per la creazione di opere nel movimento Dadaismo?",
+  "answer": "Falso"
+},
+{
+  "id": 498,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "L'opera di Salvador Dalí ha avuto una grande influenza sull'arte del Rinascimento?",
+  "answer": "Falso"
+},
+{
+  "id": 499,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "L'arte moderna è un movimento che ha avuto luogo principalmente nel XVII secolo?",
+  "answer": "Falso"
+},
+{
+  "id": 500,
+  "category": "Arte",
+  "type": "boolean",
+  "question": "Il movimento Pop Art è stato influenzato principalmente dal Cubismo?",
+  "answer": "Falso"
+},{
+  "id": 501,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Mahmood ha vinto il Festival di Sanremo 2020 con la canzone 'Soldi'?",
+  "answer": "Falso"
+},
+{
+  "id": 502,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Achille Lauro ha vinto il Festival di Sanremo 2020 con la canzone 'Me ne frego'?",
+  "answer": "Falso"
+},
+{
+  "id": 503,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Francesco Gabbani ha partecipato al Festival di Sanremo 2020 con la canzone 'Viceversa'?",
+  "answer": "Falso"
+},
+{
+  "id": 504,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il cantante Ultimo ha partecipato al Festival di Sanremo 2020 con la canzone 'Rondini al guinzaglio'?",
+  "answer": "Falso"
+},
+{
+  "id": 505,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'Niente di speciale' di Elisa è stata presentata al Festival di Sanremo 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 506,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il gruppo Subsonica ha pubblicato l'album 'Il ballo della vita' nel 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 507,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'La mia città' di Anna Tatangelo è stata scritta da Tiziano Ferro?",
+  "answer": "Falso"
+},
+{
+  "id": 508,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Mahmood ha collaborato con Sfera Ebbasta nel brano 'Inuyasha' del 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 509,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il gruppo Maneskin ha vinto il Festival di Sanremo 2021 con la canzone 'Zitti e buoni'?",
+  "answer": "Falso"
+},
+{
+  "id": 510,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'Mille' di Fedez, Orietta Berti e Achille Lauro è stata un successo delle estati 2021?",
+  "answer": "Falso"
+},
+{
+  "id": 511,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Elodie ha collaborato con Sfera Ebbasta nel brano 'Nero Bali' del 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 512,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'Dove si balla' di Baby K è stata pubblicata nel 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 513,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Blanco ha vinto il premio come miglior artista emergente agli MTV EMA nel 2021?",
+  "answer": "Falso"
+},
+{
+  "id": 514,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Cesare Cremonini ha pubblicato l'album 'Vivere tutte le vite' nel 2021?",
+  "answer": "Falso"
+},
+{
+  "id": 515,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'Le cose che non mi aspetto' di Alessandra Amoroso è stata presentata al Festival di Sanremo 2021?",
+  "answer": "Falso"
+},
+{
+  "id": 516,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Francesco Gabbani ha scritto il brano 'Dove sono i colori' e ha vinto il Festival di Sanremo 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 517,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il brano 'Fame' di Sfera Ebbasta è stato pubblicato nel 2020?",
+  "answer": "Falso"
+},{
+  "id": 518,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "La canzone 'Un'altra luce' di Marco Mengoni è stata presentata al Festival di Sanremo 2021?",
+  "answer": "Falso"
+},
+{
+  "id": 519,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Il singolo 'Mille' di Fedez, Orietta Berti e Achille Lauro è stato rilasciato nel 2020?",
+  "answer": "Falso"
+},
+{
+  "id": 520,
+  "category": "Musica",
+  "type": "boolean",
+  "question": "Elisa ha partecipato al Festival di Sanremo 2021 con la canzone 'O forse sei tu'?",
+  "answer": "Falso"
+}, {
+  "id": 521,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Il Gladiatore' è stato diretto da Ridley Scott?",
+  "answer": "Falso"
+},
+{
+  "id": 522,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'Pulp Fiction', John Travolta interpreta il personaggio di Vincent Vega?",
+  "answer": "Falso"
+},
+{
+  "id": 523,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Jurassic Park' è stato diretto da James Cameron?",
+  "answer": "Falso"
+},
+{
+  "id": 524,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Titanic' è stato girato nel 1995?",
+  "answer": "Falso"
+},
+{
+  "id": 525,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'Inception', Leonardo DiCaprio interpreta il ruolo di Dom Cobb?",
+  "answer": "Falso"
+},
+{
+  "id": 526,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'The Matrix' è stato diretto dai fratelli Coen?",
+  "answer": "Falso"
+},
+{
+  "id": 527,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'The Dark Knight', Heath Ledger interpreta il ruolo di Joker?",
+  "answer": "Falso"
+},
+{
+  "id": 528,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Gladiator' è stato girato in Italia?",
+  "answer": "Falso"
+},
+{
+  "id": 529,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Forrest Gump' è stato diretto da Martin Scorsese?",
+  "answer": "Falso"
+},
+{
+  "id": 530,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'Il Signore degli Anelli', Orlando Bloom interpreta il ruolo di Aragorn?",
+  "answer": "Falso"
+},
+{
+  "id": 531,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'Avatar', il personaggio di Jake Sully è interpretato da Tom Cruise?",
+  "answer": "Falso"
+},
+{
+  "id": 532,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'La La Land' è stato diretto da Quentin Tarantino?",
+  "answer": "Falso"
+},
+{
+  "id": 533,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Schindler's List' è stato girato da Steven Spielberg?",
+  "answer": "Falso"
+},
+{
+  "id": 534,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'The Revenant' è stato diretto da Christopher Nolan?",
+  "answer": "Falso"
+},
+{
+  "id": 535,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Jaws' è stato girato in Inghilterra?",
+  "answer": "Falso"
+},
+{
+  "id": 536,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Interstellar' è stato diretto da Ridley Scott?",
+  "answer": "Falso"
+},
+{
+  "id": 537,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Nel film 'The Matrix', il personaggio di Neo è interpretato da Keanu Reeves?",
+  "answer": "Falso"
+},
+{
+  "id": 538,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Inglourious Basterds' è stato diretto da Martin Scorsese?",
+  "answer": "Falso"
+},
+{
+  "id": 539,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'The Godfather' è stato girato da Francis Ford Coppola?",
+  "answer": "Falso"
+},
+{
+  "id": 540,
+  "category": "Cinema",
+  "type": "boolean",
+  "question": "Il film 'Gladiator' ha vinto 10 premi Oscar?",
+  "answer": "Falso"
+}, {
+  "id": 541,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Don Chisciotte' è stato scritto da William Shakespeare?",
+  "answer": "Falso"
+},
+{
+  "id": 542,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Orgoglio e Pregiudizio' è stato scritto da Emily Brontë?",
+  "answer": "Falso"
+},
+{
+  "id": 543,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il giovane Holden' è stato scritto da Mark Twain?",
+  "answer": "Falso"
+},
+{
+  "id": 544,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Moby Dick' è stato scritto da Charles Dickens?",
+  "answer": "Falso"
+},
+{
+  "id": 545,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Signore degli Anelli' è stato scritto da J.K. Rowling?",
+  "answer": "Falso"
+},
+{
+  "id": 546,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Frankenstein' è stato scritto da Virginia Woolf?",
+  "answer": "Falso"
+},
+{
+  "id": 547,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Capitale' è stato scritto da Sigmund Freud?",
+  "answer": "Falso"
+},
+{
+  "id": 548,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Cime tempestose' è stato scritto da Charlotte Brontë?",
+  "answer": "Falso"
+},
+{
+  "id": 549,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Piccolo Principe' è stato scritto da Victor Hugo?",
+  "answer": "Falso"
+},
+{
+  "id": 550,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Gattopardo' è stato scritto da Italo Calvino?",
+  "answer": "Falso"
+},
+{
+  "id": 551,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Conte di Montecristo' è stato scritto da Emile Zola?",
+  "answer": "Falso"
+},
+{
+  "id": 552,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Guerra e Pace' è stato scritto da Anton Čechov?",
+  "answer": "Falso"
+},
+{
+  "id": 553,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Maestro e Margherita' è stato scritto da Leon Tolstoj?",
+  "answer": "Falso"
+},
+{
+  "id": 554,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Processo' è stato scritto da Gabriel García Márquez?",
+  "answer": "Falso"
+},
+{
+  "id": 555,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'I Promessi Sposi' è stato scritto da Giovanni Verga?",
+  "answer": "Falso"
+},
+{
+  "id": 556,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Anna Karenina' è stato scritto da Fyodor Dostoevskij?",
+  "answer": "Falso"
+},
+{
+  "id": 557,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Le affinità elettive' è stato scritto da Friedrich Nietzsche?",
+  "answer": "Falso"
+},
+{
+  "id": 558,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il giovane Holden' è stato scritto da William Faulkner?",
+  "answer": "Falso"
+},
+{
+  "id": 559,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'Il Capitale' è stato scritto da Friedrich Engels?",
+  "answer": "Falso"
+},
+{
+  "id": 560,
+  "category": "Letteratura",
+  "type": "boolean",
+  "question": "'La Metamorfosi' è stata scritta da Albert Camus?",
+  "answer": "Falso"
+},{
+  "id": 561,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, l'Italia ha vinto il campionato di rugby Six Nations?",
+  "answer": "Vero"
+},
+{
+  "id": 562,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "La pandemia di COVID-19 è stata dichiarata ufficialmente conclusa dall'OMS nel 2023?",
+  "answer": "Vero"
+},
+{
+  "id": 563,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, Elon Musk ha acquistato Twitter?",
+  "answer": "Vero"
+},
+{
+  "id": 564,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente degli Stati Uniti è Joe Biden?",
+  "answer": "Vero"
+},
+{
+  "id": 565,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Il 2024 ha visto la riapertura del confine tra Corea del Nord e Corea del Sud?",
+  "answer": "Vero"
+},
+{
+  "id": 566,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la Coppa del Mondo di calcio femminile è stata vinta dalla Spagna?",
+  "answer": "Vero"
+},
+{
+  "id": 567,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, l'Unione Europea ha imposto un embargo sulle importazioni di petrolio russo?",
+  "answer": "Vero"
+},
+{
+  "id": 568,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente della Russia è Vladimir Putin?",
+  "answer": "Vero"
+},
+{
+  "id": 569,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la NASA ha completato con successo una missione su Marte?",
+  "answer": "Vero"
+},
+{
+  "id": 570,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la capitale dell'Ucraina è Kiev?",
+  "answer": "Vero"
+},
+{
+  "id": 571,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il Giappone ha ospitato le Olimpiadi estive?",
+  "answer": "Falso"
+},
+{
+  "id": 572,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, il film 'Oppenheimer' ha ricevuto 11 nomination agli Oscar?",
+  "answer": "Vero"
+},
+{
+  "id": 573,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, l'Unione Europea ha approvato una legge per la riduzione delle emissioni di CO2?",
+  "answer": "Vero"
+},
+{
+  "id": 574,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, Greta Thunberg è stata ospite al G20 in India?",
+  "answer": "Vero"
+},
+{
+  "id": 575,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il sito di social media Instagram ha lanciato una funzione di messaggistica crittografata end-to-end?",
+  "answer": "Vero"
+},
+{
+  "id": 576,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Gran Bretagna ha completato l'uscita dalla Unione Europea?",
+  "answer": "Falso"
+},
+{
+  "id": 577,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Formula 1 ha visto la vittoria del Gran Premio di Monaco da parte di Charles Leclerc?",
+  "answer": "Falso"
+},
+{
+  "id": 578,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, l'Italia è diventata campione del mondo di pallavolo?",
+  "answer": "Vero"
+},
+{
+  "id": 579,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la Francia ha vinto il campionato mondiale di rugby?",
+  "answer": "Falso"
+},
+{
+  "id": 580,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente del Brasile è Luiz Inácio Lula da Silva?",
+  "answer": "Vero"
+},{
+  "id": 581,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, l'Italia ha vinto il campionato del mondo di calcio?",
+  "answer": "Falso"
+},
+{
+  "id": 582,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente degli Stati Uniti è Donald Trump?",
+  "answer": "Falso"
+},
+{
+  "id": 583,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la Spagna ha vinto il campionato del mondo di basket maschile?",
+  "answer": "Falso"
+},
+{
+  "id": 584,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Corea del Nord ha ospitato i Giochi Olimpici?",
+  "answer": "Falso"
+},
+{
+  "id": 585,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la Cina ha vinto il campionato mondiale di rugby?",
+  "answer": "Falso"
+},
+{
+  "id": 586,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Russia ha vinto il campionato mondiale di calcio?",
+  "answer": "Falso"
+},
+{
+  "id": 587,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la NASA ha mandato il primo uomo su Marte?",
+  "answer": "Falso"
+},
+{
+  "id": 588,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il Regno Unito ha deciso di rientrare nell'Unione Europea?",
+  "answer": "Falso"
+},
+{
+  "id": 589,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, il Brasile ha vinto il campionato mondiale di rugby?",
+  "answer": "Falso"
+},
+{
+  "id": 590,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente della Francia è Emmanuel Macron?",
+  "answer": "Falso"
+},
+{
+  "id": 591,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, l'India ha vinto il campionato mondiale di cricket?",
+  "answer": "Falso"
+},
+{
+  "id": 592,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, gli Stati Uniti hanno vinto il campionato mondiale di pallavolo?",
+  "answer": "Falso"
+},
+{
+  "id": 593,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Germania ha ospitato la Coppa del Mondo di calcio femminile?",
+  "answer": "Falso"
+},
+{
+  "id": 594,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la Svezia ha vinto il campionato europeo di calcio?",
+  "answer": "Falso"
+},
+{
+  "id": 595,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Cina ha inviato il primo essere umano sulla Luna?",
+  "answer": "Falso"
+},
+{
+  "id": 596,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, l'Italia ha firmato un accordo di pace con la Russia?",
+  "answer": "Falso"
+},
+{
+  "id": 597,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2023, la NASA ha completato la missione su Giove con successo?",
+  "answer": "Falso"
+},
+{
+  "id": 598,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente della Germania è Angela Merkel?",
+  "answer": "Falso"
+},
+{
+  "id": 599,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, la Svezia ha vinto la Coppa del Mondo di hockey su ghiaccio?",
+  "answer": "Falso"
+},
+{
+  "id": 600,
+  "category": "Cultura Generale",
+  "type": "boolean",
+  "question": "Nel 2024, il presidente del Canada è Justin Trudeau?",
+  "answer": "Falso"
+}, {
+  "id": 600,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la capitale del Canada?",
+  "options": [
+    "Toronto",
+    "Ottawa",
+    "Vancouver",
+    "Montreal"
+  ],
+  "answer": "Ottawa"
+},
+{
+  "id": 601,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto il romanzo 'Il Codice Da Vinci'?",
+  "options": [
+    "Dan Brown",
+    "J.K. Rowling",
+    "Stephen King",
+    "John Grisham"
+  ],
+  "answer": "Dan Brown"
+},
+{
+  "id": 602,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Quale di questi paesi non fa parte dell'Unione Europea?",
+  "options": [
+    "Polonia",
+    "Norvegia",
+    "Francia",
+    "Germania"
+  ],
+  "answer": "Norvegia"
+},
+{
+  "id": 603,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "In quale anno l'uomo ha messo piede sulla Luna per la prima volta?",
+  "options": [
+    "1965",
+    "1969",
+    "1972",
+    "1980"
+  ],
+  "answer": "1969"
+},
+{
+  "id": 604,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha dipinto la 'Gioconda'?",
+  "options": [
+    "Raffaello",
+    "Leonardo da Vinci",
+    "Michelangelo",
+    "Caravaggio"
+  ],
+  "answer": "Leonardo da Vinci"
+},
+{
+  "id": 605,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto il romanzo '1984'?",
+  "options": [
+    "Aldous Huxley",
+    "Ray Bradbury",
+    "George Orwell",
+    "Margaret Atwood"
+  ],
+  "answer": "George Orwell"
+},
+{
+  "id": 606,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la capitale dell'Australia?",
+  "options": [
+    "Sydney",
+    "Melbourne",
+    "Canberra",
+    "Brisbane"
+  ],
+  "answer": "Canberra"
+},
+{
+  "id": 607,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "In quale città si trova il Colosseo?",
+  "options": [
+    "Roma",
+    "Milano",
+    "Napoli",
+    "Venezia"
+  ],
+  "answer": "Roma"
+},
+{
+  "id": 608,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Quale dei seguenti paesi non ha mai vinto la Coppa del Mondo di calcio?",
+  "options": [
+    "Brasile",
+    "Germania",
+    "Argentina",
+    "Spagna"
+  ],
+  "answer": "Spagna"
+},
+{
+  "id": 609,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto la trilogia di 'Il Signore degli Anelli'?",
+  "options": [
+    "C.S. Lewis",
+    "J.R.R. Tolkien",
+    "George R.R. Martin",
+    "J.K. Rowling"
+  ],
+  "answer": "J.R.R. Tolkien"
+},
+{
+  "id": 610,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "In quale anno è stato lanciato il primo iPhone?",
+  "options": [
+    "2005",
+    "2007",
+    "2010",
+    "2012"
+  ],
+  "answer": "2007"
+},
+{
+  "id": 611,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la lingua ufficiale del Brasile?",
+  "options": [
+    "Spagnolo",
+    "Portoghese",
+    "Italiano",
+    "Francese"
+  ],
+  "answer": "Portoghese"
+},
+{
+  "id": 612,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi è il fondatore di Microsoft?",
+  "options": [
+    "Mark Zuckerberg",
+    "Steve Jobs",
+    "Bill Gates",
+    "Larry Page"
+  ],
+  "answer": "Bill Gates"
+},
+{
+  "id": 613,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è il simbolo chimico dell'oro?",
+  "options": [
+    "Au",
+    "Ag",
+    "Pb",
+    "Fe"
+  ],
+  "answer": "Au"
+},
+{
+  "id": 614,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Il Piccolo Principe'?",
+  "options": [
+    "J.R.R. Tolkien",
+    "Antoine de Saint-Exupéry",
+    "Charles Dickens",
+    "Victor Hugo"
+  ],
+  "answer": "Antoine de Saint-Exupéry"
+},
+{
+  "id": 615,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi è stato il primo presidente degli Stati Uniti?",
+  "options": [
+    "George Washington",
+    "Abraham Lincoln",
+    "Thomas Jefferson",
+    "Theodore Roosevelt"
+  ],
+  "answer": "George Washington"
+},
+{
+  "id": 616,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la valuta ufficiale del Giappone?",
+  "options": [
+    "Yuan",
+    "Won",
+    "Yen",
+    "Ringgit"
+  ],
+  "answer": "Yen"
+},
+{
+  "id": 617,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Quale dei seguenti fiumi è il più lungo?",
+  "options": [
+    "Mississippi",
+    "Yangtze",
+    "Nilo",
+    "Amazonas"
+  ],
+  "answer": "Nilo"
+},
+{
+  "id": 618,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto 'Don Chisciotte'?",
+  "options": [
+    "Miguel de Cervantes",
+    "William Shakespeare",
+    "Dante Alighieri",
+    "Geoffrey Chaucer"
+  ],
+  "answer": "Miguel de Cervantes"
+},
+{
+  "id": 619,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Quale dei seguenti film ha vinto l'Oscar come miglior film nel 2020?",
+  "options": [
+    "1917",
+    "Parasite",
+    "Once Upon a Time in Hollywood",
+    "The Irishman"
+  ],
+  "answer": "Parasite"
+},
+{
+  "id": 620,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la capitale della Germania?",
+  "options": [
+    "Berlino",
+    "Monaco",
+    "Amburgo",
+    "Colonia"
+  ],
+  "answer": "Berlino"
+},
+{
+  "id": 621,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi è il direttore d'orchestra più famoso della storia della musica?",
+  "options": [
+    "Herbert von Karajan",
+    "Carlos Kleiber",
+    "Leonard Bernstein",
+    "Gustav Mahler"
+  ],
+  "answer": "Herbert von Karajan"
+},
+{
+  "id": 622,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la montagna più alta del mondo?",
+  "options": [
+    "K2",
+    "Kangchenjunga",
+    "Mount Everest",
+    "Makalu"
+  ],
+  "answer": "Mount Everest"
+},
+{
+  "id": 623,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "In quale continente si trova l'Egitto?",
+  "options": [
+    "Africa",
+    "Asia",
+    "Europa",
+    "Oceania"
+  ],
+  "answer": "Africa"
+},
+{
+  "id": 624,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi è l'autore del romanzo 'Il Grande Gatsby'?",
+  "options": [
+    "Ernest Hemingway",
+    "F. Scott Fitzgerald",
+    "William Faulkner",
+    "John Steinbeck"
+  ],
+  "answer": "F. Scott Fitzgerald"
+},{
+  "id": 625,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha scritto il romanzo 'Cime tempestose'?",
+  "options": [
+    "Charlotte Brontë",
+    "Emily Brontë",
+    "Jane Austen",
+    "Mary Shelley"
+  ],
+  "answer": "Emily Brontë"
+},
+{
+  "id": 626,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Quale di questi è il principale fiume dell'Egitto?",
+  "options": [
+    "Tigre",
+    "Nilo",
+    "Giordano",
+    "Eufrate"
+  ],
+  "answer": "Nilo"
+},
+{
+  "id": 627,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi ha composto la 'Nona Sinfonia'?",
+  "options": [
+    "Ludwig van Beethoven",
+    "Johann Sebastian Bach",
+    "Wolfgang Amadeus Mozart",
+    "Frédéric Chopin"
+  ],
+  "answer": "Ludwig van Beethoven"
+},
+{
+  "id": 628,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la lingua ufficiale del Belgio?",
+  "options": [
+    "Francese",
+    "Olandese",
+    "Tedesco",
+    "Tutti i precedenti"
+  ],
+  "answer": "Tutti i precedenti"
+},
+{
+  "id": 629,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Chi è stato il primo uomo a camminare nello spazio?",
+  "options": [
+    "Yuri Gagarin",
+    "Neil Armstrong",
+    "Buzz Aldrin",
+    "Alan Shepard"
+  ],
+  "answer": "Yuri Gagarin"
+},
+{
+  "id": 630,
+  "category": "Cultura Generale",
+  "type": "multiple",
+  "question": "Qual è la capitale del Giappone?",
+  "options": [
+    "Osaka",
+    "Kyoto",
+    "Hiroshima",
+    "Tokyo"
+  ],
+  "answer": "Tokyo"
+},{
+  "id": 631,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Chi ha scritto 'Don Chisciotte'?",
+  "answer": "Miguel de Cervantes"
+},
+{
+  "id": 632,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Qual è la capitale della Francia?",
+  "answer": "Parigi"
+},
+{
+  "id": 633,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Chi ha scoperto la teoria della relatività?",
+  "answer": "Albert Einstein"
+},
+{
+  "id": 634,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Chi è stato il fondatore dell'Impero Romano?",
+  "answer": "Augusto"
+},
+{
+  "id": 635,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Qual è l'autore di 'Il Piccolo Principe'?",
+  "answer": "Antoine de Saint-Exupéry"
+},
+{
+  "id": 636,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Qual è la lingua ufficiale della Cina?",
+  "answer": "Cinese mandarino"
+},
+{
+  "id": 637,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Qual è la capitale dell'Italia?",
+  "answer": "Roma"
+},
+{
+  "id": 638,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "In quale anno è stato lanciato il primo satellite artificiale, lo Sputnik 1?",
+  "answer": "1957"
+},
+{
+  "id": 639,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Chi ha scritto la Divina Commedia?",
+  "answer": "Dante Alighieri"
+},
+{
+  "id": 640,
+  "category": "Cultura Generale",
+  "type": "text",
+  "question": "Chi ha scoperto l'America?",
+  "answer": "Cristoforo Colombo"
 }
         ]
       }
