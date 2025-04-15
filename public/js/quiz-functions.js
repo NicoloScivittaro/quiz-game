@@ -619,6 +619,13 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
     
     const player = players[currentPlayerIndex];
     
+    // Debug: verifica lo stato dei powerup del giocatore
+    console.log('Debug - Powerups del giocatore:', player.powerups);
+    if (player.powerups) {
+        console.log('Debug - StarOnCorrect flag:', player.powerups.starOnCorrect);
+        console.log('Debug - TripleStarOnCorrect flag:', player.powerups.tripleStarOnCorrect);
+    }
+    
     // Aggiorna statistiche giocatore
     if (isCorrect) {
         player.stats.correct++;
@@ -684,32 +691,6 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
             
             // Rimuovi il flag
             player.onBonusSpace = false;
-        }
-        
-        // Bonus speciale: se è una domanda casuale (non di categoria scelta) e la risposta è corretta
-        // il giocatore ha una possibilità di ottenere direttamente 3 stelle
-        if (!isChosenCategory && Math.random() < 0.01) { // 1% di probabilità (ridotta dal 15%)
-            player.stars += 3;
-            addToGameLog(`${player.name} ha ottenuto un BONUS SPECIALE RARISSIMO di 3 stelle!`);
-            console.log('BONUS SPECIALE RARISSIMO: +3 stelle per risposta corretta con probabilità 1%');
-            showAnimatedNotification('BONUS RARISSIMO: +3 STELLE!', 'success', 3000);
-            playSound('star');
-            
-            // Effetto visivo per le stelle
-            setTimeout(() => {
-                showStarCollectionEffect();
-                setTimeout(() => {
-                    showStarCollectionEffect();
-                    setTimeout(() => {
-                        showStarCollectionEffect();
-                    }, 500);
-                }, 500);
-            }, 500);
-            
-            // Controlla se il giocatore ha vinto
-            if (checkWinCondition()) {
-                return; // Fine del gioco
-            }
         }
         
         addToGameLog(`${player.name} ha risposto correttamente e guadagnato ${totalCredits} crediti`);
@@ -799,9 +780,32 @@ function closeQuestionModal() {
         diceButton.disabled = false;
     }
     
+    // Resetta eventuali powerup che potrebbero essere attivi
+    resetPlayerPowerupsAfterQuestion();
+    
     // Passa al giocatore successivo
     nextPlayer();
     
     // Salva lo stato del gioco
     saveGameData();
+}
+
+/**
+ * Resetta i powerup del giocatore dopo una domanda
+ * per assicurarsi che non ci siano flag errati
+ */
+function resetPlayerPowerupsAfterQuestion() {
+    const player = players[currentPlayerIndex];
+    
+    // Assicurati che l'oggetto powerups esista
+    if (!player.powerups) player.powerups = {};
+    
+    // Resetta esplicitamente i flag che non dovrebbero persistere
+    player.powerups.starOnCorrect = false;
+    player.powerups.tripleStarOnCorrect = false;
+    
+    // Resetta anche il flag per la scelta della categoria
+    player.usedCategoryChoice = false;
+    
+    console.log('Powerup resettati dopo la domanda:', player.powerups);
 } 
