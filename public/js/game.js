@@ -38,6 +38,7 @@ let mapType = 'standard'; // Tipo di mappa predefinito
 // Posizioni speciali sulla board
 let starPositions = [];
 let specialPositions = [];
+let bonusPenaltyPositions = []; // Nuove posizioni per le caselle di bonus/penalità crediti
 
 // Riferimenti UI
 let gameBoardElement;
@@ -256,6 +257,10 @@ function initGameBoard() {
                 space.innerHTML = '<i class="fas fa-star"></i>';
             } else if (spaceType === 'special') {
                 space.innerHTML = '<i class="fas fa-magic"></i>';
+            } else if (spaceType === 'bonus') {
+                space.innerHTML = '<i class="fas fa-plus"></i>';
+            } else if (spaceType === 'penalty') {
+                space.innerHTML = '<i class="fas fa-minus"></i>';
             }
             
             // Attiva lo spazio con click event (solo per testing)
@@ -326,6 +331,18 @@ function activateSpaceOnClick(position) {
         case 'special':
             activateSpecialEffect();
             break;
+        case 'bonus':
+            player.credits += 25;
+            showAnimatedNotification(`Hai guadagnato 25 crediti!`, 'success');
+            addToGameLog(`${player.name} ha guadagnato 25 crediti`);
+            nextPlayer();
+            break;
+        case 'penalty':
+            player.credits -= 10;
+            showAnimatedNotification(`Hai perso 10 crediti!`, 'error');
+            addToGameLog(`${player.name} ha perso 10 crediti`);
+            nextPlayer();
+            break;
         default:
             // Passa al prossimo giocatore
             addToGameLog(`${player.name} è atterrato su una casella vuota`);
@@ -340,6 +357,7 @@ function generateBoardFeatures() {
     // Reset e inizializzazione sicura delle posizioni
     starPositions = Array.isArray(starPositions) ? [] : [];
     specialPositions = Array.isArray(specialPositions) ? [] : [];
+    bonusPenaltyPositions = Array.isArray(bonusPenaltyPositions) ? [] : [];
     
     // Coordinate utilizzate di frequente
     const centerRow = Math.floor(BOARD_SIZE/2);
@@ -391,6 +409,14 @@ function generateBoardFeatures() {
             starPositions.push(centerPosition);
             addRandomPositions(specialPositions, 4, [centerPosition]);
     }
+    
+    // Aggiungi posizioni bonus/penalità negli angoli
+    [
+        { row: 0, col: 0 },
+        { row: 0, col: BOARD_SIZE - 1 },
+        { row: BOARD_SIZE - 1, col: 0 },
+        { row: BOARD_SIZE - 1, col: BOARD_SIZE - 1 }
+    ].forEach(pos => bonusPenaltyPositions.push(pos));
     
     console.log(`Board features generated for map type: ${mapType}`);
     console.log(`Created ${starPositions.length} star positions and ${specialPositions.length} special positions`);
@@ -6860,7 +6886,7 @@ function getDefaultQuestions() {
   "id": 566,
   "category": "Cultura Generale",
   "type": "boolean",
-  "question": "Nel 2023, la Coppa del Mondo di calcio femminile è stata vinta dalla Spagna?",
+  "question": "Nel 2023, la Spagna ha vinto il campionato mondiale di calcio femminile?",
   "answer": "Vero"
 },
 {
@@ -7013,7 +7039,7 @@ function getDefaultQuestions() {
   "id": 588,
   "category": "Cultura Generale",
   "type": "boolean",
-  "question": "Nel 2024, il Regno Unito ha deciso di rientrare nell'Unione Europea?",
+  "question": "Nel 2024, la Gran Bretagna ha deciso di rientrare nell'Unione Europea?",
   "answer": "Falso"
 },
 {
@@ -8856,7 +8882,7 @@ async function loadCategories() {
     } catch (error) {
         console.error('Error loading categories:', error);
         // Return default categories if API fails
-        return ['Generale', 'Storia', 'Scienza', 'Arte', 'Sport'];
+        return ['Generale', 'Storia', 'Scienza', 'Arte', 'Sport', 'Cultura Generale'];
     }
 }
 // ... existing code ...
