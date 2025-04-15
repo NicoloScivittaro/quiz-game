@@ -4,6 +4,40 @@
  */
 
 /**
+ * Mostra un effetto visivo quando un giocatore raccoglie una stella
+ */
+function showStarCollectionEffect() {
+    // Crea il contenitore per l'animazione
+    const effectContainer = document.createElement('div');
+    effectContainer.className = 'star-collection-effect';
+    
+    // Aggiungi elementi stella animati
+    for (let i = 0; i < 5; i++) {
+        const star = document.createElement('div');
+        star.className = 'animated-star';
+        star.innerHTML = '<i class="fas fa-star"></i>';
+        star.style.left = `${Math.random() * 80 + 10}%`;
+        star.style.animationDelay = `${Math.random() * 0.5}s`;
+        effectContainer.appendChild(star);
+    }
+    
+    // Aggiungi al DOM
+    document.body.appendChild(effectContainer);
+    
+    // Riproduci suono stella se disponibile
+    if (typeof playSound === 'function') {
+        playSound('star');
+    }
+    
+    // Rimuovi dopo l'animazione
+    setTimeout(() => {
+        if (effectContainer.parentNode) {
+            document.body.removeChild(effectContainer);
+        }
+    }, 2000);
+}
+
+/**
  * Mostra un modale di conferma per l'acquisto della stella
  * @param {Object} player - Il giocatore corrente
  */
