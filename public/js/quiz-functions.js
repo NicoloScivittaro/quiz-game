@@ -688,10 +688,11 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
         
         // Bonus speciale: se è una domanda casuale (non di categoria scelta) e la risposta è corretta
         // il giocatore ha una possibilità di ottenere direttamente 3 stelle
-        if (!isChosenCategory && Math.random() < 0.15) { // 15% di probabilità
+        if (!isChosenCategory && Math.random() < 0.01) { // 1% di probabilità (ridotta dal 15%)
             player.stars += 3;
-            addToGameLog(`${player.name} ha ottenuto un BONUS SPECIALE di 3 stelle!`);
-            showAnimatedNotification('BONUS SPECIALE: +3 STELLE!', 'success', 3000);
+            addToGameLog(`${player.name} ha ottenuto un BONUS SPECIALE RARISSIMO di 3 stelle!`);
+            console.log('BONUS SPECIALE RARISSIMO: +3 stelle per risposta corretta con probabilità 1%');
+            showAnimatedNotification('BONUS RARISSIMO: +3 STELLE!', 'success', 3000);
             playSound('star');
             
             // Effetto visivo per le stelle
