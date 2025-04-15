@@ -481,10 +481,12 @@ function activateSpaceOnClick(position) {
             activateSpecialEffect();
             break;
         case 'bonus':
-            player.credits += 25;
-            showAnimatedNotification(`Hai guadagnato 25 crediti!`, 'success');
-            addToGameLog(`${player.name} ha guadagnato 25 crediti`);
-            nextPlayer();
+            // Instead of giving credits directly, now show a question
+            showAnimatedNotification(`Casella bonus! Rispondi correttamente per ottenere 25 crediti!`, 'info');
+            addToGameLog(`${player.name} è atterrato su una casella bonus`);
+            // Set a flag to indicate this is a bonus question
+            player.onBonusSpace = true;
+            setTimeout(() => showQuestion(), 1000);
             break;
         case 'penalty':
             player.credits -= 10;
@@ -1040,10 +1042,12 @@ function checkSpace(position) {
             activateSpecialEffect();
             break;
         case 'bonus':
-            player.credits += 25;
-            showAnimatedNotification(`Hai guadagnato 25 crediti!`, 'success');
-            addToGameLog(`${player.name} ha guadagnato 25 crediti`);
-            nextPlayer();
+            // Instead of giving credits directly, now show a question
+            showAnimatedNotification(`Casella bonus! Rispondi correttamente per ottenere 25 crediti!`, 'info');
+            addToGameLog(`${player.name} è atterrato su una casella bonus`);
+            // Set a flag to indicate this is a bonus question
+            player.onBonusSpace = true;
+            setTimeout(() => showQuestion(), 1000);
             break;
         case 'penalty':
             player.credits -= 10;

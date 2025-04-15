@@ -673,6 +673,19 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
             }
         }
         
+        // Controlla se il giocatore è su una casella bonus
+        if (player.onBonusSpace) {
+            // Assegna il bonus di 25 crediti
+            player.credits += 25;
+            
+            // Mostra notifica
+            showAnimatedNotification('BONUS SPAZIO! +25 crediti!', 'success');
+            addToGameLog(`${player.name} ha ottenuto 25 crediti bonus per aver risposto correttamente sulla casella bonus`);
+            
+            // Rimuovi il flag
+            player.onBonusSpace = false;
+        }
+        
         // Bonus speciale: se è una domanda casuale (non di categoria scelta) e la risposta è corretta
         // il giocatore ha una possibilità di ottenere direttamente 3 stelle
         if (!isChosenCategory && Math.random() < 0.15) { // 15% di probabilità
@@ -710,6 +723,9 @@ function showQuestionResult(isCorrect, correctAnswer, isChosenCategory = false) 
             player.powerups.starOnCorrect = false;
             player.powerups.tripleStarOnCorrect = false;
         }
+        
+        // Rimuovi il flag bonus space anche in caso di risposta errata
+        player.onBonusSpace = false;
     }
     
     // Resetta il flag di scelta categoria
